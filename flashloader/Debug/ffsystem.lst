@@ -1,0 +1,296 @@
+Zilog eZ80 Macro Assembler Version 4.3 (19073001)24-Apr-23     13:38:02     page:   1
+
+
+PC     Object              I  Line    Source 
+                           A     1    ; Zilog eZ80 ANSI C Compiler Release 3.4
+                           A     2    ; -nomodsect -optsize -noreduceopt -nopadbranch
+                           A     3    ; -peephole -globalopt -localcse -const=ROM 
+                           A     4    	FILE	"..\src_fatfs\ffsystem.c"
+                           A     5    	.assume ADL=1
+                           A     6    .DEBUG "C"
+                           A     7    	SEGMENT CODE
+                           A     8    .BEGREC "NONAME0",566
+                           A     9    .DEFINE "fs_type"
+                           A    10    .VALUE 0
+                           A    11    .CLASS 8
+                           A    12    .TYPE 12
+                           A    13    .ENDEF
+                           A    14    .DEFINE "pdrv"
+                           A    15    .VALUE 1
+                           A    16    .CLASS 8
+                           A    17    .TYPE 12
+                           A    18    .ENDEF
+                           A    19    .DEFINE "n_fats"
+                           A    20    .VALUE 2
+                           A    21    .CLASS 8
+                           A    22    .TYPE 12
+                           A    23    .ENDEF
+                           A    24    .DEFINE "wflag"
+                           A    25    .VALUE 3
+                           A    26    .CLASS 8
+                           A    27    .TYPE 12
+                           A    28    .ENDEF
+                           A    29    .DEFINE "fsi_flag"
+                           A    30    .VALUE 4
+                           A    31    .CLASS 8
+                           A    32    .TYPE 12
+                           A    33    .ENDEF
+                           A    34    .DEFINE "id"
+                           A    35    .VALUE 5
+                           A    36    .CLASS 8
+                           A    37    .TYPE 13
+                           A    38    .ENDEF
+                           A    39    .DEFINE "n_rootdir"
+                           A    40    .VALUE 7
+                           A    41    .CLASS 8
+                           A    42    .TYPE 13
+                           A    43    .ENDEF
+                           A    44    .DEFINE "csize"
+                           A    45    .VALUE 9
+                           A    46    .CLASS 8
+                           A    47    .TYPE 13
+                           A    48    .ENDEF
+                           A    49    .DEFINE "lfnbuf"
+                           A    50    .VALUE 11
+                           A    51    .CLASS 8
+                           A    52    .TYPE 45
+                           A    53    .ENDEF
+                           A    54    .DEFINE "last_clst"
+                           A    55    .VALUE 14
+                           A    56    .CLASS 8
+                           A    57    .TYPE 15
+                           A    58    .ENDEF
+                           A    59    .DEFINE "free_clst"
+                           A    60    .VALUE 18
+                           A    61    .CLASS 8
+                           A    62    .TYPE 15
+                           A    63    .ENDEF
+                           A    64    .DEFINE "cdir"
+                           A    65    .VALUE 22
+                           A    66    .CLASS 8
+                           A    67    .TYPE 15
+                           A    68    .ENDEF
+                           A    69    .DEFINE "n_fatent"
+                           A    70    .VALUE 26
+                           A    71    .CLASS 8
+                           A    72    .TYPE 15
+                           A    73    .ENDEF
+                           A    74    .DEFINE "fsize"
+                           A    75    .VALUE 30
+                           A    76    .CLASS 8
+                           A    77    .TYPE 15
+                           A    78    .ENDEF
+                           A    79    .DEFINE "volbase"
+                           A    80    .VALUE 34
+                           A    81    .CLASS 8
+                           A    82    .TYPE 15
+                           A    83    .ENDEF
+                           A    84    .DEFINE "fatbase"
+                           A    85    .VALUE 38
+                           A    86    .CLASS 8
+                           A    87    .TYPE 15
+                           A    88    .ENDEF
+                           A    89    .DEFINE "dirbase"
+                           A    90    .VALUE 42
+                           A    91    .CLASS 8
+                           A    92    .TYPE 15
+                           A    93    .ENDEF
+                           A    94    .DEFINE "database"
+                           A    95    .VALUE 46
+                           A    96    .CLASS 8
+                           A    97    .TYPE 15
+                           A    98    .ENDEF
+                           A    99    .DEFINE "winsect"
+                           A   100    .VALUE 50
+                           A   101    .CLASS 8
+                           A   102    .TYPE 15
+                           A   103    .ENDEF
+                           A   104    .DEFINE "win"
+                           A   105    .VALUE 54
+                           A   106    .CLASS 8
+                           A   107    .DIM 512
+                           A   108    .TYPE 108
+                           A   109    .ENDEF
+                           A   110    .ENDREC "NONAME0"
+                           A   111    .BEGREC "NONAME1",15
+                           A   112    .DEFINE "fs"
+                           A   113    .VALUE 0
+                           A   114    .CLASS 8
+                           A   115    .TAG "NONAME0"
+                           A   116    .TYPE 40
+                           A   117    .ENDEF
+                           A   118    .DEFINE "id"
+                           A   119    .VALUE 3
+                           A   120    .CLASS 8
+                           A   121    .TYPE 13
+                           A   122    .ENDEF
+                           A   123    .DEFINE "attr"
+                           A   124    .VALUE 5
+                           A   125    .CLASS 8
+                           A   126    .TYPE 12
+                           A   127    .ENDEF
+                           A   128    .DEFINE "stat"
+                           A   129    .VALUE 6
+                           A   130    .CLASS 8
+                           A   131    .TYPE 12
+                           A   132    .ENDEF
+                           A   133    .DEFINE "sclust"
+                           A   134    .VALUE 7
+                           A   135    .CLASS 8
+                           A   136    .TYPE 15
+                           A   137    .ENDEF
+                           A   138    .DEFINE "objsize"
+                           A   139    .VALUE 11
+                           A   140    .CLASS 8
+                           A   141    .TYPE 15
+                           A   142    .ENDEF
+                           A   143    .ENDREC "NONAME1"
+                           A   144    .BEGREC "NONAME2",36
+                           A   145    .DEFINE "obj"
+                           A   146    .VALUE 0
+                           A   147    .CLASS 8
+                           A   148    .TAG "NONAME1"
+                           A   149    .TYPE 8
+                           A   150    .ENDEF
+                           A   151    .DEFINE "flag"
+                           A   152    .VALUE 15
+                           A   153    .CLASS 8
+                           A   154    .TYPE 12
+                           A   155    .ENDEF
+                           A   156    .DEFINE "err"
+                           A   157    .VALUE 16
+                           A   158    .CLASS 8
+                           A   159    .TYPE 12
+                           A   160    .ENDEF
+                           A   161    .DEFINE "fptr"
+                           A   162    .VALUE 17
+                           A   163    .CLASS 8
+                           A   164    .TYPE 15
+                           A   165    .ENDEF
+                           A   166    .DEFINE "clust"
+                           A   167    .VALUE 21
+                           A   168    .CLASS 8
+                           A   169    .TYPE 15
+                           A   170    .ENDEF
+                           A   171    .DEFINE "sect"
+                           A   172    .VALUE 25
+                           A   173    .CLASS 8
+                           A   174    .TYPE 15
+                           A   175    .ENDEF
+                           A   176    .DEFINE "dir_sect"
+                           A   177    .VALUE 29
+                           A   178    .CLASS 8
+                           A   179    .TYPE 15
+                           A   180    .ENDEF
+                           A   181    .DEFINE "dir_ptr"
+                           A   182    .VALUE 33
+                           A   183    .CLASS 8
+                           A   184    .TYPE 44
+                           A   185    .ENDEF
+                           A   186    .ENDREC "NONAME2"
+                           A   187    .BEGREC "NONAME3",46
+                           A   188    .DEFINE "obj"
+                           A   189    .VALUE 0
+                           A   190    .CLASS 8
+                           A   191    .TAG "NONAME1"
+                           A   192    .TYPE 8
+                           A   193    .ENDEF
+                           A   194    .DEFINE "dptr"
+                           A   195    .VALUE 15
+                           A   196    .CLASS 8
+                           A   197    .TYPE 15
+                           A   198    .ENDEF
+                           A   199    .DEFINE "clust"
+                           A   200    .VALUE 19
+                           A   201    .CLASS 8
+                           A   202    .TYPE 15
+                           A   203    .ENDEF
+                           A   204    .DEFINE "sect"
+                           A   205    .VALUE 23
+                           A   206    .CLASS 8
+                           A   207    .TYPE 15
+                           A   208    .ENDEF
+                           A   209    .DEFINE "dir"
+                           A   210    .VALUE 27
+                           A   211    .CLASS 8
+                           A   212    .TYPE 44
+                           A   213    .ENDEF
+                           A   214    .DEFINE "fn"
+                           A   215    .VALUE 30
+                           A   216    .CLASS 8
+                           A   217    .DIM 12
+                           A   218    .TYPE 108
+                           A   219    .ENDEF
+                           A   220    .DEFINE "blk_ofs"
+                           A   221    .VALUE 42
+                           A   222    .CLASS 8
+                           A   223    .TYPE 15
+                           A   224    .ENDEF
+                           A   225    .ENDREC "NONAME3"
+                           A   226    .BEGREC "NONAME4",278
+                           A   227    .DEFINE "fsize"
+                           A   228    .VALUE 0
+                           A   229    .CLASS 8
+                           A   230    .TYPE 15
+                           A   231    .ENDEF
+                           A   232    .DEFINE "fdate"
+                           A   233    .VALUE 4
+                           A   234    .CLASS 8
+                           A   235    .TYPE 13
+                           A   236    .ENDEF
+                           A   237    .DEFINE "ftime"
+                           A   238    .VALUE 6
+                           A   239    .CLASS 8
+                           A   240    .TYPE 13
+                           A   241    .ENDEF
+                           A   242    .DEFINE "fattrib"
+                           A   243    .VALUE 8
+                           A   244    .CLASS 8
+                           A   245    .TYPE 12
+                           A   246    .ENDEF
+                           A   247    .DEFINE "altname"
+                           A   248    .VALUE 9
+                           A   249    .CLASS 8
+                           A   250    .DIM 13
+                           A   251    .TYPE 98
+                           A   252    .ENDEF
+                           A   253    .DEFINE "fname"
+                           A   254    .VALUE 22
+                           A   255    .CLASS 8
+                           A   256    .DIM 256
+                           A   257    .TYPE 98
+                           A   258    .ENDEF
+                           A   259    .ENDREC "NONAME4"
+                           A   260    .BEGREC "NONAME5",12
+                           A   261    .DEFINE "fmt"
+                           A   262    .VALUE 0
+                           A   263    .CLASS 8
+                           A   264    .TYPE 12
+                           A   265    .ENDEF
+                           A   266    .DEFINE "n_fat"
+                           A   267    .VALUE 1
+                           A   268    .CLASS 8
+                           A   269    .TYPE 12
+                           A   270    .ENDEF
+                           A   271    .DEFINE "align"
+                           A   272    .VALUE 2
+                           A   273    .CLASS 8
+                           A   274    .TYPE 14
+                           A   275    .ENDEF
+                           A   276    .DEFINE "n_root"
+                           A   277    .VALUE 5
+                           A   278    .CLASS 8
+                           A   279    .TYPE 14
+                           A   280    .ENDEF
+                           A   281    .DEFINE "au_size"
+                           A   282    .VALUE 8
+                           A   283    .CLASS 8
+                           A   284    .TYPE 15
+                           A   285    .ENDEF
+                           A   286    .ENDREC "NONAME5"
+                           A   287    	END
+
+
+Errors: 0
+Warnings: 0
+Lines Assembled: 288

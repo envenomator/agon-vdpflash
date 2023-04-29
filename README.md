@@ -18,7 +18,9 @@ The utility can be flashed in multiple ways:
 ## Flashing using the ESP Flash download tool
 The latest version of this tool can be downloaded [from the Espressif support website](https://www.espressif.com/en/support/download/other-tools?keys=&field_type_tid%5B%5D=13)
 
-After installation of the Espressif ESP Flash download tool, run it and fill in the fields exactly as follows, pointing the binaries where you downloaded this git to on disk. Binaries to flash are in the 'batchfile-flash' folder, which I put in 'C:\bin' in this example:
+Connect your AgonLight board to your PC, using an appropriate USB interface cable. This will provide serial connectivity between the ESP32 on your AgonLight and the PC.
+
+After installation of the Espressif ESP Flash download tool, run it and fill in the fields exactly as follows (provide your own COM port details), pointing the binaries where you downloaded this git to on disk. Binaries to flash are in the 'batchfile-flash' folder, which I put in 'C:\bin' in this example:
 
 ![espressif settings](/media/esp32flash.PNG)
 

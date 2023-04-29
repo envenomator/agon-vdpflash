@@ -20,7 +20,7 @@ The latest version of this tool can be downloaded [from the Espressif support we
 
 After installation of the Espressif ESP Flash download tool, run it and fill in the fields exactly as follows, pointing the binaries where you downloaded this git to on disk. Binaries to flash are in the 'batchfile-flash' folder, which I put in 'C:\bin' in this example:
 
-![espressif settings](https://github.com/envenomator/agon-vdpflash/tree/master/media/esp32flash.PNG?raw=true)
+![espressif settings](/media/esp32flash.PNG)
 
 ## Requirements
 1. Two (dupont female-female) cables need to be connected between the external GPIO and ZDI ports of the AgonLight board. Please see detailed description below
@@ -29,11 +29,11 @@ After installation of the Espressif ESP Flash download tool, run it and fill in 
 
 ## Cabling details
 ### ZDI connector
-![zdi connector](https://github.com/envenomator/agon-vdpflash/tree/master/media/zdi.png?raw=true)
+![zdi connector](/media/zdi.png)
 
 ### Original AgonLight GPIO header
-![agonlight](https://github.com/envenomator/agon-vdpflash/tree/master/media/originalagonlight.png?raw=true)
+![agonlight](/media/originalagonlight.png)
 
 ### Olimex AgonLight2 GPIO IDC box header
-![agonlight2](https://github.com/envenomator/agon-vdpflash/tree/master/media/olimexagonlight2.png?raw=true)
+![agonlight2](/media/olimexagonlight2.png)
 

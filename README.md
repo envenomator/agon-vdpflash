@@ -24,6 +24,8 @@ After installation of the Espressif ESP Flash download tool, run it and fill in 
 
 ![espressif settings](/media/esp32flash.PNG)
 
+Then press 'Start', wait for the tool to finish and follow the on-screen instructions on your VGA monitor connected to the AgonLight board.
+
 ## Requirements
 1. Two (dupont female-female) cables need to be connected between the external GPIO and ZDI ports of the AgonLight board. Please see detailed description below
 2. The required MOS version to flash needs to be placed on the SD card's root filesystem, with filename "MOS.bin"

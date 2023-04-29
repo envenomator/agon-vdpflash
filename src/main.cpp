@@ -46,7 +46,7 @@ void boot_screen() {
     term_printf("\e[44;37m"); // background: blue, foreground: white
     term_printf("\e[2J");     // clear screen
     term_printf("\e[1;1H");   // move cursor to 1,1
-    term_printf("Agon MOS ZDI flash utility - version 0.2\r\n\r\n");
+    term_printf("Agon MOS ZDI flash utility - version 0.3\r\n\r\n");
 }
 
 void waitforKey(uint8_t key) {
@@ -69,8 +69,8 @@ void ask_initial() {
     term_printf("an incompatible MOS version.\r\n");
     term_printf("\r\nRequirements before proceeding:\r\n");
     term_printf(" 1) Connect two cables between the GPIO and ZDI ports:\r\n");
-    term_printf("    - GPIO26 (pin 9) to TCK (pin 4)\r\n");
-    term_printf("    - GPIO27 (pin 8) to TDI (pin 6)\r\n");
+    term_printf("    - ESP GPIO26 to ZDI TCK (pin 4)\r\n");
+    term_printf("    - ESP GPIO27 to ZDI TDI (pin 6)\r\n");
     term_printf(" 2) Place the required MOS version on the SD card's root\r\n"); 
     term_printf("    with filename \"MOS.bin\"\r\n");
     term_printf(" 3) Reset the board after inserting the SD card\r\n\r\n");
@@ -112,11 +112,12 @@ void init_ez80(void) {
     zdi_read_cpu (SET_ADL);
     zdi_cpu_instruction_di ();
     
+    
     // configure default GPIO
     zdi_cpu_instruction_out (PB_DDR, 0xff);
     zdi_cpu_instruction_out (PC_DDR, 0xff);
     zdi_cpu_instruction_out (PD_DDR, 0xff);
-
+    
     zdi_cpu_instruction_out (PB_ALT1, 0x0);
     zdi_cpu_instruction_out (PC_ALT1, 0x0);
     zdi_cpu_instruction_out (PD_ALT1, 0x0);
@@ -144,6 +145,7 @@ void init_ez80(void) {
     // configure internal flash
     zdi_cpu_instruction_out (FLASH_ADDR_U,0x00);
     zdi_cpu_instruction_out (FLASH_CTRL,0b00101000);   // flash enabled, 1 wait state
+    
     // configure internal RAM chip-select range
     zdi_cpu_instruction_out (RAM_ADDR_U,0xb7);         // configure internal RAM chip-select range
     zdi_cpu_instruction_out (RAM_CTL,0b10000000);      // enable
@@ -152,23 +154,14 @@ void init_ez80(void) {
     zdi_cpu_instruction_out (CS0_UBR,0x0b);            // upper boundary
     zdi_cpu_instruction_out (CS0_BMC,0b00000001);      // 1 wait-state, ez80 mode
     zdi_cpu_instruction_out (CS0_CTL,0b00001000);      // memory chip select, cs0 enabled
-    
+
     // configure external RAM chip-select range
-    zdi_cpu_instruction_out (CS1_LBR,0xc0);            // lower boundary
-    zdi_cpu_instruction_out (CS1_UBR,0xc7);            // upper boundary
-    zdi_cpu_instruction_out (CS1_BMC,0x0);      // 1 wait-state, ez80 mode
-    zdi_cpu_instruction_out (CS1_CTL,0x08);      // memory chip select, cs0 enabled
+    zdi_cpu_instruction_out (CS1_CTL,0x00);            // memory chip select, cs1 disabled
     // configure external RAM chip-select range
-    zdi_cpu_instruction_out (CS2_LBR,0x80);            // lower boundary
-    zdi_cpu_instruction_out (CS2_UBR,0xbf);            // upper boundary
-    zdi_cpu_instruction_out (CS2_BMC,0x0);      // 1 wait-state, ez80 mode
-    zdi_cpu_instruction_out (CS2_CTL,0x08);      // memory chip select, cs0 enabled
+    zdi_cpu_instruction_out (CS2_CTL,0x00);            // memory chip select, cs2 disabled
     // configure external RAM chip-select range
-    zdi_cpu_instruction_out (CS3_LBR,0x03);            // lower boundary
-    zdi_cpu_instruction_out (CS3_UBR,0x03);            // upper boundary
-    zdi_cpu_instruction_out (CS3_BMC,0x82);      // 1 wait-state, ez80 mode
-    zdi_cpu_instruction_out (CS3_CTL,0x18);      // memory chip select, cs0 enabled
-    
+    zdi_cpu_instruction_out (CS3_CTL,0x00);            // memory chip select, cs3 disabled
+
     // set stack pointer
     zdi_write_cpu (REG_SP,0x0A0000);
 }

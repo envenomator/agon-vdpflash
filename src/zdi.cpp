@@ -311,13 +311,35 @@ void zdi_exit ()
 }
 
 void zdi_cpu_instruction_out (uint8_t regnr, uint8_t value) {   
+
     // ld a, value
     zdi_write_register(ZDI_IS1, value);
     zdi_write_register(ZDI_IS0, 0x3e);
     // out (regnr), a
     zdi_write_register(ZDI_IS1, regnr);
     zdi_write_register(ZDI_IS0, 0xd3);
+
+/*
+    // ld a, nn
+    uint8_t instructions[3];
+    instructions[0]=value;
+    instructions[1]=0x3e;
+    zdi_write_registers (ZDI_IS1,2,instructions);
+    // out0 (nn),a
+    instructions[0]=regnr;
+    instructions[1]=0x39;
+    instructions[2]=0xed;
+    zdi_write_registers (ZDI_IS2,3,instructions);
+*/
+/*
+    zdi_write_register(ZDI_IS1, value);
+    zdi_write_register(ZDI_IS0, 0x3e);
+    zdi_write_register(ZDI_IS2, regnr);
+    zdi_write_register(ZDI_IS1, 0x39);
+    zdi_write_register(ZDI_IS0, 0xed);
+*/
 }
+
 void zdi_cpu_instruction_di ()
 {
     // di

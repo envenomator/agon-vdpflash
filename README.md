@@ -37,3 +37,8 @@ After installation of the Espressif ESP Flash download tool, run it and fill in 
 ### Olimex AgonLight2 GPIO IDC box header
 ![agonlight2](/media/olimexagonlight2.png)
 
+## Implementation details
+This utility makes use of the excellent ZDI code from Mario Smit ([S0urceror](https://github.com/S0urceror/AgonElectronHAL)), many thanks for the hard work of getting this working with the onboard ESP32!
+
+After the utility is flashed and boots up the ESP32, it opens the ZDI interface and tries to upload a 2nd stage utility (ez80 code) to the ez80 and places that in memory to execute. This 2nd stage opens the SD card interface, reads the "MOS.bin" file and programs it to ez80 flash.
+The actual fun part of writing this, was implementing a simple protocol for the ez80 to communicate back to its ZDI overlord in the sky. By praying to a dedicated assembly waitloop, handing over register results, with ZDI setting breakpoints at this waitloop, both CPUs party up and form an effective team. Each feedback dot you see on the screen while programming, the filesize returned, are all the fun result of a delicate prayer/break(point)dance.

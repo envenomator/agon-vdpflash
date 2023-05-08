@@ -194,7 +194,7 @@ void loop() {
     ask_initial();
 
     productid = zdi_get_productid();
-    if((productid == 0) || (productid == 255)) {
+    if((productid == 0) || (productid == 65535)) {
         term_printf("ZDI Interface DOWN - check cabling and reset\r\n");
         term_printf("--------------------------------------------\r\n");
         while(1);

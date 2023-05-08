@@ -224,6 +224,10 @@ void loop() {
         term_printf("Error opening \"MOS.bin\"");
         while(1);
     }
+    if(filesize == 0xFFFFFF) {
+        term_printf("Invalid file size for \"MOS.bin\"");
+        while(1);
+    }
     term_printf("Done");
     term_printf(" (%d bytes)\r\n", filesize);
     term_printf("Reading file to ez80 memory  - ");

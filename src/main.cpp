@@ -194,7 +194,7 @@ void loop() {
     ask_initial();
 
     productid = zdi_get_productid();
-    if((productid == 0) || (productid == 255)) {
+    if((productid == 0) || (productid == 65535)) {
         term_printf("ZDI Interface DOWN - check cabling and reset\r\n");
         term_printf("--------------------------------------------\r\n");
         while(1);
@@ -222,6 +222,10 @@ void loop() {
     filesize = waitcontinueLoader();
     if(filesize == 0) {
         term_printf("Error opening \"MOS.bin\"");
+        while(1);
+    }
+    if(filesize == 0xFFFFFF) {
+        term_printf("Invalid file size for \"MOS.bin\"");
         while(1);
     }
     term_printf("Done");

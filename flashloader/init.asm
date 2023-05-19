@@ -55,7 +55,16 @@ _exec_name:		DB	"FLASHLOADER.BIN", 0		; The executable name, only used in argv
 			DB	01h			; Flag for run mode (0: Z80, 1: ADL)
 
 ;
-; And the code follows on immediately after the header
+; Place the waitBreakpoint routine at a fixed address (0x40048) so that it
+; won't be affected by code changes in the future.
+;
+			ALIGN	8
+waitBreakpoint:
+			cp	a, b
+			jr	nz, waitBreakpoint
+			ret
+;
+; And the code follows on immediately after the header and waitBreakpoint
 ;
 _start:		DI
 ; Config SPI
@@ -219,10 +228,7 @@ _waitZDI:
 
 	ld		b, 0
 	ld		a, 1
-waitBreakpoint:
-	cp		a, b
-	jr		nz, waitBreakpoint
-
+	call		waitBreakpoint
 	ld		sp,ix
 	pop		ix
 	ret

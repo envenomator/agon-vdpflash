@@ -64,7 +64,7 @@ waitBreakpoint:
 			DB	01h			; Flag for run mode (0: Z80, 1: ADL)
 
 ;
-; And the code follows on immediately
+; And the code follows on immediately after the header
 ;
 _start:		DI
 ; Config SPI

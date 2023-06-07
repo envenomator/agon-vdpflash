@@ -46,7 +46,7 @@ void boot_screen() {
     term_printf("\e[44;37m"); // background: blue, foreground: white
     term_printf("\e[2J");     // clear screen
     term_printf("\e[1;1H");   // move cursor to 1,1
-    term_printf("Agon MOS ZDI flash utility - version 0.3\r\n\r\n");
+    term_printf("Agon MOS ZDI flash utility - version 0.4\r\n\r\n");
 }
 
 void waitforKey(uint8_t key) {

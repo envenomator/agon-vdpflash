@@ -5,9 +5,9 @@ The premise of this utility is that there is no running firmware in the ez80 its
 
 The ZDI can be used with one of the Zilog Smart Cable options, together with the Zilog Developer Studio II software to program a new MOS firmware, or use this utility without needing such a cable.
 
-The utility needs to be flashed to the onboard ESP32 IC, normally used as graphics processor (VDP). When the ESP32 IC is done running the utility and flashing the MOS firmware to the ez80 flash, it needs to be flashed again with the VDP code, so resume it's role as graphics processor.
+The utility needs to be flashed to the onboard ESP32 IC, normally used as graphics processor (VDP). When the ESP32 IC is done running the utility and flashing the MOS firmware to the ez80 flash, it needs to be flashed again with the VDP code, to resume it's role as graphics processor.
 
-To enable the utility access to the ZDI interface, it needs to cables connected as detailed below. After installation, the user simply places the required MOS firmware on the SD card, which the utility picks up and flashes.
+To enable the utility access to the ZDI interface, it needs two cables connected as detailed below. After installation, the user simply places the required MOS firmware on the SD card, which the utility picks up and flashes.
 
 ## Flashing the utility
 The utility can be flashed in multiple ways:
@@ -29,7 +29,7 @@ Then press 'Start', wait for the tool to finish and follow the on-screen instruc
 ## Requirements
 1. Two (dupont female-female) cables need to be connected between the external GPIO and ZDI ports of the AgonLight board. Please see detailed description below
 2. The required MOS version to flash needs to be placed on the SD card's root filesystem, with filename "MOS.bin"
-3. The board needs to be reset after inserting the SD card.
+3. The board needs to be reset after inserting the SD card - just press the reset button.
 
 ## Cabling details
 ### ZDI connector

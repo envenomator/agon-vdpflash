@@ -6,7 +6,7 @@
 
 #define PAGESIZE       1024
 #define USERLOAD    0x40000
-#define BREAKPOINT  0x40048
+#define BREAKPOINT  0x40020
 
 fabgl::PS2Controller    PS2Controller;
 fabgl::VGA16Controller  DisplayController;

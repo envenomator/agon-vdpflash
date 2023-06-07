@@ -48,6 +48,15 @@ __FLASH_ADDR_U_INIT_PARAM:	EQU 00h
 ; The header stuff
 ;
 _exec_name:		DB	"FLASHLOADER.BIN", 0		; The executable name, only used in argv
+;
+; Place the waitBreakpoint routine at a fixed address (0x40020) so that it
+; won't be affected by code changes in the future.
+;
+			ALIGN	32
+waitBreakpoint:
+			cp	a, b
+			jr	nz, waitBreakpoint
+			ret
 
 			ALIGN	64			; The executable header is from byte 64 onwards
 			DB	"MOS"			; Flag for MOS - to confirm this is a valid MOS command
@@ -55,16 +64,7 @@ _exec_name:		DB	"FLASHLOADER.BIN", 0		; The executable name, only used in argv
 			DB	01h			; Flag for run mode (0: Z80, 1: ADL)
 
 ;
-; Place the waitBreakpoint routine at a fixed address (0x40048) so that it
-; won't be affected by code changes in the future.
-;
-			ALIGN	8
-waitBreakpoint:
-			cp	a, b
-			jr	nz, waitBreakpoint
-			ret
-;
-; And the code follows on immediately after the header and waitBreakpoint
+; And the code follows on immediately
 ;
 _start:		DI
 ; Config SPI

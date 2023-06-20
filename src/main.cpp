@@ -46,7 +46,7 @@ void boot_screen() {
     term_printf("\e[44;37m"); // background: blue, foreground: white
     term_printf("\e[2J");     // clear screen
     term_printf("\e[1;1H");   // move cursor to 1,1
-    term_printf("Agon MOS ZDI flash utility - version 0.4\r\n\r\n");
+    term_printf("Agon MOS ZDI flash utility - version 0.5\r\n\r\n");
 }
 
 void waitforKey(uint8_t key) {
@@ -88,7 +88,6 @@ void ask_proceed() {
 void setup() {
     // Disable the watchdog timers
     disableCore0WDT(); delay(200);								
-	disableCore1WDT(); delay(300);
 
     esp_task_wdt_init(30, false); // in case WDT cannot be removed
 
@@ -193,17 +192,22 @@ void loop() {
     boot_screen();
     ask_initial();
 
-    productid = zdi_get_productid();
-    if((productid == 0) || (productid == 65535)) {
-        term_printf("ZDI Interface DOWN - check cabling and reset\r\n");
-        term_printf("--------------------------------------------\r\n");
-        while(1);
-    }
+    //if((productid == 0) || (productid == 65535)) {
+    //    term_printf("ZDI Interface DOWN - check cabling and reset\r\n");
+    //    term_printf("--------------------------------------------\r\n");
+    //    while(1);
+    //}
     
     boot_screen();
     term_printf("Action                         Status\r\n");
     term_printf("-------------------------------------\r\n");
-    term_printf("Checking ZDI interface       - UP (ID %X.%02X)\r\n",productid, zdi_get_revision());
+    term_printf("Checking ZDI interface       - ");
+    productid = zdi_get_productid();
+    if((productid == 0) || (productid == 65535)) {
+        term_printf("DOWN - check cabling and reset");
+        while(1);
+    }
+    term_printf("UP (ID %X.%02X)\r\n",productid, zdi_get_revision());
     term_printf("ZDI uploading flash utility  - ");
 
     init_ez80();

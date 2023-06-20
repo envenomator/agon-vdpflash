@@ -55,6 +55,7 @@ bool zdi_read_bit ()
     //
     pinMode (ZDI_TDI, INPUT);
     bit = digitalRead (ZDI_TDI);
+    pinMode (ZDI_TDI, OUTPUT);
     //usleep (ZDI_WAIT_MICRO);
     //
     digitalWrite (ZDI_TCK,HIGH);

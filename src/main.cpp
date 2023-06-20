@@ -191,38 +191,31 @@ void loop() {
 
     boot_screen();
     ask_initial();
-
-    //if((productid == 0) || (productid == 65535)) {
-    //    term_printf("ZDI Interface DOWN - check cabling and reset\r\n");
-    //    term_printf("--------------------------------------------\r\n");
-    //    while(1);
-    //}
-    
+ 
     boot_screen();
-    term_printf("Action                         Status\r\n");
-    term_printf("-------------------------------------\r\n");
-    term_printf("Checking ZDI interface       - ");
+    term_printf("Action                          Status\r\n");
+    term_printf("--------------------------------------\r\n");
+    term_printf("Checking ZDI interface        - ");
     productid = zdi_get_productid();
     if((productid == 0) || (productid == 65535)) {
         term_printf("DOWN - check cabling and reset");
         while(1);
     }
     term_printf("UP (ID %X.%02X)\r\n",productid, zdi_get_revision());
-    term_printf("ZDI uploading flash utility  - ");
+    term_printf("Uploading flashloader to ez80 - ");
 
     init_ez80();
-    //zdi_write_memory(address, flashloader_bin_len, &flashloader_bin[0]);
     ZDI_upload();
  
     term_printf(" Done\r\n");
     zdi_debug_breakpoint_enable (0, BREAKPOINT);    
     zdi_write_cpu (REG_PC, USERLOAD);
-    zdi_debug_continue();   // start loaded program
+    zdi_debug_continue();   // start uploaded program
     
-    term_printf("Starting bootloader          - ");
+    term_printf("Starting flashloader          - ");
     waitcontinueLoader();
     term_printf("Done\r\n");   
-    term_printf("Opening file from SD card    - ");
+    term_printf("Opening file from SD card     - ");
     filesize = waitcontinueLoader();
     if(filesize == 0) {
         term_printf("Error opening \"MOS.bin\"");
@@ -234,14 +227,14 @@ void loop() {
     }
     term_printf("Done");
     term_printf(" (%d bytes)\r\n", filesize);
-    term_printf("Reading file to ez80 memory  - ");
+    term_printf("Reading file to ez80 memory   - ");
     waitcontinueLoader();
     term_printf("Done\r\n");
 
     ask_proceed();
     waitcontinueLoader();
 
-    term_printf("Erasing flash                - ");
+    term_printf("Erasing flash                 - ");
     pages = waitcontinueLoader();
     term_printf("Done\r\n");
 

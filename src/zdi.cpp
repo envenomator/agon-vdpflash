@@ -35,14 +35,14 @@ void zdi_write_bit (bool bit)
     // TCK: ^\\___*//^^
     // TDI: xxxxxBBBBBB
     digitalWrite (ZDI_TCK,LOW);
-    usleep (ZDI_WAIT_MICRO);
+    //usleep (ZDI_WAIT_MICRO);
     //
     digitalWrite (ZDI_TDI,bit);
-    pinMode (ZDI_TDI, OUTPUT);
-    usleep (ZDI_WAIT_MICRO);
+    //pinMode (ZDI_TDI, OUTPUT);
+    //usleep (ZDI_WAIT_MICRO);
     //
     digitalWrite (ZDI_TCK,HIGH);
-    usleep (ZDI_WAIT_MICRO);
+    //usleep (ZDI_WAIT_MICRO);
 }
 bool zdi_read_bit ()
 {
@@ -51,14 +51,14 @@ bool zdi_read_bit ()
     // TCK: ^\\*___//^^
     // TDI: xxxxBBBBBBB
     digitalWrite (ZDI_TCK,LOW);
-    usleep (ZDI_WAIT_MICRO);
+    //usleep (ZDI_WAIT_MICRO);
     //
     pinMode (ZDI_TDI, INPUT);
     bit = digitalRead (ZDI_TDI);
-    usleep (ZDI_WAIT_MICRO);
+    //usleep (ZDI_WAIT_MICRO);
     //
     digitalWrite (ZDI_TCK,HIGH);
-    usleep (ZDI_WAIT_MICRO);
+    //usleep (ZDI_WAIT_MICRO);
     return bit;
 }
 void zdi_register (byte regnr,bool read)

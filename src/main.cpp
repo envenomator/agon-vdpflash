@@ -15,7 +15,6 @@
 fabgl::PS2Controller    PS2Controller;
 fabgl::VGA16Controller  DisplayController;
 fabgl::Terminal         terminal;
-uint8_t *buffer;
 
 CPU*                    cpu;
 ZDI*                    zdi;
@@ -49,19 +48,23 @@ uint32_t waitcontinueLoader(void) {
     return result;
 }
 
+void fg_white(void) {
+    term_printf("\e[44;37m"); // background: blue, foreground: white
+}
+void fg_red(void) {
+    term_printf("\e[41;37m"); // background: blue, foreground: red
+}
 void boot_screen() {
     // initialize terminal
-    term_printf("\e[44;37m"); // background: blue, foreground: white
+    fg_white();
     term_printf("\e[2J");     // clear screen
     term_printf("\e[1;1H");   // move cursor to 1,1
-    term_printf("Agon MOS ZDI flash utility - version 0.5\r\n\r\n");
+    term_printf("Agon MOS ZDI flash utility - version 0.6\r\n\r\n");
 }
 
 void waitforKey(uint8_t key) {
     fabgl::Keyboard *kb = PS2Controller.keyboard();
     fabgl::VirtualKeyItem item;
-    byte keycode = 0;						// Last pressed key code
-    byte modifiers = 0;						// Last pressed key modifiers
     
     while(1) {
         if(kb->getNextVirtualKey(&item, 0)) {
@@ -71,7 +74,7 @@ void waitforKey(uint8_t key) {
 }
 
 void ask_initial() {
-    term_printf("This utility will (baremetal) program a new MOS to the Agon flash,\r\n");
+    term_printf("This utility will (baremetal) program a new MOS to the Agon ez80 flash,\r\n");
     term_printf("from a file on the SD card. This can be performed in case of\r\n");
     term_printf("an initially erased or corrupted flash, or having previously flashed\r\n");
     term_printf("an incompatible MOS version.\r\n");
@@ -79,7 +82,7 @@ void ask_initial() {
     term_printf(" 1) Connect two cables between the GPIO and ZDI ports:\r\n");
     term_printf("    - ESP GPIO26 to ZDI TCK (pin 4)\r\n");
     term_printf("    - ESP GPIO27 to ZDI TDI (pin 6)\r\n");
-    term_printf(" 2) Place the required MOS version on the SD card's root\r\n"); 
+    term_printf(" 2) Place the required MOS version on the SD card's root directory\r\n"); 
     term_printf("    with filename \"MOS.bin\"\r\n");
     term_printf(" 3) Reset the board after inserting the SD card\r\n\r\n");
     term_printf("Press ENTER to proceed:");
@@ -99,7 +102,6 @@ void setup() {
 
     esp_task_wdt_init(30, false); // in case WDT cannot be removed
 
-    Serial.begin(115200);
     // setup keyboard/PS2
     PS2Controller.begin(PS2Preset::KeyboardPort0, KbdMode::CreateVirtualKeysQueue);
 
@@ -114,8 +116,6 @@ void setup() {
     // setup ZDI interface
     zdi = new ZDI(ZDI_TCKPIN, ZDI_TDIPIN);
     cpu = new CPU(zdi);
-
-    //buffer = (uint8_t *) malloc(1024);
 }
 
 void init_ez80(void) {
@@ -209,6 +209,7 @@ void loop() {
     term_printf("Checking ZDI interface        - ");
     productid = zdi->get_productid();
     if((productid == 0) || (productid == 65535)) {
+        fg_red();
         term_printf("DOWN - check cabling and reset");
         while(1);
     }
@@ -217,36 +218,7 @@ void loop() {
 
     init_ez80();
     ZDI_upload();
-    //term_printf("Upload done\r\n");
 
-    //remaining = flashloader_bin_len;
-    //address = USERLOAD;
-    //localaddress = 0;
-    //i = 0;
-    //    while(1);
-    /*
-    while(remaining > 128) {
-        zdi->read_memory(address, 128, buffer);
-        for(i = 0; i < 128; i++) {
-            if(flashloader_bin[localaddress] != buffer[i]) {
-                term_printf("Error at 0x%x\r\n", address);
-                while(1);
-            }
-        }
-        address += 128;
-        localaddress += 128;
-        remaining -= 128;
-        term_printf(".");
-    }
-    zdi->read_memory(address, remaining, buffer);
-    for(i = 0; i < remaining; i++) {
-        if(flashloader_bin[localaddress] != buffer[i]) {
-            term_printf("Error at 0x%x\r\n", address);
-            while(1);
-        }
-    }
-    */
-    //term_printf("Binary ok\r\n");
     term_printf(" Done\r\n");
 
     cpu->pc(USERLOAD);
@@ -260,10 +232,12 @@ void loop() {
     term_printf("Opening file from SD card     - ");
     filesize = waitcontinueLoader();
     if(filesize == 0) {
+        fg_red();
         term_printf("Error opening \"MOS.bin\"");
         while(1);
     }
     if(filesize == 0xFFFFFF) {
+        fg_red();
         term_printf("Invalid file size for \"MOS.bin\"");
         while(1);
     }

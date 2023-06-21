@@ -154,7 +154,6 @@ void ZDI::write_memory(uint32_t address, uint32_t count, uint8_t* buffer) {
     uint32_t oldpc;
     uint32_t i;
 
-    //oldpc = read_cpu_register(ZDI_RWControl::pc);
     write_cpu_register(ZDI_RWControl::pc, address);
 
     signal_start();
@@ -164,8 +163,6 @@ void ZDI::write_memory(uint32_t address, uint32_t count, uint8_t* buffer) {
         write_byte(*(buffer++));
     }
     signal_done();
-
-    //write_cpu_register(ZDI_RWControl::pc, oldpc);
 }
 
 void ZDI::set_debugflags(uint8_t flags) {

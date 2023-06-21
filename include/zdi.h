@@ -22,7 +22,6 @@ public:
     // ZDI interface functions
     uint16_t get_productid(void);
      uint8_t get_revision (void);
-
         void set_debugflags(uint8_t flags);
     
     // Higher layer functions

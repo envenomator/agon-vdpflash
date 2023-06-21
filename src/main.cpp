@@ -1,5 +1,6 @@
 #include "fabgl.h"
 #include "zdi.h"
+#include "cpu.h"
 #include "flashloader.h"
 #include "eZ80F92.h"
 #include <esp_task_wdt.h>
@@ -8,9 +9,16 @@
 #define USERLOAD    0x40000
 #define BREAKPOINT  0x40020
 
+#define ZDI_TCKPIN 26
+#define ZDI_TDIPIN 27
+
 fabgl::PS2Controller    PS2Controller;
 fabgl::VGA16Controller  DisplayController;
 fabgl::Terminal         terminal;
+uint8_t *buffer;
+
+CPU*                    cpu;
+ZDI*                    zdi;
 
 void term_printf (const char* format, ...) {
 	va_list list;
@@ -30,14 +38,14 @@ void term_printf (const char* format, ...) {
 uint32_t waitcontinueLoader(void) {
     uint32_t result, pc;
 
-    while(!zdi_debug_breakpoint_reached()); // wait for ez80 to hit breakpoint
-    zdi_debug_break;
-    pc = zdi_read_cpu (REG_PC);
-    zdi_write_cpu (REG_BC, 0x100); // write '1' to register B, don't care about 'C'
-    result = zdi_read_cpu (REG_HL);
-    zdi_write_cpu (REG_PC, pc);
+    while(cpu->isRunning()); // wait for ez80 to hit breakpoint
+    cpu->setBreak();
+    pc = cpu->pc();
+    cpu->bc(0x100); // write '1' to register B, don't care about 'C'
+    result = cpu->hl();
+    cpu->pc(pc);
     //zdi_debug_breakpoint_enable (0, BREAKPOINT);
-    zdi_debug_continue();
+    cpu->setContinue();
     return result;
 }
 
@@ -91,6 +99,7 @@ void setup() {
 
     esp_task_wdt_init(30, false); // in case WDT cannot be removed
 
+    Serial.begin(115200);
     // setup keyboard/PS2
     PS2Controller.begin(PS2Preset::KeyboardPort0, KbdMode::CreateVirtualKeysQueue);
 
@@ -103,66 +112,68 @@ void setup() {
     terminal.enableCursor(true);
 
     // setup ZDI interface
-    zdi_enter();
+    zdi = new ZDI(ZDI_TCKPIN, ZDI_TDIPIN);
+    cpu = new CPU(zdi);
+
+    //buffer = (uint8_t *) malloc(1024);
 }
 
 void init_ez80(void) {
-    zdi_debug_break ();
-    zdi_read_cpu (SET_ADL);
-    zdi_cpu_instruction_di ();
-    
+    cpu->setBreak();
+    cpu->setADLmode(true);
+    cpu->instruction_di();  
     
     // configure default GPIO
-    zdi_cpu_instruction_out (PB_DDR, 0xff);
-    zdi_cpu_instruction_out (PC_DDR, 0xff);
-    zdi_cpu_instruction_out (PD_DDR, 0xff);
+    cpu->instruction_out (PB_DDR, 0xff);
+    cpu->instruction_out (PC_DDR, 0xff);
+    cpu->instruction_out (PD_DDR, 0xff);
     
-    zdi_cpu_instruction_out (PB_ALT1, 0x0);
-    zdi_cpu_instruction_out (PC_ALT1, 0x0);
-    zdi_cpu_instruction_out (PD_ALT1, 0x0);
-    zdi_cpu_instruction_out (PB_ALT2, 0x0);
-    zdi_cpu_instruction_out (PC_ALT2, 0x0);
-    zdi_cpu_instruction_out (PD_ALT2, 0x0);
+    cpu->instruction_out (PB_ALT1, 0x0);
+    cpu->instruction_out (PC_ALT1, 0x0);
+    cpu->instruction_out (PD_ALT1, 0x0);
+    cpu->instruction_out (PB_ALT2, 0x0);
+    cpu->instruction_out (PC_ALT2, 0x0);
+    cpu->instruction_out (PD_ALT2, 0x0);
 
-    zdi_cpu_instruction_out (TMR0_CTL, 0x0);
-    zdi_cpu_instruction_out (TMR1_CTL, 0x0);
-    zdi_cpu_instruction_out (TMR2_CTL, 0x0);
-    zdi_cpu_instruction_out (TMR3_CTL, 0x0);
-    zdi_cpu_instruction_out (TMR4_CTL, 0x0);
-    zdi_cpu_instruction_out (TMR5_CTL, 0x0);
+    cpu->instruction_out (TMR0_CTL, 0x0);
+    cpu->instruction_out (TMR1_CTL, 0x0);
+    cpu->instruction_out (TMR2_CTL, 0x0);
+    cpu->instruction_out (TMR3_CTL, 0x0);
+    cpu->instruction_out (TMR4_CTL, 0x0);
+    cpu->instruction_out (TMR5_CTL, 0x0);
 
-    zdi_cpu_instruction_out (UART0_IER, 0x0);
-    zdi_cpu_instruction_out (UART1_IER, 0x0);
+    cpu->instruction_out (UART0_IER, 0x0);
+    cpu->instruction_out (UART1_IER, 0x0);
 
-    zdi_cpu_instruction_out (I2C_CTL, 0x0);
-    zdi_cpu_instruction_out (FLASH_IRQ, 0x0);
+    cpu->instruction_out (I2C_CTL, 0x0);
+    cpu->instruction_out (FLASH_IRQ, 0x0);
 
-    zdi_cpu_instruction_out (SPI_CTL, 0x4);
+    cpu->instruction_out (SPI_CTL, 0x4);
 
-    zdi_cpu_instruction_out (RTC_CTRL, 0x0);
+    cpu->instruction_out (RTC_CTRL, 0x0);
     
     // configure internal flash
-    zdi_cpu_instruction_out (FLASH_ADDR_U,0x00);
-    zdi_cpu_instruction_out (FLASH_CTRL,0b00101000);   // flash enabled, 1 wait state
+    cpu->instruction_out (FLASH_ADDR_U,0x00);
+    cpu->instruction_out (FLASH_CTRL,0b00101000);   // flash enabled, 1 wait state
     
     // configure internal RAM chip-select range
-    zdi_cpu_instruction_out (RAM_ADDR_U,0xb7);         // configure internal RAM chip-select range
-    zdi_cpu_instruction_out (RAM_CTL,0b10000000);      // enable
+    cpu->instruction_out (RAM_ADDR_U,0xb7);         // configure internal RAM chip-select range
+    cpu->instruction_out (RAM_CTL,0b10000000);      // enable
     // configure external RAM chip-select range
-    zdi_cpu_instruction_out (CS0_LBR,0x04);            // lower boundary
-    zdi_cpu_instruction_out (CS0_UBR,0x0b);            // upper boundary
-    zdi_cpu_instruction_out (CS0_BMC,0b00000001);      // 1 wait-state, ez80 mode
-    zdi_cpu_instruction_out (CS0_CTL,0b00001000);      // memory chip select, cs0 enabled
+    cpu->instruction_out (CS0_LBR,0x04);            // lower boundary
+    cpu->instruction_out (CS0_UBR,0x0b);            // upper boundary
+    cpu->instruction_out (CS0_BMC,0b00000001);      // 1 wait-state, ez80 mode
+    cpu->instruction_out (CS0_CTL,0b00001000);      // memory chip select, cs0 enabled
 
     // configure external RAM chip-select range
-    zdi_cpu_instruction_out (CS1_CTL,0x00);            // memory chip select, cs1 disabled
+    cpu->instruction_out (CS1_CTL,0x00);            // memory chip select, cs1 disabled
     // configure external RAM chip-select range
-    zdi_cpu_instruction_out (CS2_CTL,0x00);            // memory chip select, cs2 disabled
+    cpu->instruction_out (CS2_CTL,0x00);            // memory chip select, cs2 disabled
     // configure external RAM chip-select range
-    zdi_cpu_instruction_out (CS3_CTL,0x00);            // memory chip select, cs3 disabled
+    cpu->instruction_out (CS3_CTL,0x00);            // memory chip select, cs3 disabled
 
     // set stack pointer
-    zdi_write_cpu (REG_SP,0x0A0000);
+    cpu->sp(0x0A0000);
 }
 
 void ZDI_upload(void) {
@@ -174,14 +185,14 @@ void ZDI_upload(void) {
     filesize = flashloader_bin_len;
 
     while(filesize > PAGESIZE) {
-        zdi_write_memory(address, PAGESIZE, buffer);
+        zdi->write_memory(address, PAGESIZE, buffer);
         terminal.write(".");
         address += PAGESIZE;
         buffer += PAGESIZE;
         filesize -= PAGESIZE;
         sys_delay_ms(1);
     }
-    zdi_write_memory(address, filesize, buffer);
+    zdi->write_memory(address, filesize, buffer);
 }
 
 void loop() {
@@ -196,21 +207,52 @@ void loop() {
     term_printf("Action                          Status\r\n");
     term_printf("--------------------------------------\r\n");
     term_printf("Checking ZDI interface        - ");
-    productid = zdi_get_productid();
+    productid = zdi->get_productid();
     if((productid == 0) || (productid == 65535)) {
         term_printf("DOWN - check cabling and reset");
         while(1);
     }
-    term_printf("UP (ID %X.%02X)\r\n",productid, zdi_get_revision());
+    term_printf("UP (ID %X.%02X)\r\n",productid, zdi->get_revision());
     term_printf("Uploading flashloader to ez80 - ");
 
     init_ez80();
     ZDI_upload();
- 
+    //term_printf("Upload done\r\n");
+
+    //remaining = flashloader_bin_len;
+    //address = USERLOAD;
+    //localaddress = 0;
+    //i = 0;
+    //    while(1);
+    /*
+    while(remaining > 128) {
+        zdi->read_memory(address, 128, buffer);
+        for(i = 0; i < 128; i++) {
+            if(flashloader_bin[localaddress] != buffer[i]) {
+                term_printf("Error at 0x%x\r\n", address);
+                while(1);
+            }
+        }
+        address += 128;
+        localaddress += 128;
+        remaining -= 128;
+        term_printf(".");
+    }
+    zdi->read_memory(address, remaining, buffer);
+    for(i = 0; i < remaining; i++) {
+        if(flashloader_bin[localaddress] != buffer[i]) {
+            term_printf("Error at 0x%x\r\n", address);
+            while(1);
+        }
+    }
+    */
+    //term_printf("Binary ok\r\n");
     term_printf(" Done\r\n");
-    zdi_debug_breakpoint_enable (0, BREAKPOINT);    
-    zdi_write_cpu (REG_PC, USERLOAD);
-    zdi_debug_continue();   // start uploaded program
+
+    cpu->pc(USERLOAD);
+    cpu->setBreakpoint(0, BREAKPOINT);
+    cpu->enableBreakpoint(0);
+    cpu->setContinue(); // start uploaded program
     
     term_printf("Starting flashloader          - ");
     waitcontinueLoader();

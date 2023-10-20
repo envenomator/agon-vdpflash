@@ -6,16 +6,17 @@ ZDI::ZDI(uint8_t tckpin, uint8_t tdipin) {
     this->tckpin = tckpin;
     this->tdipin = tdipin;
 
-    pinMode(tckpin, OUTPUT);
-    digitalWrite(tckpin,HIGH);
+    directWriteHigh(tckpin);
+    directModeOutput(tckpin);    
 
     set_debugflags(0);
 }
 
 void ZDI::signal_start(void) {
-    pinMode(tdipin, OUTPUT);
-    digitalWrite(tckpin,HIGH);
-    digitalWrite(tdipin,LOW);
+    directWriteHigh(tdipin);
+    directModeOutput(tdipin);
+    directWriteHigh(tckpin);
+    directWriteLow(tdipin);
 }
 
 void ZDI::signal_done(void) {
@@ -27,18 +28,21 @@ void ZDI::signal_continue(void) {
 }
 
 void ZDI::write_bit(bool bit) {
-    digitalWrite(tckpin,LOW);
-    digitalWrite(tdipin,bit);
-    digitalWrite(tckpin,HIGH);
+    directWriteLow(tckpin);
+    if (bit)
+        directWriteHigh(tdipin);
+    else
+        directWriteLow(tdipin);
+    directModeOutput(tdipin);
+    directWriteHigh(tckpin);
 }
 
 bool ZDI::read_bit(void) {
     bool bit;
-    digitalWrite(tckpin,LOW);
-    pinMode(tdipin, INPUT);
-    bit = digitalRead(tdipin);
-    pinMode(tdipin, OUTPUT);
-    digitalWrite(tckpin,HIGH);
+    directWriteLow(tckpin);
+    directModeInput(tdipin);
+    bit = directRead(tdipin);
+    directWriteHigh(tckpin);
     return bit;
 }
 
@@ -68,21 +72,35 @@ uint8_t ZDI::read_byte(void) {
 
 uint8_t ZDI::read_register(ZDI_REG zdi_regnr) {
     uint8_t value;
+    noInterrupts();
     signal_start();
     address_register(zdi_regnr, READ);
     signal_continue();
     value  = read_byte();
     signal_done();
-
+    delayMicroseconds(3);
+    interrupts();
     return value;
 }
 
 void ZDI::write_register(ZDI_REG zdi_regnr, uint8_t value) {
+    //noInterrupts();
+    //signal_start();
+    //zdi_register (regnr,ZDI_WRITE);
+    //zdi_separator (1);
+    //zdi_write(value);
+    //zdi_separator (1);
+    //delayMicroseconds (3);
+    //interrupts();
+
+    noInterrupts();
     signal_start();
     address_register(zdi_regnr, WRITE);
     signal_continue();
     write_byte(value);
     signal_done();
+    delayMicroseconds(3);
+    interrupts();
 }
 
 uint32_t ZDI::read_cpu_register(ZDI_RWControl cpureg) {
@@ -144,6 +162,7 @@ void ZDI::read_memory (uint32_t address, uint32_t count, uint8_t* buffer) {
     address_register(ZDI_RD_MEM, READ);
     for(i=0;i<count;i++) {
         signal_continue();
+        delayMicroseconds (3);
         *(buffer++) = read_byte();
     }
     signal_done();
@@ -161,9 +180,11 @@ void ZDI::write_memory(uint32_t address, uint32_t count, uint8_t* buffer) {
     address_register(ZDI_WR_MEM, WRITE);
     for (i=0;i<count;i++) {
         signal_continue();
+        delayMicroseconds (3);
         write_byte(*(buffer++));
     }
     signal_done();
+    delayMicroseconds (3);
 }
 
 void ZDI::set_debugflags(uint8_t flags) {

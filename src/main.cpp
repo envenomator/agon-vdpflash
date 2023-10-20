@@ -173,7 +173,9 @@ void init_ez80(void) {
     cpu->instruction_out (CS3_CTL,0x00);            // memory chip select, cs3 disabled
 
     // set stack pointer
-    cpu->sp(0x0A0000);
+    cpu->sp(0x0BFFFF);
+    // set program counter
+    cpu->pc(0x000000);
 }
 
 void ZDI_upload(void) {

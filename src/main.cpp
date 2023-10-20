@@ -198,7 +198,7 @@ void ZDI_upload(void) {
 }
 
 void loop() {
-    uint32_t page,pages,filesize;
+    uint32_t page,pages,filesize,readsize;
     uint16_t productid;
     uint8_t memval;
     char buffer[128];
@@ -254,9 +254,16 @@ void loop() {
     terminal.write(")\r\n");
     
     terminal.write("Reading file to ez80 memory   - ");
-    waitcontinueLoader();
-    terminal.write("Done\r\n");
-
+    readsize = waitcontinueLoader();
+    if(filesize == readsize) terminal.write("Done\r\n");
+    else {
+        fg_red();
+        terminal.write("Error (");
+        sprintf(buffer,"%ld", readsize);
+        terminal.write(buffer);
+        terminal.write(") bytes read\r\n");
+        while(1);
+    }
     ask_proceed();
     waitcontinueLoader();
 

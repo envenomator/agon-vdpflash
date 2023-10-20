@@ -49,6 +49,7 @@ int main(int argc, char * argv[]) {
 	fr = f_open(&fil, MOSFILENAME, FA_READ);
 	if(fr == FR_OK) {
 
+		di();
 		size = f_size(&fil);
 		waitZDI(FEEDBACK_OPEN, size);
 

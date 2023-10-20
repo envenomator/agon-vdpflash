@@ -1,4 +1,4 @@
-Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED20-Oct-23     22:13:43     page:   1
+Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED20-Oct-23     22:41:23     page:   1
 
 
 PC     Object              I  Line    Source 
@@ -426,13 +426,13 @@ PC     Object              I  Line    Source
 0400CB B0                  A   141    			OR	A, B
 0400CC C8                  A   142    			RET	Z			; BSS is zero-lengt
 0400CD AF                  A   143    			XOR	A, A
-0400CE 32 43 45 04         A   144    			LD 	(__low_bss), A
+0400CE 32 44 45 04         A   144    			LD 	(__low_bss), A
 0400D2 ED62                A   145    			SBC	HL, HL			; HL = 0
 0400D4 0B                  A   146    			DEC	BC			; 1st byte's taken 
 0400D5 ED42                A   147    			SBC	HL, BC
 0400D7 C8                  A   148    			RET	Z		  	; Just 1 byte ...
-0400D8 21 43 45 04         A   149    			LD	HL, __low_bss		; Reset HL
-0400DC 11 44 45 04         A   150    			LD	DE, __low_bss + 1	; [DE] = bs
+0400D8 21 44 45 04         A   149    			LD	HL, __low_bss		; Reset HL
+0400DC 11 45 45 04         A   150    			LD	DE, __low_bss + 1	; [DE] = bs
 0400E0 EDB0                A   151    			LDIR				; Clear this se
 0400E2 C9                  A   152    			RET
                            A   153    

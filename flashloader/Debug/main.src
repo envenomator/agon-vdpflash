@@ -429,11 +429,31 @@ _main:
 
 .ENDEF
 
+.DEFINE "dest"
+
+.CLASS 65
+
+.VALUE -31
+
+.TYPE 33
+
+.ENDEF
+
+.DEFINE "timer"
+
+.CLASS 65
+
+.VALUE -34
+
+.TYPE 14
+
+.ENDEF
+
 .DEFINE "fil"
 
 .CLASS 65
 
-.VALUE -57
+.VALUE -63
 
 .TAG "NONAME2"
 
@@ -444,7 +464,7 @@ _main:
 	PUSH	IX
 	LD	IX,0
 	ADD	IX,SP
-	LEA	HL,IX+%FFFFFFC7
+	LEA	HL,IX+%FFFFFFC1
 	LD	SP,HL
 ;   30		FRESULT	fr;
 ;   31		FIL	   	fil;
@@ -504,7 +524,7 @@ _main:
 	PUSH	BC
 	LD	BC,L__1
 	PUSH	BC
-	PEA	IX+%FFFFFFC7
+	PEA	IX+%FFFFFFC1
 	CALL	_f_open
 	POP	BC
 	POP	BC
@@ -516,13 +536,17 @@ _main:
 	CALL	__icmpzero
 	JR	NZ,L_19
 ;   51	
-;   52			size = f_size(&fil);
+;   52			di();
 .LINE 52
 
-	LD	BC,(IX+%FFFFFFD2)
-	LD	(IX+%FFFFFFF7),BC
-;   53			waitZDI(FEEDBACK_OPEN, size);
+	di
+;   53			size = f_size(&fil);
 .LINE 53
+
+	LD	BC,(IX+%FFFFFFCC)
+	LD	(IX+%FFFFFFF7),BC
+;   54			waitZDI(FEEDBACK_OPEN, size);
+.LINE 54
 
 	PUSH	BC
 	LD	BC,0
@@ -530,31 +554,31 @@ _main:
 	CALL	_waitZDI
 	POP	BC
 	POP	BC
-;   54	
-;   55			fr = f_read(&fil, (void *)LOADADDRESS, size, &br);
-.LINE 55
+;   55	
+;   56			fr = f_read(&fil, (void *)LOADADDRESS, size, &br);
+.LINE 56
 
 	PEA	IX+%FFFFFFE4
 	LD	BC,(IX+%FFFFFFF7)
 	PUSH	BC
 	LD	BC,327680
 	PUSH	BC
-	PEA	IX+%FFFFFFC7
+	PEA	IX+%FFFFFFC1
 	CALL	_f_read
 	POP	BC
 	POP	BC
 	POP	BC
 	POP	BC
 	LD	(IX+%FFFFFFEA),HL
-;   56	
-;   57			f_close(&fil);
-.LINE 57
+;   57	
+;   58			f_close(&fil);
+.LINE 58
 
-	PEA	IX+%FFFFFFC7
+	PEA	IX+%FFFFFFC1
 	CALL	_f_close
 	POP	BC
-;   58			waitZDI(FEEDBACK_FILEDONE, br);
-.LINE 58
+;   59			waitZDI(FEEDBACK_FILEDONE, br);
+.LINE 59
 
 	LD	BC,(IX+%FFFFFFE4)
 	PUSH	BC
@@ -563,10 +587,10 @@ _main:
 	CALL	_waitZDI
 	POP	BC
 	POP	BC
-;   59			
-;   60			// Wait for user to acknowledge proceed (remote ZDI)
-;   61			waitZDI(FEEDBACK_PROCEED, 0);
-.LINE 61
+;   60			
+;   61			// Wait for user to acknowledge proceed (remote ZDI)
+;   62			waitZDI(FEEDBACK_PROCEED, 0);
+.LINE 62
 
 	LD	BC,0
 	PUSH	BC
@@ -575,86 +599,86 @@ _main:
 	CALL	_waitZDI
 	POP	BC
 	POP	BC
-;   62			
-;   63			// Unprotect and erase flash
-;   64			enableFlashKeyRegister();	// unlock Flash Key Register, so we can write to the Flash Write/Erase protection registers
-.LINE 64
+;   63			
+;   64			// Unprotect and erase flash
+;   65			enableFlashKeyRegister();	// unlock Flash Key Register, so we can write to the Flash Write/Erase protection registers
+.LINE 65
 
 	CALL	_enableFlashKeyRegister
-;   65			FLASH_PROT = 0;				// disable protection on all 8x16KB blocks in the flash
-.LINE 65
+;   66			FLASH_PROT = 0;				// disable protection on all 8x16KB blocks in the flash
+.LINE 66
 
 	XOR	A,A
 	OUT0	(250),A
-;   66			enableFlashKeyRegister();	// will need to unlock again after previous write to the flash protection register
-.LINE 66
+;   67			enableFlashKeyRegister();	// will need to unlock again after previous write to the flash protection register
+.LINE 67
 
 	CALL	_enableFlashKeyRegister
-;   67			FLASH_FDIV = 0x5F;			// Ceiling(18Mhz * 5,1us) = 95, or 0x5F
-.LINE 67
+;   68			FLASH_FDIV = 0x5F;			// Ceiling(18Mhz * 5,1us) = 95, or 0x5F
+.LINE 68
 
 	LD	A,%5F
 	OUT0	(249),A
-;   68	
-;   69			// Erase all flash pages
-;   70			for(counter = 0; counter < FLASHPAGES; counter++)
-.LINE 70
+;   69	
+;   70			// Erase all flash pages
+;   71			for(counter = 0; counter < FLASHPAGES; counter++)
+.LINE 71
 
 	LD	BC,0
 	LD	(IX+%FFFFFFFD),BC
 	JR	L_5
 L_3:
-;   71			{
-;   72				FLASH_PAGE = counter;
-.LINE 72
+;   72			{
+;   73				FLASH_PAGE = counter;
+.LINE 73
 
 	LD	A,(IX+%FFFFFFFD)
 	OUT0	(252),A
-;   73				FLASH_PGCTL = 0x02;			// Page erase bit enable, start erase
-.LINE 73
+;   74				FLASH_PGCTL = 0x02;			// Page erase bit enable, start erase
+.LINE 74
 
 	LD	A,%2
 	OUT0	(255),A
-;   74	
-;   75				do
+;   75	
+;   76				do
 L_1:
-.LINE 75
+.LINE 76
 
-;   76				{
-;   77					value = FLASH_PGCTL;
-.LINE 77
+;   77				{
+;   78					value = FLASH_PGCTL;
+.LINE 78
 
 	IN0	A,(255)
 	LD	(IX+%FFFFFFF0),A
-;   78				}
-;   79				while(value & 0x02);// wait for completion of erase			
-.LINE 79
+;   79				}
+;   80				while(value & 0x02);// wait for completion of erase			
+.LINE 80
 
 	AND	A,%2
 	JR	NZ,L_1
 	LD	BC,(IX+%FFFFFFFD)
 	INC	BC
 	LD	(IX+%FFFFFFFD),BC
-;   80			}
+;   81			}
 L_5:
-.LINE 80
+.LINE 81
 
 	LD	BC,128
 	LD	HL,(IX+%FFFFFFFD)
 	OR	A,A
 	SBC	HL,BC
 	JR	C,L_3
-;   81			
-;   82			// determine number of pages to write
-;   83			pagemax = size/PAGESIZE;
-.LINE 83
+;   82			
+;   83			// determine number of pages to write
+;   84			pagemax = size/PAGESIZE;
+.LINE 84
 
 	LD	HL,(IX+%FFFFFFF7)
 	LD	A,%A
 	CALL	__ishru_b
 	LD	(IX+%FFFFFFFA),HL
-;   84			if(size%PAGESIZE) // last page has less than PAGESIZE bytes
-.LINE 84
+;   85			if(size%PAGESIZE) // last page has less than PAGESIZE bytes
+.LINE 85
 
 	LD	BC,1023
 	LD	HL,(IX+%FFFFFFF7)
@@ -662,30 +686,30 @@ L_5:
 	LD	(IX+%FFFFFFE7),HL
 	CALL	__icmpzero
 	JR	Z,L_8
-;   85			{
-;   86				pagemax += 1;
-.LINE 86
+;   86			{
+;   87				pagemax += 1;
+.LINE 87
 
 	LD	BC,(IX+%FFFFFFFA)
 	INC	BC
 	LD	(IX+%FFFFFFFA),BC
-;   87				lastpagebytes = size%PAGESIZE;			
-.LINE 87
+;   88				lastpagebytes = size%PAGESIZE;			
+.LINE 88
 
 	LD	BC,(IX+%FFFFFFE7)
 	LD	(IX+%FFFFFFED),BC
-;   88			}
-;   89			else lastpagebytes = PAGESIZE; // normal last page
-.LINE 89
+;   89			}
+;   90			else lastpagebytes = PAGESIZE; // normal last page
+.LINE 90
 
 	JR	L_9
 L_8:
 	LD	BC,1024
 	LD	(IX+%FFFFFFED),BC
 L_9:
-;   90	
-;   91			waitZDI(FEEDBACK_ERASEDONE, pagemax);
-.LINE 91
+;   91	
+;   92			waitZDI(FEEDBACK_ERASEDONE, pagemax);
+.LINE 92
 
 	LD	BC,(IX+%FFFFFFFA)
 	PUSH	BC
@@ -694,18 +718,18 @@ L_9:
 	CALL	_waitZDI
 	POP	BC
 	POP	BC
-;   92	
-;   93			// write out each page to flash
-;   94			for(counter = 0; counter < pagemax; counter++)
-.LINE 94
+;   93	
+;   94			// write out each page to flash
+;   95			for(counter = 0; counter < pagemax; counter++)
+.LINE 95
 
 	LD	BC,0
 	LD	(IX+%FFFFFFFD),BC
 	JR	L_16
 L_14:
-;   95			{
-;   96				if(counter == (pagemax - 1)) // last page to write - might need to write less than PAGESIZE
-.LINE 96
+;   96			{
+;   97				if(counter == (pagemax - 1)) // last page to write - might need to write less than PAGESIZE
+.LINE 97
 
 	LD	IY,(IX+%FFFFFFFA)
 	LEA	HL,IY+%FFFFFFFF
@@ -713,8 +737,8 @@ L_14:
 	OR	A,A
 	SBC	HL,BC
 	JR	NZ,L_12
-;   97					fastmemcpy(addressto,addressfrom,lastpagebytes);				
-.LINE 97
+;   98					fastmemcpy(addressto,addressfrom,lastpagebytes);				
+.LINE 98
 
 	LD	BC,(IX+%FFFFFFED)
 	PUSH	BC
@@ -726,13 +750,13 @@ L_14:
 	POP	BC
 	POP	BC
 	POP	BC
-;   98				else 
-.LINE 98
+;   99				else 
+.LINE 99
 
 	JR	L_13
 L_12:
-;   99					fastmemcpy(addressto,addressfrom,PAGESIZE);
-.LINE 99
+;  100					fastmemcpy(addressto,addressfrom,PAGESIZE);
+.LINE 100
 
 	LD	BC,1024
 	PUSH	BC
@@ -745,16 +769,16 @@ L_12:
 	POP	BC
 	POP	BC
 L_13:
-;  100			
-;  101				addressto += PAGESIZE;
-.LINE 101
+;  101			
+;  102				addressto += PAGESIZE;
+.LINE 102
 
 	LD	BC,1024
 	LD	HL,(IX+%FFFFFFF4)
 	ADD	HL,BC
 	LD	(IX+%FFFFFFF4),HL
-;  102				addressfrom += PAGESIZE;
-.LINE 102
+;  103				addressfrom += PAGESIZE;
+.LINE 103
 
 	LD	HL,(IX+%FFFFFFF1)
 	ADD	HL,BC
@@ -762,24 +786,24 @@ L_13:
 	LD	BC,(IX+%FFFFFFFD)
 	INC	BC
 	LD	(IX+%FFFFFFFD),BC
-;  103				//timer = 0;
-;  104				//while(timer++ < 32768);
-;  105				//waitZDI(FEEDBACK_PAGEWRITTEN, counter);
-;  106			}
+;  104				//timer = 0;
+;  105				//while(timer++ < 32768);
+;  106				//waitZDI(FEEDBACK_PAGEWRITTEN, counter);
+;  107			}
 L_16:
-.LINE 106
+.LINE 107
 
 	LD	BC,(IX+%FFFFFFFA)
 	LD	HL,(IX+%FFFFFFFD)
 	OR	A,A
 	SBC	HL,BC
 	JR	C,L_14
-;  107			lockFlashKeyRegister();	// lock the flash before WARM reset
-.LINE 107
+;  108			lockFlashKeyRegister();	// lock the flash before WARM reset
+.LINE 108
 
 	CALL	_lockFlashKeyRegister
-;  108			waitZDI(FEEDBACK_PAGEWRITTEN, counter);
-.LINE 108
+;  109			waitZDI(FEEDBACK_PAGEWRITTEN, counter);
+.LINE 109
 
 	LD	BC,(IX+%FFFFFFFD)
 	PUSH	BC
@@ -788,9 +812,9 @@ L_16:
 	CALL	_waitZDI
 	POP	BC
 	POP	BC
-;  109		}
-;  110		else waitZDI(FEEDBACK_OPEN, 0);
-.LINE 110
+;  110		}
+;  111		else waitZDI(FEEDBACK_OPEN, 0);
+.LINE 111
 
 	JR	L_21
 L_19:
@@ -800,14 +824,14 @@ L_19:
 	CALL	_waitZDI
 	POP	BC
 	POP	BC
-;  111		while(1);
+;  112		while(1);
 L_21:
-.LINE 111
+.LINE 112
 
 	JR	L_21
-;  112		return 0;
-;  113	}
-.LINE 113
+;  113		return 0;
+;  114	}
+.LINE 114
 
 	LD	SP,IX
 	POP	IX
@@ -826,7 +850,9 @@ L_21:
 ;_f_mount                            IMPORT  -----   function
 ;_init_spi                           IMPORT  -----   function
 ;_waitZDI                            IMPORT  -----   function
-;fil                                  IX-57     29   variable
+;fil                                  IX-63     29   variable
+;timer                                IX-34      3   variable
+;dest                                 IX-31      3   variable
 ;br                                   IX-28      3   variable
 ;G_0                                  IX-25      3   variable
 ;fr                                   IX-22      3   variable
@@ -841,11 +867,11 @@ L_21:
 ;argc                                  IX+6      3   parameter
 
 
-; Stack Frame Size: 69 (bytes)
+; Stack Frame Size: 75 (bytes)
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "main",113,"_main"
+.ENDFUNC "main",114,"_main"
 	SEGMENT STRSECT
 L__0:
 	DB	0

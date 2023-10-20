@@ -201,6 +201,7 @@ void loop() {
     uint32_t page,pages,filesize;
     uint16_t productid;
     uint8_t memval;
+    char buffer[128];
 
     boot_screen();
     ask_initial();
@@ -248,7 +249,8 @@ void loop() {
     terminal.write("Done");
     //terminal.write(" (%d bytes)\r\n", filesize);
     terminal.write("(");
-    terminal.write(filesize);
+    sprintf(buffer, "%ld", filesize);
+    terminal.write(buffer);
     terminal.write(")\r\n");
     
     terminal.write("Reading file to ez80 memory   - ");
@@ -260,8 +262,13 @@ void loop() {
 
     terminal.write("Erasing flash                 - ");
     pages = waitcontinueLoader();
-    terminal.write(pages);
+
+    sprintf(buffer, "%ld", pages);
+    terminal.write(buffer);
+
     terminal.write(" - ");
+
+
     //terminal.write("%x-",(pages >> 24)&0xFF);
     //terminal.write("%x-",(pages >> 16)&0xFF);
     //terminal.write("%x-",(pages >> 8)&0xFF);

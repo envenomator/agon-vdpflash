@@ -55,7 +55,7 @@ int main(int argc, char * argv[]) {
 		fr = f_read(&fil, (void *)LOADADDRESS, size, &br);
 
 		f_close(&fil);
-		waitZDI(FEEDBACK_FILEDONE, 0);
+		waitZDI(FEEDBACK_FILEDONE, br);
 		
 		// Wait for user to acknowledge proceed (remote ZDI)
 		waitZDI(FEEDBACK_PROCEED, 0);

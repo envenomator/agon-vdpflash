@@ -22,14 +22,14 @@ ZDI*                    zdi;
 void term_printf (const char* format, ...) {
 	va_list list;
    	int size = vsnprintf(nullptr, 0, format, list) + 1;
-    char buffer[size + 1];
-
+    //char buffer[size + 1];
+    char buffer[256];
    	va_start(list, format);
    	if (size > 0) {
     	va_end(list);
      	va_start(list, format);
      	vsnprintf(buffer, size, format, list);
-        terminal.write (buffer);
+        terminal.write (buffer, size);
    	}
    	va_end(list);
 }
@@ -49,17 +49,17 @@ uint32_t waitcontinueLoader(void) {
 }
 
 void fg_white(void) {
-    term_printf("\e[44;37m"); // background: blue, foreground: white
+    terminal.write("\e[44;37m"); // background: blue, foreground: white
 }
 void fg_red(void) {
-    term_printf("\e[41;37m"); // background: blue, foreground: red
+    terminal.write("\e[41;37m"); // background: blue, foreground: red
 }
 void boot_screen() {
     // initialize terminal
     fg_white();
-    term_printf("\e[2J");     // clear screen
-    term_printf("\e[1;1H");   // move cursor to 1,1
-    term_printf("Agon MOS ZDI flash utility - version 0.6\r\n\r\n");
+    terminal.write("\e[2J");     // clear screen
+    terminal.write("\e[1;1H");   // move cursor to 1,1
+    terminal.write("Agon MOS ZDI flash utility - version 0.6\r\n\r\n");
 }
 
 void waitforKey(uint8_t key) {
@@ -74,26 +74,26 @@ void waitforKey(uint8_t key) {
 }
 
 void ask_initial() {
-    term_printf("This utility will (baremetal) program a new MOS to the Agon ez80 flash,\r\n");
-    term_printf("from a file on the SD card. This can be performed in case of\r\n");
-    term_printf("an initially erased or corrupted flash, or having previously flashed\r\n");
-    term_printf("an incompatible MOS version.\r\n");
-    term_printf("\r\nRequirements before proceeding:\r\n");
-    term_printf(" 1) Connect two cables between the GPIO and ZDI ports:\r\n");
-    term_printf("    - ESP GPIO26 to ZDI TCK (pin 4)\r\n");
-    term_printf("    - ESP GPIO27 to ZDI TDI (pin 6)\r\n");
-    term_printf(" 2) Place the required MOS version on the SD card's root directory\r\n"); 
-    term_printf("    with filename \"MOS.bin\"\r\n");
-    term_printf(" 3) Reset the board after inserting the SD card\r\n\r\n");
-    term_printf("Press ENTER to proceed:");
+    terminal.write("This utility will (baremetal) program a new MOS to the Agon ez80 flash,\r\n");
+    terminal.write("from a file on the SD card. This can be performed in case of\r\n");
+    terminal.write("an initially erased or corrupted flash, or having previously flashed\r\n");
+    terminal.write("an incompatible MOS version.\r\n");
+    terminal.write("\r\nRequirements before proceeding:\r\n");
+    terminal.write(" 1) Connect two cables between the GPIO and ZDI ports:\r\n");
+    terminal.write("    - ESP GPIO26 to ZDI TCK (pin 4)\r\n");
+    terminal.write("    - ESP GPIO27 to ZDI TDI (pin 6)\r\n");
+    terminal.write(" 2) Place the required MOS version on the SD card's root directory\r\n"); 
+    terminal.write("    with filename \"MOS.bin\"\r\n");
+    terminal.write(" 3) Reset the board after inserting the SD card\r\n\r\n");
+    terminal.write("Press ENTER to proceed:");
     waitforKey(0x0D);
-    term_printf("\r\n\r\n");
+    terminal.write("\r\n\r\n");
 }
 
 void ask_proceed() {
-    term_printf("\r\nPress [y] to start programming MOS:");
+    terminal.write("\r\nPress [y] to start programming MOS:");
     waitforKey('y');
-    term_printf("\r\n\r\n");
+    terminal.write("\r\n\r\n");
 }
 
 void setup() {
@@ -206,57 +206,70 @@ void loop() {
     ask_initial();
  
     boot_screen();
-    term_printf("Action                          Status\r\n");
-    term_printf("--------------------------------------\r\n");
-    term_printf("Checking ZDI interface        - ");
+    terminal.write("Action                          Status\r\n");
+    terminal.write("--------------------------------------\r\n");
+    terminal.write("Checking ZDI interface        - ");
     productid = zdi->get_productid();
     if((productid != 7)) {
         fg_red();
-        term_printf("DOWN - check cabling and reset");
+        terminal.write("DOWN - check cabling and reset");
         while(1);
     }
-    term_printf("UP (ID %X.%02X)\r\n",productid, zdi->get_revision());
-    term_printf("Uploading flashloader to ez80 - ");
+    //terminal.write("UP (ID %X.%02X)\r\n",productid, zdi->get_revision());
+    terminal.write("UP (");
+    terminal.write(")\r\n");
+    terminal.write("Uploading flashloader to ez80 - ");
 
     init_ez80();
     ZDI_upload();
 
-    term_printf(" Done\r\n");
+    terminal.write(" Done\r\n");
 
     cpu->pc(USERLOAD);
     cpu->setBreakpoint(0, BREAKPOINT);
     cpu->enableBreakpoint(0);
     cpu->setContinue(); // start uploaded program
     
-    term_printf("Starting flashloader          - ");
+    terminal.write("Starting flashloader          - ");
     waitcontinueLoader();
-    term_printf("Done\r\n");   
-    term_printf("Opening file from SD card     - ");
+    terminal.write("Done\r\n");   
+    terminal.write("Opening file from SD card     - ");
     filesize = waitcontinueLoader();
     if(filesize == 0) {
         fg_red();
-        term_printf("Error opening \"MOS.bin\"");
+        terminal.write("Error opening \"MOS.bin\"");
         while(1);
     }
     if(filesize == 0xFFFFFF) {
         fg_red();
-        term_printf("Invalid file size for \"MOS.bin\"");
+        terminal.write("Invalid file size for \"MOS.bin\"");
         while(1);
     }
-    term_printf("Done");
-    term_printf(" (%d bytes)\r\n", filesize);
-    term_printf("Reading file to ez80 memory   - ");
+    terminal.write("Done");
+    //terminal.write(" (%d bytes)\r\n", filesize);
+    terminal.write("(");
+    terminal.write(filesize);
+    terminal.write(")\r\n");
+    
+    terminal.write("Reading file to ez80 memory   - ");
     waitcontinueLoader();
-    term_printf("Done\r\n");
+    terminal.write("Done\r\n");
 
     ask_proceed();
     waitcontinueLoader();
 
-    term_printf("Erasing flash                 - ");
+    terminal.write("Erasing flash                 - ");
     pages = waitcontinueLoader();
-    term_printf("Done\r\n");
+    terminal.write(pages);
+    terminal.write(" - ");
+    //terminal.write("%x-",(pages >> 24)&0xFF);
+    //terminal.write("%x-",(pages >> 16)&0xFF);
+    //terminal.write("%x-",(pages >> 8)&0xFF);
+    //terminal.write("%x ",(pages)&0xFF);
 
-    term_printf("Programming ");
+    terminal.write("Done\r\n");
+
+    terminal.write("Programming ");
 
     page = 0;
     do {

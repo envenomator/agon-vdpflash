@@ -1,5 +1,6 @@
 #include "zdi.h"
 #include <Arduino.h>
+#include "esp32_io.h"
 
 ZDI::ZDI(uint8_t tckpin, uint8_t tdipin) {
     this->tckpin = tckpin;

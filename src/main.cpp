@@ -210,7 +210,7 @@ void loop() {
     term_printf("--------------------------------------\r\n");
     term_printf("Checking ZDI interface        - ");
     productid = zdi->get_productid();
-    if((productid == 0) || (productid == 65535)) {
+    if((productid != 7)) {
         fg_red();
         term_printf("DOWN - check cabling and reset");
         while(1);

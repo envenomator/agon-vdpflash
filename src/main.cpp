@@ -37,15 +37,12 @@ void term_printf (const char* format, ...) {
 uint32_t waitcontinueLoader(void) {
     uint32_t result, pc;
 
-    delay(100);
-    while(cpu->isRunning()); // wait for ez80 to hit breakpoint
-    delay(100);
-    //cpu->setBreak();
+    while(cpu->isRunning()) delay(100); // wait for ez80 to hit breakpoint
+    cpu->setBreak();
     pc = cpu->pc();
     cpu->bc(0x100); // write '1' to register B, don't care about 'C'
     result = cpu->hl();
     cpu->pc(pc);
-    //zdi_debug_breakpoint_enable (0, BREAKPOINT);
     cpu->setContinue();
     return result;
 }
@@ -270,12 +267,12 @@ void loop() {
     waitcontinueLoader();
 
     terminal.write("Erasing flash                 - ");
-    //pages = waitcontinueLoader();
-    delay(2500);
-    waitcontinueLoader();
+    delay(5000);
+    pages = waitcontinueLoader();
+    //waitcontinueLoader();
     // determine number of pages to write
-    pages = filesize/1024;
-    if(filesize%1024) pages += 1;
+    //pages = filesize/1024;
+    //if(filesize%1024) pages += 1;
 
     sprintf(buffer, "%ld", pages);
     terminal.write(buffer);
@@ -293,7 +290,7 @@ void loop() {
     terminal.write("Programming ");
 
     // Temp wait
-    delay(8000);
+    delay(10000);
     //page = 0;
     //do {
     //    page++;

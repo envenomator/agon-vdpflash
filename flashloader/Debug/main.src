@@ -294,7 +294,7 @@ _fs:
 ;   18		FEEDBACK_PAGEWRITTEN,
 ;   19	};
 ;   20	
-;   21	extern UINT24 waitZDI(UINT8 status, UINT24 value);
+;   21	extern void waitZDI(UINT8 status, UINT24 value);
 ;   22	extern void enableFlashKeyRegister(void);
 ;   23	extern void lockFlashKeyRegister(void);
 ;   24	extern void fastmemcpy(UINT24 destination, UINT24 source, UINT24 size);

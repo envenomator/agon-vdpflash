@@ -18,7 +18,7 @@ enum {
 	FEEDBACK_PAGEWRITTEN,
 };
 
-extern UINT24 waitZDI(UINT8 status, UINT24 value);
+extern void waitZDI(UINT8 status, UINT24 value);
 extern void enableFlashKeyRegister(void);
 extern void lockFlashKeyRegister(void);
 extern void fastmemcpy(UINT24 destination, UINT24 source, UINT24 size);

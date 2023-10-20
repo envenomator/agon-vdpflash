@@ -37,8 +37,10 @@ void term_printf (const char* format, ...) {
 uint32_t waitcontinueLoader(void) {
     uint32_t result, pc;
 
+    delay(100);
     while(cpu->isRunning()); // wait for ez80 to hit breakpoint
-    cpu->setBreak();
+    delay(100);
+    //cpu->setBreak();
     pc = cpu->pc();
     cpu->bc(0x100); // write '1' to register B, don't care about 'C'
     result = cpu->hl();
@@ -268,7 +270,12 @@ void loop() {
     waitcontinueLoader();
 
     terminal.write("Erasing flash                 - ");
-    pages = waitcontinueLoader();
+    //pages = waitcontinueLoader();
+    delay(2500);
+    waitcontinueLoader();
+    // determine number of pages to write
+    pages = filesize/1024;
+    if(filesize%1024) pages += 1;
 
     sprintf(buffer, "%ld", pages);
     terminal.write(buffer);
@@ -285,14 +292,24 @@ void loop() {
 
     terminal.write("Programming ");
 
-    page = 0;
-    do {
-        page++;
-        terminal.write(".");
-        waitcontinueLoader();
-    }
-    while(page < pages);
-    
+    // Temp wait
+    delay(8000);
+    //page = 0;
+    //do {
+    //    page++;
+    //    terminal.write(".");
+    //    waitcontinueLoader();
+    //
+    //}
+    //while(page < pages);
+
+    terminal.write(" - ");
+
+    pages = waitcontinueLoader();
+    sprintf(buffer, "%ld pages written - ", pages);
+    terminal.write(buffer);
+
+
     terminal.write(" Done\r\n\r\n");
     terminal.write("MOS has been programmed to ez80 flash\r\n");
     terminal.write("Please (re)program ESP32 with matching VDP");

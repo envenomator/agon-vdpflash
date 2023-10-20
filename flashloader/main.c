@@ -100,9 +100,9 @@ int main(int argc, char * argv[]) {
 		
 			addressto += PAGESIZE;
 			addressfrom += PAGESIZE;
-			timer = 0;
-			while(timer++ < 32768);
-			waitZDI(FEEDBACK_PAGEWRITTEN, counter);
+			//timer = 0;
+			//while(timer++ < 32768);
+			//waitZDI(FEEDBACK_PAGEWRITTEN, counter);
 		}
 		lockFlashKeyRegister();	// lock the flash before WARM reset
 		waitZDI(FEEDBACK_PAGEWRITTEN, counter);

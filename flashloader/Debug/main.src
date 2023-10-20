@@ -399,7 +399,7 @@ _main:
 
 .ENDEF
 
-.DEFINE "timer"
+.DEFINE "lastpagebytes"
 
 .CLASS 65
 
@@ -419,21 +419,11 @@ _main:
 
 .ENDEF
 
-.DEFINE "lastpagebytes"
-
-.CLASS 65
-
-.VALUE -25
-
-.TYPE 14
-
-.ENDEF
-
 .DEFINE "br"
 
 .CLASS 65
 
-.VALUE -31
+.VALUE -28
 
 .TYPE 14
 
@@ -443,7 +433,7 @@ _main:
 
 .CLASS 65
 
-.VALUE -60
+.VALUE -57
 
 .TAG "NONAME2"
 
@@ -454,7 +444,7 @@ _main:
 	PUSH	IX
 	LD	IX,0
 	ADD	IX,SP
-	LEA	HL,IX+%FFFFFFC4
+	LEA	HL,IX+%FFFFFFC7
 	LD	SP,HL
 ;   30		FRESULT	fr;
 ;   31		FIL	   	fil;
@@ -514,7 +504,7 @@ _main:
 	PUSH	BC
 	LD	BC,L__1
 	PUSH	BC
-	PEA	IX+%FFFFFFC4
+	PEA	IX+%FFFFFFC7
 	CALL	_f_open
 	POP	BC
 	POP	BC
@@ -524,12 +514,12 @@ _main:
 .LINE 50
 
 	CALL	__icmpzero
-	JR	NZ,L_23
+	JR	NZ,L_19
 ;   51	
 ;   52			size = f_size(&fil);
 .LINE 52
 
-	LD	BC,(IX+%FFFFFFCF)
+	LD	BC,(IX+%FFFFFFD2)
 	LD	(IX+%FFFFFFF7),BC
 ;   53			waitZDI(FEEDBACK_OPEN, size);
 .LINE 53
@@ -544,12 +534,12 @@ _main:
 ;   55			fr = f_read(&fil, (void *)LOADADDRESS, size, &br);
 .LINE 55
 
-	PEA	IX+%FFFFFFE1
+	PEA	IX+%FFFFFFE4
 	LD	BC,(IX+%FFFFFFF7)
 	PUSH	BC
 	LD	BC,327680
 	PUSH	BC
-	PEA	IX+%FFFFFFC4
+	PEA	IX+%FFFFFFC7
 	CALL	_f_read
 	POP	BC
 	POP	BC
@@ -560,13 +550,13 @@ _main:
 ;   57			f_close(&fil);
 .LINE 57
 
-	PEA	IX+%FFFFFFC4
+	PEA	IX+%FFFFFFC7
 	CALL	_f_close
 	POP	BC
 ;   58			waitZDI(FEEDBACK_FILEDONE, br);
 .LINE 58
 
-	LD	BC,(IX+%FFFFFFE1)
+	LD	BC,(IX+%FFFFFFE4)
 	PUSH	BC
 	LD	BC,1
 	PUSH	BC
@@ -669,7 +659,7 @@ L_5:
 	LD	BC,1023
 	LD	HL,(IX+%FFFFFFF7)
 	CALL	__iand
-	LD	(IX+%FFFFFFE4),HL
+	LD	(IX+%FFFFFFE7),HL
 	CALL	__icmpzero
 	JR	Z,L_8
 ;   85			{
@@ -682,8 +672,8 @@ L_5:
 ;   87				lastpagebytes = size%PAGESIZE;			
 .LINE 87
 
-	LD	BC,(IX+%FFFFFFE4)
-	LD	(IX+%FFFFFFE7),BC
+	LD	BC,(IX+%FFFFFFE7)
+	LD	(IX+%FFFFFFED),BC
 ;   88			}
 ;   89			else lastpagebytes = PAGESIZE; // normal last page
 .LINE 89
@@ -691,7 +681,7 @@ L_5:
 	JR	L_9
 L_8:
 	LD	BC,1024
-	LD	(IX+%FFFFFFE7),BC
+	LD	(IX+%FFFFFFED),BC
 L_9:
 ;   90	
 ;   91			waitZDI(FEEDBACK_ERASEDONE, pagemax);
@@ -711,8 +701,8 @@ L_9:
 
 	LD	BC,0
 	LD	(IX+%FFFFFFFD),BC
-	JR	L_20
-L_18:
+	JR	L_16
+L_14:
 ;   95			{
 ;   96				if(counter == (pagemax - 1)) // last page to write - might need to write less than PAGESIZE
 .LINE 96
@@ -726,7 +716,7 @@ L_18:
 ;   97					fastmemcpy(addressto,addressfrom,lastpagebytes);				
 .LINE 97
 
-	LD	BC,(IX+%FFFFFFE7)
+	LD	BC,(IX+%FFFFFFED)
 	PUSH	BC
 	LD	BC,(IX+%FFFFFFF1)
 	PUSH	BC
@@ -769,45 +759,21 @@ L_13:
 	LD	HL,(IX+%FFFFFFF1)
 	ADD	HL,BC
 	LD	(IX+%FFFFFFF1),HL
-;  103				timer = 0;
-.LINE 103
-
-	LD	BC,0
-	LD	(IX+%FFFFFFED),BC
-;  104				while(timer++ < 32768);
-L_16:
-.LINE 104
-
-	LD	HL,(IX+%FFFFFFED)
-	LD	BC,(IX+%FFFFFFED)
-	INC	BC
-	LD	(IX+%FFFFFFED),BC
-	LD	BC,32768
-	OR	A,A
-	SBC	HL,BC
-	JR	C,L_16
-;  105				waitZDI(FEEDBACK_PAGEWRITTEN, counter);
-.LINE 105
-
-	LD	BC,(IX+%FFFFFFFD)
-	PUSH	BC
-	LD	BC,4
-	PUSH	BC
-	CALL	_waitZDI
-	POP	BC
-	POP	BC
 	LD	BC,(IX+%FFFFFFFD)
 	INC	BC
 	LD	(IX+%FFFFFFFD),BC
+;  103				//timer = 0;
+;  104				//while(timer++ < 32768);
+;  105				//waitZDI(FEEDBACK_PAGEWRITTEN, counter);
 ;  106			}
-L_20:
+L_16:
 .LINE 106
 
 	LD	BC,(IX+%FFFFFFFA)
 	LD	HL,(IX+%FFFFFFFD)
 	OR	A,A
 	SBC	HL,BC
-	JR	C,L_18
+	JR	C,L_14
 ;  107			lockFlashKeyRegister();	// lock the flash before WARM reset
 .LINE 107
 
@@ -826,8 +792,8 @@ L_20:
 ;  110		else waitZDI(FEEDBACK_OPEN, 0);
 .LINE 110
 
-	JR	L_25
-L_23:
+	JR	L_21
+L_19:
 	LD	BC,0
 	PUSH	BC
 	PUSH	BC
@@ -835,10 +801,10 @@ L_23:
 	POP	BC
 	POP	BC
 ;  111		while(1);
-L_25:
+L_21:
 .LINE 111
 
-	JR	L_25
+	JR	L_21
 ;  112		return 0;
 ;  113	}
 .LINE 113
@@ -860,12 +826,11 @@ L_25:
 ;_f_mount                            IMPORT  -----   function
 ;_init_spi                           IMPORT  -----   function
 ;_waitZDI                            IMPORT  -----   function
-;fil                                  IX-60     29   variable
-;br                                   IX-31      3   variable
-;G_0                                  IX-28      3   variable
-;lastpagebytes                        IX-25      3   variable
+;fil                                  IX-57     29   variable
+;br                                   IX-28      3   variable
+;G_0                                  IX-25      3   variable
 ;fr                                   IX-22      3   variable
-;timer                                IX-19      3   variable
+;lastpagebytes                        IX-19      3   variable
 ;value                                IX-16      1   variable
 ;addressfrom                          IX-15      3   variable
 ;addressto                            IX-12      3   variable
@@ -876,7 +841,7 @@ L_25:
 ;argc                                  IX+6      3   parameter
 
 
-; Stack Frame Size: 72 (bytes)
+; Stack Frame Size: 69 (bytes)
 ;       Spill Code: 0 (instruction)
 
 

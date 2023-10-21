@@ -184,8 +184,6 @@ void loop() {
     terminal.write("Done\r\n");
 
     cpu->pc(USERLOAD);
-    //cpu->setBreakpoint(0, BREAKPOINT);
-    //cpu->enableBreakpoint(0);
     cpu->setContinue(); // start uploaded program
     
     terminal.write("Starting flashloader          - ");
@@ -225,14 +223,14 @@ void loop() {
         terminal.write("Done");
     else {
         fg_red();
-        terminal.write("Error reading file into memory");
+        terminal.write(" Error reading file into memory");
         while(1);
     }
     readsize = status.result;
     if(readsize == filesize) terminal.write("\r\n");
     else {
         fg_red();
-        terminal.write("Error reading file");
+        terminal.write(" Error reading file");
         while(1);
     }
     ask_proceed();

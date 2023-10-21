@@ -213,7 +213,7 @@ void loop() {
     filesize = status.result;
     if(filesize > 0x20000) {
         fg_red();
-        terminal.write("Invalid file size for \"MOS.bin\"");
+        terminal.write(" Invalid file size for \"MOS.bin\"");
         while(1);
     }
     sprintf(buffer, " (%d bytes)\r\n", filesize);

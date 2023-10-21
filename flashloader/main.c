@@ -60,6 +60,7 @@ int main(int argc, char * argv[]) {
 		enableFlashKeyRegister();	// will need to unlock again after previous write to the flash protection register
 		FLASH_FDIV = 0x5F;			// Ceiling(18Mhz * 5,1us) = 95, or 0x5F
 
+		/*
 		// Erase all flash pages
 		for(counter = 0; counter < FLASHPAGES; counter++)
 		{
@@ -73,6 +74,13 @@ int main(int argc, char * argv[]) {
 			while(value & 0x02);// wait for completion of erase			
 		}
 		sendStatus('E', 1, counter); // number of pages erased
+		*/
+		// Mass erase flash
+		FLASH_PGCTL = 0x01;	// mass erase bit enable, start erase all pages
+		do {
+			value = FLASH_PGCTL;
+		} while(value & 0x01); // wait for completion of erase
+		sendStatus('E', 1, 128);
 
 		// determine number of pages to write
 		pagemax = size/PAGESIZE;

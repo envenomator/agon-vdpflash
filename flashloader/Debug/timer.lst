@@ -1,4 +1,4 @@
-Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     18:50:18     page:   1
+Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     19:23:07     page:   1
 
 
 PC     Object              I  Line    Source 
@@ -37,7 +37,7 @@ PC     Object              I  Line    Source
                            A    33    ;   26	// - interval value
                            A    34    ;   27	//
                            A    35    ;   28	unsigned short init_timer0(int interval
-04411C                     A    36    _init_timer0:
+0440F9                     A    36    _init_timer0:
                            A    37    .DEFINE "_init_timer0"
                            A    38    
                            A    39    .VALUE _init_timer0
@@ -112,114 +112,114 @@ PC     Object              I  Line    Source
                            A   108    
                            A   109    .ENDEF
                            A   110    
-04411C DDE5                A   111    	PUSH	IX
-04411E DD210000 00         A   112    	LD	IX,0
-044123 DD39                A   113    	ADD	IX,SP
-044125 C5                  A   114    	PUSH	BC
-044126 3B                  A   115    	DEC	SP
+0440F9 DDE5                A   111    	PUSH	IX
+0440FB DD210000 00         A   112    	LD	IX,0
+044100 DD39                A   113    	ADD	IX,SP
+044102 C5                  A   114    	PUSH	BC
+044103 3B                  A   115    	DEC	SP
                            A   116    ;   29		unsigned short	rr;
                            A   117    ;   30		unsigned char	clkbits = 0;
                            A   118    .LINE 30
                            A   119    
-044127 DD36FF00            A   120    	LD	(IX+%FFFFFFFF),%0
+044104 DD36FF00            A   120    	LD	(IX+%FFFFFFFF),%0
                            A   121    ;   31		unsigned char	ctl;
                            A   122    ;   32	
                            A   123    ;   33		switch(clkdiv) {
                            A   124    .LINE 33
                            A   125    
-04412B DD2709              A   126    	LD	HL,(IX+%9)
-04412E CD E8 43 04         A   127    	CALL	__case16D
-044132 E9                  A   128    	JP	(HL)
-044133                     A   129    L__0:
-044133 0300                A   130    	DW	3
-044135 1000                A   131    	DW	16
-044137 474104              A   132    	DW24	L_0	
+044108 DD2709              A   126    	LD	HL,(IX+%9)
+04410B CD C5 43 04         A   127    	CALL	__case16D
+04410F E9                  A   128    	JP	(HL)
+044110                     A   129    L__0:
+044110 0300                A   130    	DW	3
+044112 1000                A   131    	DW	16
+044114 244104              A   132    	DW24	L_0	
                            A   133    
-04413A 4000                A   134    	DW	64
-04413C 4D4104              A   135    	DW24	L_1	
+044117 4000                A   134    	DW	64
+044119 2A4104              A   135    	DW24	L_1	
                            A   136    
-04413F 0001                A   137    	DW	256
-044141 534104              A   138    	DW24	L_2	
+04411C 0001                A   137    	DW	256
+04411E 304104              A   138    	DW24	L_2	
                            A   139    
-044144 574104              A   140    	DW24	L_3	
+044121 344104              A   140    	DW24	L_3	
                            A   141    
                            A   142    ;   34			case  16: clkbits = 0x04; break
-044147                     A   143    L_0:
+044124                     A   143    L_0:
                            A   144    .LINE 34
                            A   145    
-044147 DD36FF04            A   146    	LD	(IX+%FFFFFFFF),%4
-04414B 18 0A               A   147    	JR	L_3
+044124 DD36FF04            A   146    	LD	(IX+%FFFFFFFF),%4
+044128 18 0A               A   147    	JR	L_3
                            A   148    ;   35			case  64: clkbits = 0x08; break
-04414D                     A   149    L_1:
+04412A                     A   149    L_1:
                            A   150    .LINE 35
                            A   151    
-04414D DD36FF08            A   152    	LD	(IX+%FFFFFFFF),%8
-044151 18 04               A   153    	JR	L_3
+04412A DD36FF08            A   152    	LD	(IX+%FFFFFFFF),%8
+04412E 18 04               A   153    	JR	L_3
                            A   154    ;   36			case 256: clkbits = 0x0C; break
-044153                     A   155    L_2:
+044130                     A   155    L_2:
                            A   156    .LINE 36
                            A   157    
-044153 DD36FF0C            A   158    	LD	(IX+%FFFFFFFF),%C
+044130 DD36FF0C            A   158    	LD	(IX+%FFFFFFFF),%C
                            A   159    ;   37		}
-044157                     A   160    L_3:
+044134                     A   160    L_3:
                            A   161    .LINE 37
                            A   162    
                            A   163    ;   38		ctl = (ctrlbits | clkbits);
                            A   164    .LINE 38
                            A   165    
-044157 DD7E0C              A   166    	LD	A,(IX+%C)
-04415A DDB6FF              A   167    	OR	A,(IX+%FFFFFFFF)
-04415D DD77FC              A   168    	LD	(IX+%FFFFFFFC),A
+044134 DD7E0C              A   166    	LD	A,(IX+%C)
+044137 DDB6FF              A   167    	OR	A,(IX+%FFFFFFFF)
+04413A DD77FC              A   168    	LD	(IX+%FFFFFFFC),A
                            A   169    ;   39	
                            A   170    ;   40		rr = (unsigned short)((SysClkFreq /
                            A   171    .LINE 40
                            A   172    
-044160 DD0709              A   173    	LD	BC,(IX+%9)
-044163 CD F0 45 04         A   174    	CALL	__itol
-044167 2100D002            A   175    	LD	HL,184320
-04416B 1E00                A   176    	LD	E,%0
-04416D CD 3B 44 04         A   177    	CALL	__ldivs
-044171 E5C1                A   178    	LD	BC,HL
-044173 DD2706              A   179    	LD	HL,(IX+%6)
-044176 CD 0E 47 04         A   180    	CALL	__smulu
-04417A DD75FD              A   181    	LD	(IX+%FFFFFFFD),L
-04417D DD74FE              A   182    	LD	(IX+%FFFFFFFE),H
+04413D DD0709              A   173    	LD	BC,(IX+%9)
+044140 CD CD 45 04         A   174    	CALL	__itol
+044144 2100D002            A   175    	LD	HL,184320
+044148 1E00                A   176    	LD	E,%0
+04414A CD 18 44 04         A   177    	CALL	__ldivs
+04414E E5C1                A   178    	LD	BC,HL
+044150 DD2706              A   179    	LD	HL,(IX+%6)
+044153 CD EB 46 04         A   180    	CALL	__smulu
+044157 DD75FD              A   181    	LD	(IX+%FFFFFFFD),L
+04415A DD74FE              A   182    	LD	(IX+%FFFFFFFE),H
                            A   183    ;   41	
                            A   184    ;   42		TMR0_CTL = 0x00;					
                            A   185    .LINE 42
                            A   186    
-044180 AF                  A   187    	XOR	A,A
-044181 ED3980              A   188    	OUT0	(128),A
+04415D AF                  A   187    	XOR	A,A
+04415E ED3980              A   188    	OUT0	(128),A
                            A   189    ;   43		TMR0_RR_L = (unsigned char)(rr);
                            A   190    .LINE 43
                            A   191    
-044184 DD7EFD              A   192    	LD	A,(IX+%FFFFFFFD)
-044187 ED3981              A   193    	OUT0	(129),A
+044161 DD7EFD              A   192    	LD	A,(IX+%FFFFFFFD)
+044164 ED3981              A   193    	OUT0	(129),A
                            A   194    ;   44		TMR0_RR_H = (unsigned char)(rr >> 8
                            A   195    .LINE 44
                            A   196    
-04418A DD07FD              A   197    	LD	BC,(IX+%FFFFFFFD)
-04418D CD E2 43 04         A   198    	CALL	__stoiu
-044191 3E08                A   199    	LD	A,%8
-044193 CD 52 43 04         A   200    	CALL	__ishrs_b
-044197 7D                  A   201    	LD	A,L
-044198 ED3982              A   202    	OUT0	(130),A
+044167 DD07FD              A   197    	LD	BC,(IX+%FFFFFFFD)
+04416A CD BF 43 04         A   198    	CALL	__stoiu
+04416E 3E08                A   199    	LD	A,%8
+044170 CD 2F 43 04         A   200    	CALL	__ishrs_b
+044174 7D                  A   201    	LD	A,L
+044175 ED3982              A   202    	OUT0	(130),A
                            A   203    ;   45	    TMR0_CTL = ctl;
                            A   204    .LINE 45
                            A   205    
-04419B DD7EFC              A   206    	LD	A,(IX+%FFFFFFFC)
-04419E ED3980              A   207    	OUT0	(128),A
+044178 DD7EFC              A   206    	LD	A,(IX+%FFFFFFFC)
+04417B ED3980              A   207    	OUT0	(128),A
                            A   208    ;   46	
                            A   209    ;   47		return rr;
                            A   210    .LINE 47
                            A   211    
-0441A1 DD27FD              A   212    	LD	HL,(IX+%FFFFFFFD)
+04417E DD27FD              A   212    	LD	HL,(IX+%FFFFFFFD)
                            A   213    ;   48	}
                            A   214    .LINE 48
                            A   215    
-0441A4 DDF9                A   216    	LD	SP,IX
-0441A6 DDE1                A   217    	POP	IX
-0441A8 C9                  A   218    	RET	
+044181 DDF9                A   216    	LD	SP,IX
+044183 DDE1                A   217    	POP	IX
+044185 C9                  A   218    	RET	
                            A   219    
                            A   220    
                            A   221    ;**************************** _init_timer0 ****
@@ -243,7 +243,7 @@ PC     Object              I  Line    Source
                            A   239    ;   52	// - enable: 0 = disable, 1 = enable
                            A   240    ;   53	//
                            A   241    ;   54	void enable_timer0(unsigned char enable
-0441A9                     A   242    _enable_timer0:
+044186                     A   242    _enable_timer0:
                            A   243    .DEFINE "_enable_timer0"
                            A   244    
                            A   245    .VALUE _enable_timer0
@@ -278,47 +278,47 @@ PC     Object              I  Line    Source
                            A   274    
                            A   275    .ENDEF
                            A   276    
-0441A9 DDE5                A   277    	PUSH	IX
-0441AB DD210000 00         A   278    	LD	IX,0
-0441B0 DD39                A   279    	ADD	IX,SP
-0441B2 3B                  A   280    	DEC	SP
+044186 DDE5                A   277    	PUSH	IX
+044188 DD210000 00         A   278    	LD	IX,0
+04418D DD39                A   279    	ADD	IX,SP
+04418F 3B                  A   280    	DEC	SP
                            A   281    ;   55		unsigned char b;
                            A   282    ;   56	
                            A   283    ;   57		if(enable <= 1) {
                            A   284    .LINE 57
                            A   285    
-0441B3 3E01                A   286    	LD	A,%1
-0441B5 DDBE06              A   287    	CP	A,(IX+%6)
-0441B8 38 19               A   288    	JR	C,L_6
+044190 3E01                A   286    	LD	A,%1
+044192 DDBE06              A   287    	CP	A,(IX+%6)
+044195 38 19               A   288    	JR	C,L_6
                            A   289    ;   58			b = TMR0_CTL;
                            A   290    .LINE 58
                            A   291    
-0441BA ED3880              A   292    	IN0	A,(128)
-0441BD DD77FF              A   293    	LD	(IX+%FFFFFFFF),A
+044197 ED3880              A   292    	IN0	A,(128)
+04419A DD77FF              A   293    	LD	(IX+%FFFFFFFF),A
                            A   294    ;   59			b &= 0xFC;
                            A   295    .LINE 59
                            A   296    
-0441C0 E6FC                A   297    	AND	A,%FC
-0441C2 DD77FF              A   298    	LD	(IX+%FFFFFFFF),A
+04419D E6FC                A   297    	AND	A,%FC
+04419F DD77FF              A   298    	LD	(IX+%FFFFFFFF),A
                            A   299    ;   60			b |= (enable | 2); 
                            A   300    .LINE 60
                            A   301    
-0441C5 DD7E06              A   302    	LD	A,(IX+%6)
-0441C8 CBCF                A   303    	SET	%1,A
-0441CA DDB6FF              A   304    	OR	A,(IX+%FFFFFFFF)
-0441CD DD77FF              A   305    	LD	(IX+%FFFFFFFF),A
+0441A2 DD7E06              A   302    	LD	A,(IX+%6)
+0441A5 CBCF                A   303    	SET	%1,A
+0441A7 DDB6FF              A   304    	OR	A,(IX+%FFFFFFFF)
+0441AA DD77FF              A   305    	LD	(IX+%FFFFFFFF),A
                            A   306    ;   61			TMR0_CTL = b;	
                            A   307    .LINE 61
                            A   308    
-0441D0 ED3980              A   309    	OUT0	(128),A
+0441AD ED3980              A   309    	OUT0	(128),A
                            A   310    ;   62		}
                            A   311    ;   63	}
-0441D3                     A   312    L_6:
+0441B0                     A   312    L_6:
                            A   313    .LINE 63
                            A   314    
-0441D3 DDF9                A   315    	LD	SP,IX
-0441D5 DDE1                A   316    	POP	IX
-0441D7 C9                  A   317    	RET	
+0441B0 DDF9                A   315    	LD	SP,IX
+0441B2 DDE1                A   316    	POP	IX
+0441B4 C9                  A   317    	RET	
                            A   318    
                            A   319    
                            A   320    ;**************************** _enable_timer0 **
@@ -336,7 +336,7 @@ PC     Object              I  Line    Source
                            A   332    ;   65	// Get data count of Timer 0
                            A   333    ;   66	//
                            A   334    ;   67	unsigned short get_timer0() {
-0441D8                     A   335    _get_timer0:
+0441B5                     A   335    _get_timer0:
                            A   336    .DEFINE "_get_timer0"
                            A   337    
                            A   338    .VALUE _get_timer0
@@ -371,37 +371,37 @@ PC     Object              I  Line    Source
                            A   367    
                            A   368    .ENDEF
                            A   369    
-0441D8 DDE5                A   370    	PUSH	IX
-0441DA DD210000 00         A   371    	LD	IX,0
-0441DF DD39                A   372    	ADD	IX,SP
-0441E1 3B                  A   373    	DEC	SP
-0441E2 3B                  A   374    	DEC	SP
+0441B5 DDE5                A   370    	PUSH	IX
+0441B7 DD210000 00         A   371    	LD	IX,0
+0441BC DD39                A   372    	ADD	IX,SP
+0441BE 3B                  A   373    	DEC	SP
+0441BF 3B                  A   374    	DEC	SP
                            A   375    ;   68		unsigned char l = TMR0_DR_L;
                            A   376    .LINE 68
                            A   377    
-0441E3 ED3881              A   378    	IN0	A,(129)
-0441E6 DD77FF              A   379    	LD	(IX+%FFFFFFFF),A
+0441C0 ED3881              A   378    	IN0	A,(129)
+0441C3 DD77FF              A   379    	LD	(IX+%FFFFFFFF),A
                            A   380    ;   69		unsigned char h = TMR0_DR_H;
                            A   381    .LINE 69
                            A   382    
-0441E9 ED3882              A   383    	IN0	A,(130)
-0441EC DD77FE              A   384    	LD	(IX+%FFFFFFFE),A
+0441C6 ED3882              A   383    	IN0	A,(130)
+0441C9 DD77FE              A   384    	LD	(IX+%FFFFFFFE),A
                            A   385    ;   70		return (h << 8) | l;
                            A   386    .LINE 70
                            A   387    
-0441EF DD4EFE              A   388    	LD	C,(IX+%FFFFFFFE)
-0441F2 0600                A   389    	LD	B,%0
-0441F4 C5E1                A   390    	LD	HL,BC
-0441F6 65                  A   391    	LD	H,L
-0441F7 2E00                A   392    	LD	L,%0
-0441F9 DD4EFF              A   393    	LD	C,(IX+%FFFFFFFF)
-0441FC CD B1 46 04         A   394    	CALL	__sor
+0441CC DD4EFE              A   388    	LD	C,(IX+%FFFFFFFE)
+0441CF 0600                A   389    	LD	B,%0
+0441D1 C5E1                A   390    	LD	HL,BC
+0441D3 65                  A   391    	LD	H,L
+0441D4 2E00                A   392    	LD	L,%0
+0441D6 DD4EFF              A   393    	LD	C,(IX+%FFFFFFFF)
+0441D9 CD 8E 46 04         A   394    	CALL	__sor
                            A   395    ;   71	}
                            A   396    .LINE 71
                            A   397    
-044200 DDF9                A   398    	LD	SP,IX
-044202 DDE1                A   399    	POP	IX
-044204 C9                  A   400    	RET	
+0441DD DDF9                A   398    	LD	SP,IX
+0441DF DDE1                A   399    	POP	IX
+0441E1 C9                  A   400    	RET	
                            A   401    
                            A   402    
                            A   403    ;**************************** _get_timer0 *****

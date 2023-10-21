@@ -1,4 +1,4 @@
-Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     18:50:18     page:   1
+Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     19:23:06     page:   1
 
 
 PC     Object              I  Line    Source 
@@ -269,8 +269,8 @@ PC     Object              I  Line    Source
                            A   265    .ENDEF
                            A   266    .ENDREC "NONAME5"
                            A   267    	SEGMENT BSS
-0449F8                     A   268    _rtc:
-0449F8                     A   269    	DS	1
+0449D5                     A   268    _rtc:
+0449D5                     A   269    	DS	1
                            A   270    .DEFINE "rtc"
                            A   271    .ALIAS "_rtc"
                            A   272    .CLASS 83
@@ -307,7 +307,7 @@ PC     Object              I  Line    Source
                            A   303    ;   27	// - DSTATUS
                            A   304    ;   28	// 
                            A   305    ;   29	DSTATUS disk_status(BYTE pdrv) {
-043D47                     A   306    _disk_status:
+043D24                     A   306    _disk_status:
                            A   307    .DEFINE "_disk_status"
                            A   308    
                            A   309    .VALUE _disk_status
@@ -332,19 +332,19 @@ PC     Object              I  Line    Source
                            A   328    
                            A   329    .ENDEF
                            A   330    
-043D47 DDE5                A   331    	PUSH	IX
-043D49 DD210000 00         A   332    	LD	IX,0
-043D4E DD39                A   333    	ADD	IX,SP
+043D24 DDE5                A   331    	PUSH	IX
+043D26 DD210000 00         A   332    	LD	IX,0
+043D2B DD39                A   333    	ADD	IX,SP
                            A   334    ;   30		return 0;
                            A   335    .LINE 30
                            A   336    
-043D50 AF                  A   337    	XOR	A,A
+043D2D AF                  A   337    	XOR	A,A
                            A   338    ;   31	}
                            A   339    .LINE 31
                            A   340    
-043D51 DDF9                A   341    	LD	SP,IX
-043D53 DDE1                A   342    	POP	IX
-043D55 C9                  A   343    	RET	
+043D2E DDF9                A   341    	LD	SP,IX
+043D30 DDE1                A   342    	POP	IX
+043D32 C9                  A   343    	RET	
                            A   344    
                            A   345    
                            A   346    ;**************************** _disk_status ****
@@ -365,7 +365,7 @@ PC     Object              I  Line    Source
                            A   361    ;   37	// - DSTATUS
                            A   362    ;   38	//
                            A   363    ;   39	DSTATUS disk_initialize(BYTE pdrv) {
-043D56                     A   364    _disk_initialize:
+043D33                     A   364    _disk_initialize:
                            A   365    .DEFINE "_disk_initialize"
                            A   366    
                            A   367    .VALUE _disk_initialize
@@ -400,40 +400,40 @@ PC     Object              I  Line    Source
                            A   396    
                            A   397    .ENDEF
                            A   398    
-043D56 DDE5                A   399    	PUSH	IX
-043D58 DD210000 00         A   400    	LD	IX,0
-043D5D DD39                A   401    	ADD	IX,SP
-043D5F 3B                  A   402    	DEC	SP
+043D33 DDE5                A   399    	PUSH	IX
+043D35 DD210000 00         A   400    	LD	IX,0
+043D3A DD39                A   401    	ADD	IX,SP
+043D3C 3B                  A   402    	DEC	SP
                            A   403    ;   40		BYTE err = SD_init();
                            A   404    .LINE 40
                            A   405    
-043D60 CD F0 09 04         A   406    	CALL	_SD_init
-043D64 DD77FF              A   407    	LD	(IX+%FFFFFFFF),A
+043D3D CD CD 09 04         A   406    	CALL	_SD_init
+043D41 DD77FF              A   407    	LD	(IX+%FFFFFFFF),A
                            A   408    ;   41		if(err == SD_SUCCESS) {
                            A   409    .LINE 41
                            A   410    
-043D67 B7                  A   411    	OR	A,A
-043D68 20 03               A   412    	JR	NZ,L_2
+043D44 B7                  A   411    	OR	A,A
+043D45 20 03               A   412    	JR	NZ,L_2
                            A   413    ;   42			return RES_OK;
                            A   414    .LINE 42
                            A   415    
-043D6A AF                  A   416    	XOR	A,A
-043D6B 18 02               A   417    	JR	L_3
+043D47 AF                  A   416    	XOR	A,A
+043D48 18 02               A   417    	JR	L_3
                            A   418    ;   43		}
-043D6D                     A   419    L_2:
+043D4A                     A   419    L_2:
                            A   420    .LINE 43
                            A   421    
                            A   422    ;   44		return RES_ERROR;
                            A   423    .LINE 44
                            A   424    
-043D6D 3E01                A   425    	LD	A,%1
+043D4A 3E01                A   425    	LD	A,%1
                            A   426    ;   45	}
-043D6F                     A   427    L_3:
+043D4C                     A   427    L_3:
                            A   428    .LINE 45
                            A   429    
-043D6F DDF9                A   430    	LD	SP,IX
-043D71 DDE1                A   431    	POP	IX
-043D73 C9                  A   432    	RET	
+043D4C DDF9                A   430    	LD	SP,IX
+043D4E DDE1                A   431    	POP	IX
+043D50 C9                  A   432    	RET	
                            A   433    
                            A   434    
                            A   435    ;**************************** _disk_initialize 
@@ -459,7 +459,7 @@ PC     Object              I  Line    Source
                            A   455    ;   54	// - DSTATUS
                            A   456    ;   55	//
                            A   457    ;   56	DRESULT disk_read(BYTE pdrv, BYTE *buff
-043D74                     A   458    _disk_read:
+043D51                     A   458    _disk_read:
                            A   459    .DEFINE "_disk_read"
                            A   460    
                            A   461    .VALUE _disk_read
@@ -524,54 +524,54 @@ PC     Object              I  Line    Source
                            A   520    
                            A   521    .ENDEF
                            A   522    
-043D74 DDE5                A   523    	PUSH	IX
-043D76 DD210000 00         A   524    	LD	IX,0
-043D7B DD39                A   525    	ADD	IX,SP
-043D7D 3B                  A   526    	DEC	SP
+043D51 DDE5                A   523    	PUSH	IX
+043D53 DD210000 00         A   524    	LD	IX,0
+043D58 DD39                A   525    	ADD	IX,SP
+043D5A 3B                  A   526    	DEC	SP
                            A   527    ;   57		BYTE err = SD_readBlocks(sector, bu
                            A   528    .LINE 57
                            A   529    
-043D7E DD0712              A   530    	LD	BC,(IX+%12)
-043D81 C5                  A   531    	PUSH	BC
-043D82 DD0709              A   532    	LD	BC,(IX+%9)
-043D85 C5                  A   533    	PUSH	BC
-043D86 DD4E0F              A   534    	LD	C,(IX+%F)
-043D89 0600                A   535    	LD	B,%0
-043D8B C5                  A   536    	PUSH	BC
-043D8C DD070C              A   537    	LD	BC,(IX+%C)
-043D8F C5                  A   538    	PUSH	BC
-043D90 CD B2 06 04         A   539    	CALL	_SD_readBlocks
-043D94 C1                  A   540    	POP	BC
-043D95 C1                  A   541    	POP	BC
-043D96 C1                  A   542    	POP	BC
-043D97 C1                  A   543    	POP	BC
-043D98 DD77FF              A   544    	LD	(IX+%FFFFFFFF),A
+043D5B DD0712              A   530    	LD	BC,(IX+%12)
+043D5E C5                  A   531    	PUSH	BC
+043D5F DD0709              A   532    	LD	BC,(IX+%9)
+043D62 C5                  A   533    	PUSH	BC
+043D63 DD4E0F              A   534    	LD	C,(IX+%F)
+043D66 0600                A   535    	LD	B,%0
+043D68 C5                  A   536    	PUSH	BC
+043D69 DD070C              A   537    	LD	BC,(IX+%C)
+043D6C C5                  A   538    	PUSH	BC
+043D6D CD 8F 06 04         A   539    	CALL	_SD_readBlocks
+043D71 C1                  A   540    	POP	BC
+043D72 C1                  A   541    	POP	BC
+043D73 C1                  A   542    	POP	BC
+043D74 C1                  A   543    	POP	BC
+043D75 DD77FF              A   544    	LD	(IX+%FFFFFFFF),A
                            A   545    ;   58		if(err == SD_SUCCESS) {
                            A   546    .LINE 58
                            A   547    
-043D9B B7                  A   548    	OR	A,A
-043D9C 20 05               A   549    	JR	NZ,L_5
+043D78 B7                  A   548    	OR	A,A
+043D79 20 05               A   549    	JR	NZ,L_5
                            A   550    ;   59			return RES_OK;
                            A   551    .LINE 59
                            A   552    
-043D9E B7                  A   553    	OR	A,A
-043D9F ED62                A   554    	SBC	HL,HL
-043DA1 18 04               A   555    	JR	L_6
+043D7B B7                  A   553    	OR	A,A
+043D7C ED62                A   554    	SBC	HL,HL
+043D7E 18 04               A   555    	JR	L_6
                            A   556    ;   60		}
-043DA3                     A   557    L_5:
+043D80                     A   557    L_5:
                            A   558    .LINE 60
                            A   559    
                            A   560    ;   61		return RES_ERROR;
                            A   561    .LINE 61
                            A   562    
-043DA3 21010000            A   563    	LD	HL,1
+043D80 21010000            A   563    	LD	HL,1
                            A   564    ;   62	}
-043DA7                     A   565    L_6:
+043D84                     A   565    L_6:
                            A   566    .LINE 62
                            A   567    
-043DA7 DDF9                A   568    	LD	SP,IX
-043DA9 DDE1                A   569    	POP	IX
-043DAB C9                  A   570    	RET	
+043D84 DDF9                A   568    	LD	SP,IX
+043D86 DDE1                A   569    	POP	IX
+043D88 C9                  A   570    	RET	
                            A   571    
                            A   572    
                            A   573    ;**************************** _disk_read ******
@@ -621,7 +621,7 @@ PC     Object              I  Line    Source
                            A   617    ;   92	// - DSTATUS
                            A   618    ;   93	//
                            A   619    ;   94	DRESULT disk_ioctl(BYTE pdrv, BYTE cmd,
-043DAC                     A   620    _disk_ioctl:
+043D89                     A   620    _disk_ioctl:
                            A   621    .DEFINE "_disk_ioctl"
                            A   622    
                            A   623    .VALUE _disk_ioctl
@@ -666,20 +666,20 @@ PC     Object              I  Line    Source
                            A   662    
                            A   663    .ENDEF
                            A   664    
-043DAC DDE5                A   665    	PUSH	IX
-043DAE DD210000 00         A   666    	LD	IX,0
-043DB3 DD39                A   667    	ADD	IX,SP
+043D89 DDE5                A   665    	PUSH	IX
+043D8B DD210000 00         A   666    	LD	IX,0
+043D90 DD39                A   667    	ADD	IX,SP
                            A   668    ;   95		return RES_OK;
                            A   669    .LINE 95
                            A   670    
-043DB5 B7                  A   671    	OR	A,A
-043DB6 ED62                A   672    	SBC	HL,HL
+043D92 B7                  A   671    	OR	A,A
+043D93 ED62                A   672    	SBC	HL,HL
                            A   673    ;   96	}
                            A   674    .LINE 96
                            A   675    
-043DB8 DDF9                A   676    	LD	SP,IX
-043DBA DDE1                A   677    	POP	IX
-043DBC C9                  A   678    	RET	
+043D95 DDF9                A   676    	LD	SP,IX
+043D97 DDE1                A   677    	POP	IX
+043D99 C9                  A   678    	RET	
                            A   679    
                            A   680    
                            A   681    ;**************************** _disk_ioctl *****
@@ -707,7 +707,7 @@ PC     Object              I  Line    Source
                            A   703    ;  107	//   25 to 31: Year-1980 (0 to 127)
                            A   704    ;  108	//
                            A   705    ;  109	DWORD get_fattime(void) {
-043DBD                     A   706    _get_fattime:
+043D9A                     A   706    _get_fattime:
                            A   707    .DEFINE "_get_fattime"
                            A   708    
                            A   709    .VALUE _get_fattime
@@ -782,11 +782,11 @@ PC     Object              I  Line    Source
                            A   778    
                            A   779    .ENDEF
                            A   780    
-043DBD DDE5                A   781    	PUSH	IX
-043DBF DD210000 00         A   782    	LD	IX,0
-043DC4 DD39                A   783    	ADD	IX,SP
-043DC6 ED22E8              A   784    	LEA	HL,IX+%FFFFFFE8
-043DC9 F9                  A   785    	LD	SP,HL
+043D9A DDE5                A   781    	PUSH	IX
+043D9C DD210000 00         A   782    	LD	IX,0
+043DA1 DD39                A   783    	ADD	IX,SP
+043DA3 ED22E8              A   784    	LEA	HL,IX+%FFFFFFE8
+043DA6 F9                  A   785    	LD	SP,HL
                            A   786    ;  110		DWORD	yr, mo, da, hr, mi, se;
                            A   787    ;  111		BYTE *	p = &rtc;
                            A   788    ;  112	
@@ -795,102 +795,102 @@ PC     Object              I  Line    Source
                            A   791    ;  115		yr =  *(p+0)    << 25;
                            A   792    .LINE 115
                            A   793    
-043DCA B7ED62              A   794    	UEXT	HL
-043DCD 3A F8 49 04         A   795    	LD	A,(_rtc)
-043DD1 6F                  A   796    	LD	L,A
-043DD2 7C                  A   797    	LD	A,H
-043DD3 E5C1                A   798    	LD	BC,HL
-043DD5 2E19                A   799    	LD	L,%19
-043DD7 CD 54 46 04         A   800    	CALL	__lshl
-043DDB DD0FFC              A   801    	LD	(IX+%FFFFFFFC),BC
-043DDE DD77FF              A   802    	LD	(IX+%FFFFFFFF),A
+043DA7 B7ED62              A   794    	UEXT	HL
+043DAA 3A D5 49 04         A   795    	LD	A,(_rtc)
+043DAE 6F                  A   796    	LD	L,A
+043DAF 7C                  A   797    	LD	A,H
+043DB0 E5C1                A   798    	LD	BC,HL
+043DB2 2E19                A   799    	LD	L,%19
+043DB4 CD 31 46 04         A   800    	CALL	__lshl
+043DB8 DD0FFC              A   801    	LD	(IX+%FFFFFFFC),BC
+043DBB DD77FF              A   802    	LD	(IX+%FFFFFFFF),A
                            A   803    ;  116		mo = (*(p+1)+1) << 21;
                            A   804    .LINE 116
                            A   805    
-043DE1 FD21 F8 49 04       A   806    	LD	IY,_rtc
-043DE6 B7ED62              A   807    	UEXT	HL
-043DE9 FD6E01              A   808    	LD	L,(IY+%1)
-043DEC 5C                  A   809    	LD	E,H
-043DED 3E01                A   810    	LD	A,%1
-043DEF CD F6 42 04         A   811    	CALL	__ladd_b
-043DF3 7B                  A   812    	LD	A,E
-043DF4 E5C1                A   813    	LD	BC,HL
-043DF6 2E15                A   814    	LD	L,%15
-043DF8 CD 54 46 04         A   815    	CALL	__lshl
-043DFC DD0FF8              A   816    	LD	(IX+%FFFFFFF8),BC
-043DFF DD77FB              A   817    	LD	(IX+%FFFFFFFB),A
+043DBE FD21 D5 49 04       A   806    	LD	IY,_rtc
+043DC3 B7ED62              A   807    	UEXT	HL
+043DC6 FD6E01              A   808    	LD	L,(IY+%1)
+043DC9 5C                  A   809    	LD	E,H
+043DCA 3E01                A   810    	LD	A,%1
+043DCC CD D3 42 04         A   811    	CALL	__ladd_b
+043DD0 7B                  A   812    	LD	A,E
+043DD1 E5C1                A   813    	LD	BC,HL
+043DD3 2E15                A   814    	LD	L,%15
+043DD5 CD 31 46 04         A   815    	CALL	__lshl
+043DD9 DD0FF8              A   816    	LD	(IX+%FFFFFFF8),BC
+043DDC DD77FB              A   817    	LD	(IX+%FFFFFFFB),A
                            A   818    ;  117		da =  *(p+2)    << 16;
                            A   819    .LINE 117
                            A   820    
-043E02 B7ED62              A   821    	UEXT	HL
-043E05 FD6E02              A   822    	LD	L,(IY+%2)
-043E08 7C                  A   823    	LD	A,H
-043E09 E5C1                A   824    	LD	BC,HL
-043E0B 2E10                A   825    	LD	L,%10
-043E0D CD 54 46 04         A   826    	CALL	__lshl
-043E11 DD0FF4              A   827    	LD	(IX+%FFFFFFF4),BC
-043E14 DD77F7              A   828    	LD	(IX+%FFFFFFF7),A
+043DDF B7ED62              A   821    	UEXT	HL
+043DE2 FD6E02              A   822    	LD	L,(IY+%2)
+043DE5 7C                  A   823    	LD	A,H
+043DE6 E5C1                A   824    	LD	BC,HL
+043DE8 2E10                A   825    	LD	L,%10
+043DEA CD 31 46 04         A   826    	CALL	__lshl
+043DEE DD0FF4              A   827    	LD	(IX+%FFFFFFF4),BC
+043DF1 DD77F7              A   828    	LD	(IX+%FFFFFFF7),A
                            A   829    ;  118		hr =  *(p+5)    << 11;
                            A   830    .LINE 118
                            A   831    
-043E17 B7ED62              A   832    	UEXT	HL
-043E1A FD6E05              A   833    	LD	L,(IY+%5)
-043E1D 7C                  A   834    	LD	A,H
-043E1E E5C1                A   835    	LD	BC,HL
-043E20 2E0B                A   836    	LD	L,%B
-043E22 CD 54 46 04         A   837    	CALL	__lshl
-043E26 DD0FF0              A   838    	LD	(IX+%FFFFFFF0),BC
-043E29 DD77F3              A   839    	LD	(IX+%FFFFFFF3),A
+043DF4 B7ED62              A   832    	UEXT	HL
+043DF7 FD6E05              A   833    	LD	L,(IY+%5)
+043DFA 7C                  A   834    	LD	A,H
+043DFB E5C1                A   835    	LD	BC,HL
+043DFD 2E0B                A   836    	LD	L,%B
+043DFF CD 31 46 04         A   837    	CALL	__lshl
+043E03 DD0FF0              A   838    	LD	(IX+%FFFFFFF0),BC
+043E06 DD77F3              A   839    	LD	(IX+%FFFFFFF3),A
                            A   840    ;  119		mi =  *(p+6)    <<  5;
                            A   841    .LINE 119
                            A   842    
-043E2C B7ED62              A   843    	UEXT	HL
-043E2F FD6E06              A   844    	LD	L,(IY+%6)
-043E32 7C                  A   845    	LD	A,H
-043E33 E5C1                A   846    	LD	BC,HL
-043E35 2E05                A   847    	LD	L,%5
-043E37 CD 54 46 04         A   848    	CALL	__lshl
-043E3B DD0FEC              A   849    	LD	(IX+%FFFFFFEC),BC
-043E3E DD77EF              A   850    	LD	(IX+%FFFFFFEF),A
+043E09 B7ED62              A   843    	UEXT	HL
+043E0C FD6E06              A   844    	LD	L,(IY+%6)
+043E0F 7C                  A   845    	LD	A,H
+043E10 E5C1                A   846    	LD	BC,HL
+043E12 2E05                A   847    	LD	L,%5
+043E14 CD 31 46 04         A   848    	CALL	__lshl
+043E18 DD0FEC              A   849    	LD	(IX+%FFFFFFEC),BC
+043E1B DD77EF              A   850    	LD	(IX+%FFFFFFEF),A
                            A   851    ;  120		se =  *(p+7)    >>  1;
                            A   852    .LINE 120
                            A   853    
-043E41 ED2307              A   854    	LEA	HL,IY+%7
-043E44 7E                  A   855    	LD	A,(HL)
-043E45 B7ED62              A   856    	UEXT	HL
-043E48 6F                  A   857    	LD	L,A
-043E49 3E01                A   858    	LD	A,%1
-043E4B CD 52 43 04         A   859    	CALL	__ishrs_b
-043E4F E5C1                A   860    	LD	BC,HL
-043E51 CD F0 45 04         A   861    	CALL	__itol
-043E55 DD0FE8              A   862    	LD	(IX+%FFFFFFE8),BC
-043E58 DD77EB              A   863    	LD	(IX+%FFFFFFEB),A
+043E1E ED2307              A   854    	LEA	HL,IY+%7
+043E21 7E                  A   855    	LD	A,(HL)
+043E22 B7ED62              A   856    	UEXT	HL
+043E25 6F                  A   857    	LD	L,A
+043E26 3E01                A   858    	LD	A,%1
+043E28 CD 2F 43 04         A   859    	CALL	__ishrs_b
+043E2C E5C1                A   860    	LD	BC,HL
+043E2E CD CD 45 04         A   861    	CALL	__itol
+043E32 DD0FE8              A   862    	LD	(IX+%FFFFFFE8),BC
+043E35 DD77EB              A   863    	LD	(IX+%FFFFFFEB),A
                            A   864    ;  121	
                            A   865    ;  122		return se | mi | hr | da | mo | yr;
                            A   866    .LINE 122
                            A   867    
-043E5B DD27EC              A   868    	LD	HL,(IX+%FFFFFFEC)
-043E5E DD5EEF              A   869    	LD	E,(IX+%FFFFFFEF)
-043E61 DD7EEB              A   870    	LD	A,(IX+%FFFFFFEB)
-043E64 CD 42 45 04         A   871    	CALL	__lor
-043E68 DD07F0              A   872    	LD	BC,(IX+%FFFFFFF0)
-043E6B DD7EF3              A   873    	LD	A,(IX+%FFFFFFF3)
-043E6E CD 42 45 04         A   874    	CALL	__lor
-043E72 DD07F4              A   875    	LD	BC,(IX+%FFFFFFF4)
-043E75 DD7EF7              A   876    	LD	A,(IX+%FFFFFFF7)
-043E78 CD 42 45 04         A   877    	CALL	__lor
-043E7C DD07F8              A   878    	LD	BC,(IX+%FFFFFFF8)
-043E7F DD7EFB              A   879    	LD	A,(IX+%FFFFFFFB)
-043E82 CD 42 45 04         A   880    	CALL	__lor
-043E86 DD07FC              A   881    	LD	BC,(IX+%FFFFFFFC)
-043E89 DD7EFF              A   882    	LD	A,(IX+%FFFFFFFF)
-043E8C CD 42 45 04         A   883    	CALL	__lor
+043E38 DD27EC              A   868    	LD	HL,(IX+%FFFFFFEC)
+043E3B DD5EEF              A   869    	LD	E,(IX+%FFFFFFEF)
+043E3E DD7EEB              A   870    	LD	A,(IX+%FFFFFFEB)
+043E41 CD 1F 45 04         A   871    	CALL	__lor
+043E45 DD07F0              A   872    	LD	BC,(IX+%FFFFFFF0)
+043E48 DD7EF3              A   873    	LD	A,(IX+%FFFFFFF3)
+043E4B CD 1F 45 04         A   874    	CALL	__lor
+043E4F DD07F4              A   875    	LD	BC,(IX+%FFFFFFF4)
+043E52 DD7EF7              A   876    	LD	A,(IX+%FFFFFFF7)
+043E55 CD 1F 45 04         A   877    	CALL	__lor
+043E59 DD07F8              A   878    	LD	BC,(IX+%FFFFFFF8)
+043E5C DD7EFB              A   879    	LD	A,(IX+%FFFFFFFB)
+043E5F CD 1F 45 04         A   880    	CALL	__lor
+043E63 DD07FC              A   881    	LD	BC,(IX+%FFFFFFFC)
+043E66 DD7EFF              A   882    	LD	A,(IX+%FFFFFFFF)
+043E69 CD 1F 45 04         A   883    	CALL	__lor
                            A   884    ;  123	}
                            A   885    .LINE 123
                            A   886    
-043E90 DDF9                A   887    	LD	SP,IX
-043E92 DDE1                A   888    	POP	IX
-043E94 C9                  A   889    	RET	
+043E6D DDF9                A   887    	LD	SP,IX
+043E6F DDE1                A   888    	POP	IX
+043E71 C9                  A   889    	RET	
                            A   890    
                            A   891    
                            A   892    ;**************************** _get_fattime ****

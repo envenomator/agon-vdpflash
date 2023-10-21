@@ -1,4 +1,4 @@
-Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     16:06:27     page:   1
+Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     17:00:55     page:   1
 
 
 PC     Object              I  Line    Source 
@@ -47,7 +47,7 @@ PC     Object              I  Line    Source
                            A    43    ;   36	#define SET_BIT(reg, n)     (reg |=  (1
                            A    44    ;   37	
                            A    45    ;   38	void SD_CS_enable() {
-043D7C                     A    46    _SD_CS_enable:
+043D76                     A    46    _SD_CS_enable:
                            A    47    .DEFINE "_SD_CS_enable"
                            A    48    
                            A    49    .VALUE _SD_CS_enable
@@ -60,21 +60,21 @@ PC     Object              I  Line    Source
                            A    56    
                            A    57    .BEGFUNC "SD_CS_enable",38,"_SD_CS_enable"
                            A    58    
-043D7C DDE5                A    59    	PUSH	IX
-043D7E DD210000 00         A    60    	LD	IX,0
-043D83 DD39                A    61    	ADD	IX,SP
+043D76 DDE5                A    59    	PUSH	IX
+043D78 DD210000 00         A    60    	LD	IX,0
+043D7D DD39                A    61    	ADD	IX,SP
                            A    62    ;   39	     PB_DR &= ~BIT(SD_CS);
                            A    63    .LINE 39
                            A    64    
-043D85 ED389A              A    65    	IN0	A,(154)
-043D88 CBA7                A    66    	RES	%4,A
-043D8A ED399A              A    67    	OUT0	(154),A
+043D7F ED389A              A    65    	IN0	A,(154)
+043D82 CBA7                A    66    	RES	%4,A
+043D84 ED399A              A    67    	OUT0	(154),A
                            A    68    ;   40	} 
                            A    69    .LINE 40
                            A    70    
-043D8D DDF9                A    71    	LD	SP,IX
-043D8F DDE1                A    72    	POP	IX
-043D91 C9                  A    73    	RET	
+043D87 DDF9                A    71    	LD	SP,IX
+043D89 DDE1                A    72    	POP	IX
+043D8B C9                  A    73    	RET	
                            A    74    
                            A    75    
                            A    76    ;**************************** _SD_CS_enable ***
@@ -88,7 +88,7 @@ PC     Object              I  Line    Source
                            A    84    .ENDFUNC "SD_CS_enable",40,"_SD_CS_enable"
                            A    85    ;   41	
                            A    86    ;   42	void SD_CS_disable() {
-043D92                     A    87    _SD_CS_disable:
+043D8C                     A    87    _SD_CS_disable:
                            A    88    .DEFINE "_SD_CS_disable"
                            A    89    
                            A    90    .VALUE _SD_CS_disable
@@ -101,21 +101,21 @@ PC     Object              I  Line    Source
                            A    97    
                            A    98    .BEGFUNC "SD_CS_disable",42,"_SD_CS_disable"
                            A    99    
-043D92 DDE5                A   100    	PUSH	IX
-043D94 DD210000 00         A   101    	LD	IX,0
-043D99 DD39                A   102    	ADD	IX,SP
+043D8C DDE5                A   100    	PUSH	IX
+043D8E DD210000 00         A   101    	LD	IX,0
+043D93 DD39                A   102    	ADD	IX,SP
                            A   103    ;   43	     PB_DR |= BIT(SD_CS); 
                            A   104    .LINE 43
                            A   105    
-043D9B ED389A              A   106    	IN0	A,(154)
-043D9E CBE7                A   107    	SET	%4,A
-043DA0 ED399A              A   108    	OUT0	(154),A
+043D95 ED389A              A   106    	IN0	A,(154)
+043D98 CBE7                A   107    	SET	%4,A
+043D9A ED399A              A   108    	OUT0	(154),A
                            A   109    ;   44	} 
                            A   110    .LINE 44
                            A   111    
-043DA3 DDF9                A   112    	LD	SP,IX
-043DA5 DDE1                A   113    	POP	IX
-043DA7 C9                  A   114    	RET	
+043D9D DDF9                A   112    	LD	SP,IX
+043D9F DDE1                A   113    	POP	IX
+043DA1 C9                  A   114    	RET	
                            A   115    
                            A   116    
                            A   117    ;**************************** _SD_CS_disable **
@@ -129,7 +129,7 @@ PC     Object              I  Line    Source
                            A   125    .ENDFUNC "SD_CS_disable",44,"_SD_CS_disable"
                            A   126    ;   45	
                            A   127    ;   46	BYTE spi_transfer(BYTE d) {
-043DA8                     A   128    _spi_transfer:
+043DA2                     A   128    _spi_transfer:
                            A   129    .DEFINE "_spi_transfer"
                            A   130    
                            A   131    .VALUE _spi_transfer
@@ -164,60 +164,60 @@ PC     Object              I  Line    Source
                            A   160    
                            A   161    .ENDEF
                            A   162    
-043DA8 DDE5                A   163    	PUSH	IX
-043DAA DD210000 00         A   164    	LD	IX,0
-043DAF DD39                A   165    	ADD	IX,SP
-043DB1 C5                  A   166    	PUSH	BC
+043DA2 DDE5                A   163    	PUSH	IX
+043DA4 DD210000 00         A   164    	LD	IX,0
+043DA9 DD39                A   165    	ADD	IX,SP
+043DAB C5                  A   166    	PUSH	BC
                            A   167    ;   47	    int i = 0;
                            A   168    .LINE 47
                            A   169    
-043DB2 01000000            A   170    	LD	BC,0
-043DB6 DD0FFD              A   171    	LD	(IX+%FFFFFFFD),BC
+043DAC 01000000            A   170    	LD	BC,0
+043DB0 DD0FFD              A   171    	LD	(IX+%FFFFFFFD),BC
                            A   172    ;   48	
                            A   173    ;   49	    // Write the data to exchange 
                            A   174    ;   50		//
                            A   175    ;   51	    SPI_TSR = d;
                            A   176    .LINE 51
                            A   177    
-043DB9 DD7E06              A   178    	LD	A,(IX+%6)
-043DBC ED39BC              A   179    	OUT0	(188),A
+043DB3 DD7E06              A   178    	LD	A,(IX+%6)
+043DB6 ED39BC              A   179    	OUT0	(188),A
                            A   180    ;   52	    do {
-043DBF                     A   181    L_5:
+043DB9                     A   181    L_5:
                            A   182    .LINE 52
                            A   183    
                            A   184    ;   53	        if (SPI_SR & (1 << 7))  {
                            A   185    .LINE 53
                            A   186    
-043DBF ED38BB              A   187    	IN0	A,(187)
-043DC2 E680                A   188    	AND	A,%80
-043DC4 20 15               A   189    	JR	NZ,L_7
+043DB9 ED38BB              A   187    	IN0	A,(187)
+043DBC E680                A   188    	AND	A,%80
+043DBE 20 15               A   189    	JR	NZ,L_7
                            A   190    ;   54	            break;
                            A   191    ;   55	        } 
                            A   192    ;   56	        i++;
                            A   193    .LINE 56
                            A   194    
-043DC6 DD07FD              A   195    	LD	BC,(IX+%FFFFFFFD)
-043DC9 03                  A   196    	INC	BC
-043DCA DD0FFD              A   197    	LD	(IX+%FFFFFFFD),BC
+043DC0 DD07FD              A   195    	LD	BC,(IX+%FFFFFFFD)
+043DC3 03                  A   196    	INC	BC
+043DC4 DD0FFD              A   197    	LD	(IX+%FFFFFFFD),BC
                            A   198    ;   57	    } while (i < SPIRETRY);
                            A   199    .LINE 57
                            A   200    
-043DCD 01E80300            A   201    	LD	BC,1000
-043DD1 DD27FD              A   202    	LD	HL,(IX+%FFFFFFFD)
-043DD4 B7                  A   203    	OR	A,A
-043DD5 ED42                A   204    	SBC	HL,BC
-043DD7 FA BF 3D 04         A   205    	JP	M,L_5
-043DDB                     A   206    L_7:
+043DC7 01E80300            A   201    	LD	BC,1000
+043DCB DD27FD              A   202    	LD	HL,(IX+%FFFFFFFD)
+043DCE B7                  A   203    	OR	A,A
+043DCF ED42                A   204    	SBC	HL,BC
+043DD1 FA B9 3D 04         A   205    	JP	M,L_5
+043DD5                     A   206    L_7:
                            A   207    ;   58	    return SPI_RBR;
                            A   208    .LINE 58
                            A   209    
-043DDB ED38BC              A   210    	IN0	A,(188)
+043DD5 ED38BC              A   210    	IN0	A,(188)
                            A   211    ;   59	} 
                            A   212    .LINE 59
                            A   213    
-043DDE DDF9                A   214    	LD	SP,IX
-043DE0 DDE1                A   215    	POP	IX
-043DE2 C9                  A   216    	RET	
+043DD8 DDF9                A   214    	LD	SP,IX
+043DDA DDE1                A   215    	POP	IX
+043DDC C9                  A   216    	RET	
                            A   217    
                            A   218    
                            A   219    ;**************************** _spi_transfer ***
@@ -235,7 +235,7 @@ PC     Object              I  Line    Source
                            A   231    ;   61	
                            A   232    ;   62	// Reset system devices
                            A   233    ;   63	void init_spi() {
-043DE3                     A   234    _init_spi:
+043DDD                     A   234    _init_spi:
                            A   235    .DEFINE "_init_spi"
                            A   236    
                            A   237    .VALUE _init_spi
@@ -260,11 +260,11 @@ PC     Object              I  Line    Source
                            A   256    
                            A   257    .ENDEF
                            A   258    
-043DE3 DDE5                A   259    	PUSH	IX
-043DE5 DD210000 00         A   260    	LD	IX,0
-043DEA DD39                A   261    	ADD	IX,SP
-043DEC C5                  A   262    	PUSH	BC
-043DED 3B                  A   263    	DEC	SP
+043DDD DDE5                A   259    	PUSH	IX
+043DDF DD210000 00         A   260    	LD	IX,0
+043DE4 DD39                A   261    	ADD	IX,SP
+043DE6 C5                  A   262    	PUSH	BC
+043DE7 3B                  A   263    	DEC	SP
                            A   264    ;   64	    long i;
                            A   265    ;   65	
                            A   266    ;   66	    // SS must remain high for SPI to w
@@ -272,113 +272,113 @@ PC     Object              I  Line    Source
                            A   268    ;   68	    PB_DR   |=  BIT(2);
                            A   269    .LINE 68
                            A   270    
-043DEE ED389A              A   271    	IN0	A,(154)
-043DF1 CBD7                A   272    	SET	%2,A
-043DF3 ED399A              A   273    	OUT0	(154),A
+043DE8 ED389A              A   271    	IN0	A,(154)
+043DEB CBD7                A   272    	SET	%2,A
+043DED ED399A              A   273    	OUT0	(154),A
                            A   274    ;   69	    PB_ALT1 &= ~BIT(2);
                            A   275    .LINE 69
                            A   276    
-043DF6 ED389C              A   277    	IN0	A,(156)
-043DF9 CB97                A   278    	RES	%2,A
-043DFB ED399C              A   279    	OUT0	(156),A
+043DF0 ED389C              A   277    	IN0	A,(156)
+043DF3 CB97                A   278    	RES	%2,A
+043DF5 ED399C              A   279    	OUT0	(156),A
                            A   280    ;   70	    PB_ALT2 &= ~BIT(2);
                            A   281    .LINE 70
                            A   282    
-043DFE ED389D              A   283    	IN0	A,(157)
-043E01 CB97                A   284    	RES	%2,A
-043E03 ED399D              A   285    	OUT0	(157),A
+043DF8 ED389D              A   283    	IN0	A,(157)
+043DFB CB97                A   284    	RES	%2,A
+043DFD ED399D              A   285    	OUT0	(157),A
                            A   286    ;   71	    PB_DDR  &= ~BIT(2);
                            A   287    .LINE 71
                            A   288    
-043E06 ED389B              A   289    	IN0	A,(155)
-043E09 CB97                A   290    	RES	%2,A
-043E0B ED399B              A   291    	OUT0	(155),A
+043E00 ED389B              A   289    	IN0	A,(155)
+043E03 CB97                A   290    	RES	%2,A
+043E05 ED399B              A   291    	OUT0	(155),A
                            A   292    ;   72	
                            A   293    ;   73	    // Enable the chip select outputs a
                            A   294    ;   74		//
                            A   295    ;   75	    PB_DR   |=  BIT(SD_CS);
                            A   296    .LINE 75
                            A   297    
-043E0E ED389A              A   298    	IN0	A,(154)
-043E11 CBE7                A   299    	SET	%4,A
-043E13 ED399A              A   300    	OUT0	(154),A
+043E08 ED389A              A   298    	IN0	A,(154)
+043E0B CBE7                A   299    	SET	%4,A
+043E0D ED399A              A   300    	OUT0	(154),A
                            A   301    ;   76	    PB_ALT1 &= ~BIT(SD_CS);
                            A   302    .LINE 76
                            A   303    
-043E16 ED389C              A   304    	IN0	A,(156)
-043E19 CBA7                A   305    	RES	%4,A
-043E1B ED399C              A   306    	OUT0	(156),A
+043E10 ED389C              A   304    	IN0	A,(156)
+043E13 CBA7                A   305    	RES	%4,A
+043E15 ED399C              A   306    	OUT0	(156),A
                            A   307    ;   77	    PB_ALT2 &= ~BIT(SD_CS);
                            A   308    .LINE 77
                            A   309    
-043E1E ED389D              A   310    	IN0	A,(157)
-043E21 CBA7                A   311    	RES	%4,A
-043E23 ED399D              A   312    	OUT0	(157),A
+043E18 ED389D              A   310    	IN0	A,(157)
+043E1B CBA7                A   311    	RES	%4,A
+043E1D ED399D              A   312    	OUT0	(157),A
                            A   313    ;   78	    PB_DDR  &= ~BIT(SD_CS);
                            A   314    .LINE 78
                            A   315    
-043E26 ED389B              A   316    	IN0	A,(155)
-043E29 CBA7                A   317    	RES	%4,A
-043E2B ED399B              A   318    	OUT0	(155),A
+043E20 ED389B              A   316    	IN0	A,(155)
+043E23 CBA7                A   317    	RES	%4,A
+043E25 ED399B              A   318    	OUT0	(155),A
                            A   319    ;   79		
                            A   320    ;   80	    // Set port B pins 7 (MOSI), 6 (MIS
                            A   321    ;   81		//
                            A   322    ;   82	    PB_ALT1 &= ~(BIT(SPI_MOSI) | BIT(SP
                            A   323    .LINE 82
                            A   324    
-043E2E ED389C              A   325    	IN0	A,(156)
-043E31 E637                A   326    	AND	A,%37
-043E33 ED399C              A   327    	OUT0	(156),A
+043E28 ED389C              A   325    	IN0	A,(156)
+043E2B E637                A   326    	AND	A,%37
+043E2D ED399C              A   327    	OUT0	(156),A
                            A   328    ;   83	    PB_ALT2 |=  (BIT(SPI_MOSI) | BIT(SP
                            A   329    .LINE 83
                            A   330    
-043E36 ED389D              A   331    	IN0	A,(157)
-043E39 F6C8                A   332    	OR	A,%C8
-043E3B ED399D              A   333    	OUT0	(157),A
+043E30 ED389D              A   331    	IN0	A,(157)
+043E33 F6C8                A   332    	OR	A,%C8
+043E35 ED399D              A   333    	OUT0	(157),A
                            A   334    ;   84		
                            A   335    ;   85	    mode_spi(4);
                            A   336    .LINE 85
                            A   337    
-043E3E 01040000            A   338    	LD	BC,4
-043E42 C5                  A   339    	PUSH	BC
-043E43 CD 83 3E 04         A   340    	CALL	_mode_spi
-043E47 C1                  A   341    	POP	BC
+043E38 01040000            A   338    	LD	BC,4
+043E3C C5                  A   339    	PUSH	BC
+043E3D CD 7D 3E 04         A   340    	CALL	_mode_spi
+043E41 C1                  A   341    	POP	BC
                            A   342    ;   86	
                            A   343    ;   87	    i = 0;
                            A   344    .LINE 87
                            A   345    
-043E48 01000000            A   346    	LD	BC,0
-043E4C AF                  A   347    	XOR	A,A
-043E4D DD0FFC              A   348    	LD	(IX+%FFFFFFFC),BC
-043E50 DD77FF              A   349    	LD	(IX+%FFFFFFFF),A
+043E42 01000000            A   346    	LD	BC,0
+043E46 AF                  A   347    	XOR	A,A
+043E47 DD0FFC              A   348    	LD	(IX+%FFFFFFFC),BC
+043E4A DD77FF              A   349    	LD	(IX+%FFFFFFFF),A
                            A   350    ;   88	    while (i < WAIT4RESET)
                            A   351    .LINE 88
                            A   352    
-043E53 18 12               A   353    	JR	L_10
-043E55                     A   354    L_11:
+043E4D 18 12               A   353    	JR	L_10
+043E4F                     A   354    L_11:
                            A   355    ;   89	        i++;
                            A   356    .LINE 89
                            A   357    
-043E55 DD27FC              A   358    	LD	HL,(IX+%FFFFFFFC)
-043E58 DD5EFF              A   359    	LD	E,(IX+%FFFFFFFF)
-043E5B 3E01                A   360    	LD	A,%1
-043E5D CD 66 40 04         A   361    	CALL	__ladd_b
-043E61 DD2FFC              A   362    	LD	(IX+%FFFFFFFC),HL
-043E64 DD73FF              A   363    	LD	(IX+%FFFFFFFF),E
-043E67                     A   364    L_10:
-043E67 DD27FC              A   365    	LD	HL,(IX+%FFFFFFFC)
-043E6A DD5EFF              A   366    	LD	E,(IX+%FFFFFFFF)
-043E6D 01401F00            A   367    	LD	BC,8000
-043E71 AF                  A   368    	XOR	A,A
-043E72 CD 67 43 04         A   369    	CALL	__lcmps
-043E76 CD 7B 40 04         A   370    	CALL	__setflag
-043E7A FA 55 3E 04         A   371    	JP	M,L_11
+043E4F DD27FC              A   358    	LD	HL,(IX+%FFFFFFFC)
+043E52 DD5EFF              A   359    	LD	E,(IX+%FFFFFFFF)
+043E55 3E01                A   360    	LD	A,%1
+043E57 CD FD 40 04         A   361    	CALL	__ladd_b
+043E5B DD2FFC              A   362    	LD	(IX+%FFFFFFFC),HL
+043E5E DD73FF              A   363    	LD	(IX+%FFFFFFFF),E
+043E61                     A   364    L_10:
+043E61 DD27FC              A   365    	LD	HL,(IX+%FFFFFFFC)
+043E64 DD5EFF              A   366    	LD	E,(IX+%FFFFFFFF)
+043E67 01401F00            A   367    	LD	BC,8000
+043E6B AF                  A   368    	XOR	A,A
+043E6C CD FE 43 04         A   369    	CALL	__lcmps
+043E70 CD 12 41 04         A   370    	CALL	__setflag
+043E74 FA 4F 3E 04         A   371    	JP	M,L_11
                            A   372    ;   90	} 
                            A   373    .LINE 90
                            A   374    
-043E7E DDF9                A   375    	LD	SP,IX
-043E80 DDE1                A   376    	POP	IX
-043E82 C9                  A   377    	RET	
+043E78 DDF9                A   375    	LD	SP,IX
+043E7A DDE1                A   376    	POP	IX
+043E7C C9                  A   377    	RET	
                            A   378    
                            A   379    
                            A   380    ;**************************** _init_spi *******
@@ -395,7 +395,7 @@ PC     Object              I  Line    Source
                            A   391    ;   91	
                            A   392    ;   92	
                            A   393    ;   93	void mode_spi(int d) {
-043E83                     A   394    _mode_spi:
+043E7D                     A   394    _mode_spi:
                            A   395    .DEFINE "_mode_spi"
                            A   396    
                            A   397    .VALUE _mode_spi
@@ -420,50 +420,50 @@ PC     Object              I  Line    Source
                            A   416    
                            A   417    .ENDEF
                            A   418    
-043E83 DDE5                A   419    	PUSH	IX
-043E85 DD210000 00         A   420    	LD	IX,0
-043E8A DD39                A   421    	ADD	IX,SP
+043E7D DDE5                A   419    	PUSH	IX
+043E7F DD210000 00         A   420    	LD	IX,0
+043E84 DD39                A   421    	ADD	IX,SP
                            A   422    ;   94	    // Disable SPI
                            A   423    ;   95		//
                            A   424    ;   96	    SPI_CTL = 0;
                            A   425    .LINE 96
                            A   426    
-043E8C AF                  A   427    	XOR	A,A
-043E8D ED39BA              A   428    	OUT0	(186),A
+043E86 AF                  A   427    	XOR	A,A
+043E87 ED39BA              A   428    	OUT0	(186),A
                            A   429    ;   97	
                            A   430    ;   98	    // SPI Data Rate (bps) = System Clo
                            A   431    ;   99		//
                            A   432    ;  100	    SPI_BRG_H = d / 256;
                            A   433    .LINE 100
                            A   434    
-043E90 01000100            A   435    	LD	BC,256
-043E94 DD2706              A   436    	LD	HL,(IX+%6)
-043E97 CD 02 43 04         A   437    	CALL	__idivs
-043E9B 7D                  A   438    	LD	A,L
-043E9C ED39B9              A   439    	OUT0	(185),A
+043E8A 01000100            A   435    	LD	BC,256
+043E8E DD2706              A   436    	LD	HL,(IX+%6)
+043E91 CD 99 43 04         A   437    	CALL	__idivs
+043E95 7D                  A   438    	LD	A,L
+043E96 ED39B9              A   439    	OUT0	(185),A
                            A   440    ;  101	    SPI_BRG_L = d % 256;
                            A   441    .LINE 101
                            A   442    
-043E9F 01000100            A   443    	LD	BC,256
-043EA3 DD2706              A   444    	LD	HL,(IX+%6)
-043EA6 CD 8A 40 04         A   445    	CALL	__irems
-043EAA 7D                  A   446    	LD	A,L
-043EAB ED39B8              A   447    	OUT0	(184),A
+043E99 01000100            A   443    	LD	BC,256
+043E9D DD2706              A   444    	LD	HL,(IX+%6)
+043EA0 CD 21 41 04         A   445    	CALL	__irems
+043EA4 7D                  A   446    	LD	A,L
+043EA5 ED39B8              A   447    	OUT0	(184),A
                            A   448    ;  102	
                            A   449    ;  103	    // Enable SPI
                            A   450    ;  104		//
                            A   451    ;  105	    SPI_CTL = 0x30;         // [5] SPI 
                            A   452    .LINE 105
                            A   453    
-043EAE 3E30                A   454    	LD	A,%30
-043EB0 ED39BA              A   455    	OUT0	(186),A
+043EA8 3E30                A   454    	LD	A,%30
+043EAA ED39BA              A   455    	OUT0	(186),A
                            A   456    ;  106	                            // [4] When
                            A   457    ;  107	} 
                            A   458    .LINE 107
                            A   459    
-043EB3 DDF9                A   460    	LD	SP,IX
-043EB5 DDE1                A   461    	POP	IX
-043EB7 C9                  A   462    	RET	
+043EAD DDF9                A   460    	LD	SP,IX
+043EAF DDE1                A   461    	POP	IX
+043EB1 C9                  A   462    	RET	
                            A   463    
                            A   464    
                            A   465    ;**************************** _mode_spi *******

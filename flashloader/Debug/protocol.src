@@ -1,0 +1,220 @@
+; Zilog eZ80 ANSI C Compiler Release 3.4
+; -nomodsect -optsize -noreduceopt -nopadbranch -debug
+; -peephole -globalopt -localcse -const=ROM 
+	FILE	"..\protocol.c"
+	.assume ADL=1
+.DEBUG "C"
+	SEGMENT CODE
+;    1	#include "protocol.h"
+;    2	
+;    3	// Blocking non-interrupt putch to UART0
+;    4	int putch(int c)
+;    5	{
+_putch:
+.DEFINE "_putch"
+
+.VALUE _putch
+
+.CLASS 2
+
+.TYPE 68
+
+.ENDEF
+
+.BEGFUNC "putch",5,"_putch"
+
+.LINE 5
+
+.DEFINE "c"
+
+.CLASS 65
+
+.VALUE 6
+
+.TYPE 4
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+.ENDEF
+
+;    6		//UINT8 lsr,temt;
+;    7		
+;    8		while((UART0_LSR & 0x40) == 0);
+L_1:
+.LINE 8
+
+	IN0	A,(197)
+	AND	A,%40
+	UEXT	HL
+	LD	L,A
+	CALL	__icmpzero
+	JR	Z,L_1
+;    9		UART0_THR = c;
+.LINE 9
+
+	LD	A,(IX+%6)
+	OUT0	(192),A
+;   10		return c;
+.LINE 10
+
+	LD	HL,(IX+%6)
+;   11	}
+.LINE 11
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _putch ***************************
+;Name                         Addr/Register   Size   Type
+;c                                     IX+6      3   parameter
+
+
+; Stack Frame Size: 9 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "putch",11,"_putch"
+;   12	
+;   13	void sendStatus(char state, UINT8 status, UINT32 result) {
+_sendStatus:
+.DEFINE "_sendStatus"
+
+.VALUE _sendStatus
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "sendStatus",13,"_sendStatus"
+
+.LINE 13
+
+.DEFINE "state"
+
+.CLASS 65
+
+.VALUE 6
+
+.TYPE 2
+
+.ENDEF
+
+.DEFINE "status"
+
+.CLASS 65
+
+.VALUE 9
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "result"
+
+.CLASS 65
+
+.VALUE 12
+
+.TYPE 15
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+;   14		putch(state);
+.LINE 14
+
+	LD	A,(IX+%6)
+	SEXT	HL
+	LD	L,(IX+%6)
+	PUSH	HL
+	CALL	_putch
+	POP	BC
+;   15		putch(status);
+.LINE 15
+
+	LD	A,(IX+%9)
+	UEXT	HL
+	LD	L,A
+	PUSH	HL
+	CALL	_putch
+	POP	BC
+;   16		putch((result) & 0xFF);
+.LINE 16
+
+	LD	HL,(IX+%C)
+	LD	A,L
+	UEXT	HL
+	LD	L,A
+	PUSH	HL
+	CALL	_putch
+	POP	BC
+;   17		putch((result >> 8) & 0xFF);
+.LINE 17
+
+	LD	BC,(IX+%C)
+	LD	A,(IX+%F)
+	LD	L,%8
+	CALL	__lshru
+	LD	HL,BC
+	LD	A,L
+	UEXT	HL
+	LD	L,A
+	PUSH	HL
+	CALL	_putch
+	POP	BC
+;   18		putch((result >> 16) & 0xFF);
+.LINE 18
+
+	LD	BC,(IX+%C)
+	LD	A,(IX+%F)
+	LD	L,%10
+	CALL	__lshru
+	LD	HL,BC
+	LD	A,L
+	UEXT	HL
+	LD	L,A
+	PUSH	HL
+	CALL	_putch
+	POP	BC
+;   19		putch((result >> 24) & 0xFF);
+.LINE 19
+
+	LD	A,(IX+%F)
+	UEXT	HL
+	LD	L,A
+	PUSH	HL
+	CALL	_putch
+	POP	BC
+;   20	}
+.LINE 20
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _sendStatus ***************************
+;Name                         Addr/Register   Size   Type
+;_putch                              IMPORT  -----   function
+;result                               IX+12      4   parameter
+;status                                IX+9      1   parameter
+;state                                 IX+6      1   parameter
+
+
+; Stack Frame Size: 18 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "sendStatus",20,"_sendStatus"
+	XREF __lshru:ROM
+	XREF __icmpzero:ROM
+	XDEF _sendStatus
+	XDEF _putch
+	END

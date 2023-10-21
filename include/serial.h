@@ -14,4 +14,12 @@
 
 void setupSerial2(void);
 
+typedef struct {
+	char		state;	// current state at ez80
+	uint8_t		status;	// 0: failure, 1: success
+	uint32_t	result;	// result code
+} serialpackage_t;
+
+serialpackage_t getStatus(void);
+
 #endif

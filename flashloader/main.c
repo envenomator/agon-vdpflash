@@ -4,6 +4,7 @@
 #include "defines.h"
 #include <stdint.h>
 #include "agontimer.h"
+#include "protocol.h"
 
 #define PAGESIZE	1024
 #define FLASHPAGES	128
@@ -12,25 +13,6 @@
 
 #define MOSFILENAME	"MOS.bin"
 #define LOADADDRESS	0x50000
-
-enum {
-	FEEDBACK_OPEN,
-	FEEDBACK_FILEDONE,
-	FEEDBACK_PROCEED,
-	FEEDBACK_ERASEDONE,
-	FEEDBACK_PAGEWRITTEN,
-};
-
-
-// Blocking non-interrupt putch to UART0
-int putch(int c)
-{
-	//UINT8 lsr,temt;
-	
-	while((UART0_LSR & 0x40) == 0);
-	UART0_THR = c;
-	return c;
-}
 
 extern void init_UART0(void);
 
@@ -55,14 +37,20 @@ int main(int argc, char * argv[]) {
 	init_spi();
 	init_UART0();
 
-
+	/*
 	while(1) {
 		putch('A');
 		delayms(500);
 		putch('X');
 		delayms(500);
 	}
-
+	*/
+	while(1) {
+		sendStatus('S', 1, 0xAABBCCDD);
+		delayms(500);
+		sendStatus('E', 1, 0);
+		delayms(500);
+	}
 
 
 

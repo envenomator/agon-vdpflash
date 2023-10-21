@@ -228,7 +228,7 @@ void loop() {
     //waitcontinueLoader();
     terminal.write("Done\r\n");
 
-
+/*
     // DEBUG
     while(1) {
         if(Serial2.available()) {
@@ -238,7 +238,16 @@ void loop() {
     }
 
     // DEBUG
+*/
+    // DEBUG
+    serialpackage_t status;
+    while(1) {
+        status = getStatus();
+        sprintf(buffer, "Status: <%c> <%d> <0x%08X\r\n", status.state, status.status, status.result);
+        terminal.write(buffer);
+    }
 
+    // DEBUG
 
 
 

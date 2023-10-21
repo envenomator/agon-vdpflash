@@ -14,6 +14,7 @@
 <file filter-key="">.\timer.c</file>
 <file filter-key="">.\serial.asm</file>
 <file filter-key="">.\agontimer.c</file>
+<file filter-key="">.\protocol.c</file>
 </files>
 
 <!-- configuration information -->

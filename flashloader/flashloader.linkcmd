@@ -30,6 +30,7 @@ DEFINE __len_bss = length of BSS
  ".\timer.obj", \
  ".\serial.obj", \
  ".\agontimer.obj", \
+ ".\protocol.obj", \
  "C:\ZiLOG\ZDSII_eZ80Acclaim!_5.3.5\lib\std\chelpD.lib", \
  "C:\ZiLOG\ZDSII_eZ80Acclaim!_5.3.5\lib\std\crtD.lib", \
  "C:\ZiLOG\ZDSII_eZ80Acclaim!_5.3.5\lib\std\crtSD.lib", \

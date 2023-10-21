@@ -1,0 +1,229 @@
+Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     17:00:55     page:   1
+
+
+PC     Object              I  Line    Source 
+                           A     1    ; Zilog eZ80 ANSI C Compiler Release 3.4
+                           A     2    ; -nomodsect -optsize -noreduceopt -nopadbranch
+                           A     3    ; -peephole -globalopt -localcse -const=ROM 
+                           A     4    	FILE	"..\protocol.c"
+                           A     5    	.assume ADL=1
+                           A     6    .DEBUG "C"
+                           A     7    	SEGMENT CODE
+                           A     8    ;    1	#include "protocol.h"
+                           A     9    ;    2	
+                           A    10    ;    3	// Blocking non-interrupt putch to UART
+                           A    11    ;    4	int putch(int c)
+                           A    12    ;    5	{
+04405F                     A    13    _putch:
+                           A    14    .DEFINE "_putch"
+                           A    15    
+                           A    16    .VALUE _putch
+                           A    17    
+                           A    18    .CLASS 2
+                           A    19    
+                           A    20    .TYPE 68
+                           A    21    
+                           A    22    .ENDEF
+                           A    23    
+                           A    24    .BEGFUNC "putch",5,"_putch"
+                           A    25    
+                           A    26    .LINE 5
+                           A    27    
+                           A    28    .DEFINE "c"
+                           A    29    
+                           A    30    .CLASS 65
+                           A    31    
+                           A    32    .VALUE 6
+                           A    33    
+                           A    34    .TYPE 4
+                           A    35    
+04405F DDE5                A    36    	PUSH	IX
+044061 DD210000 00         A    37    	LD	IX,0
+044066 DD39                A    38    	ADD	IX,SP
+                           A    39    .ENDEF
+                           A    40    
+                           A    41    ;    6		//UINT8 lsr,temt;
+                           A    42    ;    7		
+                           A    43    ;    8		while((UART0_LSR & 0x40) == 0);
+044068                     A    44    L_1:
+                           A    45    .LINE 8
+                           A    46    
+044068 ED38C5              A    47    	IN0	A,(197)
+04406B E640                A    48    	AND	A,%40
+04406D B7ED62              A    49    	UEXT	HL
+044070 6F                  A    50    	LD	L,A
+044071 CD 5B 43 04         A    51    	CALL	__icmpzero
+044075 28 F1               A    52    	JR	Z,L_1
+                           A    53    ;    9		UART0_THR = c;
+                           A    54    .LINE 9
+                           A    55    
+044077 DD7E06              A    56    	LD	A,(IX+%6)
+04407A ED39C0              A    57    	OUT0	(192),A
+                           A    58    ;   10		return c;
+                           A    59    .LINE 10
+                           A    60    
+04407D DD2706              A    61    	LD	HL,(IX+%6)
+                           A    62    ;   11	}
+                           A    63    .LINE 11
+                           A    64    
+044080 DDF9                A    65    	LD	SP,IX
+044082 DDE1                A    66    	POP	IX
+044084 C9                  A    67    	RET	
+                           A    68    
+                           A    69    
+                           A    70    ;**************************** _putch **********
+                           A    71    ;Name                         Addr/Register   S
+                           A    72    ;c                                     IX+6    
+                           A    73    
+                           A    74    
+                           A    75    ; Stack Frame Size: 9 (bytes)
+                           A    76    ;       Spill Code: 0 (instruction)
+                           A    77    
+                           A    78    
+                           A    79    .ENDFUNC "putch",11,"_putch"
+                           A    80    ;   12	
+                           A    81    ;   13	void sendStatus(char state, UINT8 statu
+044085                     A    82    _sendStatus:
+                           A    83    .DEFINE "_sendStatus"
+                           A    84    
+                           A    85    .VALUE _sendStatus
+                           A    86    
+                           A    87    .CLASS 2
+                           A    88    
+                           A    89    .TYPE 65
+                           A    90    
+                           A    91    .ENDEF
+                           A    92    
+                           A    93    .BEGFUNC "sendStatus",13,"_sendStatus"
+                           A    94    
+                           A    95    .LINE 13
+                           A    96    
+                           A    97    .DEFINE "state"
+                           A    98    
+                           A    99    .CLASS 65
+                           A   100    
+                           A   101    .VALUE 6
+                           A   102    
+                           A   103    .TYPE 2
+                           A   104    
+                           A   105    .ENDEF
+                           A   106    
+                           A   107    .DEFINE "status"
+                           A   108    
+                           A   109    .CLASS 65
+                           A   110    
+                           A   111    .VALUE 9
+                           A   112    
+                           A   113    .TYPE 12
+                           A   114    
+                           A   115    .ENDEF
+                           A   116    
+                           A   117    .DEFINE "result"
+                           A   118    
+                           A   119    .CLASS 65
+                           A   120    
+                           A   121    .VALUE 12
+                           A   122    
+                           A   123    .TYPE 15
+                           A   124    
+                           A   125    .ENDEF
+                           A   126    
+044085 DDE5                A   127    	PUSH	IX
+044087 DD210000 00         A   128    	LD	IX,0
+04408C DD39                A   129    	ADD	IX,SP
+                           A   130    ;   14		putch(state);
+                           A   131    .LINE 14
+                           A   132    
+04408E DD7E06              A   133    	LD	A,(IX+%6)
+044091 17ED62              A   134    	SEXT	HL
+044094 DD6E06              A   135    	LD	L,(IX+%6)
+044097 E5                  A   136    	PUSH	HL
+044098 CD 5F 40 04         A   137    	CALL	_putch
+04409C C1                  A   138    	POP	BC
+                           A   139    ;   15		putch(status);
+                           A   140    .LINE 15
+                           A   141    
+04409D DD7E09              A   142    	LD	A,(IX+%9)
+0440A0 B7ED62              A   143    	UEXT	HL
+0440A3 6F                  A   144    	LD	L,A
+0440A4 E5                  A   145    	PUSH	HL
+0440A5 CD 5F 40 04         A   146    	CALL	_putch
+0440A9 C1                  A   147    	POP	BC
+                           A   148    ;   16		putch((result) & 0xFF);
+                           A   149    .LINE 16
+                           A   150    
+0440AA DD270C              A   151    	LD	HL,(IX+%C)
+0440AD 7D                  A   152    	LD	A,L
+0440AE B7ED62              A   153    	UEXT	HL
+0440B1 6F                  A   154    	LD	L,A
+0440B2 E5                  A   155    	PUSH	HL
+0440B3 CD 5F 40 04         A   156    	CALL	_putch
+0440B7 C1                  A   157    	POP	BC
+                           A   158    ;   17		putch((result >> 8) & 0xFF);
+                           A   159    .LINE 17
+                           A   160    
+0440B8 DD070C              A   161    	LD	BC,(IX+%C)
+0440BB DD7E0F              A   162    	LD	A,(IX+%F)
+0440BE 2E08                A   163    	LD	L,%8
+0440C0 CD FD 42 04         A   164    	CALL	__lshru
+0440C4 C5E1                A   165    	LD	HL,BC
+0440C6 7D                  A   166    	LD	A,L
+0440C7 B7ED62              A   167    	UEXT	HL
+0440CA 6F                  A   168    	LD	L,A
+0440CB E5                  A   169    	PUSH	HL
+0440CC CD 5F 40 04         A   170    	CALL	_putch
+0440D0 C1                  A   171    	POP	BC
+                           A   172    ;   18		putch((result >> 16) & 0xFF);
+                           A   173    .LINE 18
+                           A   174    
+0440D1 DD070C              A   175    	LD	BC,(IX+%C)
+0440D4 DD7E0F              A   176    	LD	A,(IX+%F)
+0440D7 2E10                A   177    	LD	L,%10
+0440D9 CD FD 42 04         A   178    	CALL	__lshru
+0440DD C5E1                A   179    	LD	HL,BC
+0440DF 7D                  A   180    	LD	A,L
+0440E0 B7ED62              A   181    	UEXT	HL
+0440E3 6F                  A   182    	LD	L,A
+0440E4 E5                  A   183    	PUSH	HL
+0440E5 CD 5F 40 04         A   184    	CALL	_putch
+0440E9 C1                  A   185    	POP	BC
+                           A   186    ;   19		putch((result >> 24) & 0xFF);
+                           A   187    .LINE 19
+                           A   188    
+0440EA DD7E0F              A   189    	LD	A,(IX+%F)
+0440ED B7ED62              A   190    	UEXT	HL
+0440F0 6F                  A   191    	LD	L,A
+0440F1 E5                  A   192    	PUSH	HL
+0440F2 CD 5F 40 04         A   193    	CALL	_putch
+0440F6 C1                  A   194    	POP	BC
+                           A   195    ;   20	}
+                           A   196    .LINE 20
+                           A   197    
+0440F7 DDF9                A   198    	LD	SP,IX
+0440F9 DDE1                A   199    	POP	IX
+0440FB C9                  A   200    	RET	
+                           A   201    
+                           A   202    
+                           A   203    ;**************************** _sendStatus *****
+                           A   204    ;Name                         Addr/Register   S
+                           A   205    ;_putch                              IMPORT  --
+                           A   206    ;result                               IX+12    
+                           A   207    ;status                                IX+9    
+                           A   208    ;state                                 IX+6    
+                           A   209    
+                           A   210    
+                           A   211    ; Stack Frame Size: 18 (bytes)
+                           A   212    ;       Spill Code: 0 (instruction)
+                           A   213    
+                           A   214    
+                           A   215    .ENDFUNC "sendStatus",20,"_sendStatus"
+                           A   216    	XREF __lshru:ROM
+                           A   217    	XREF __icmpzero:ROM
+                           A   218    	XDEF _sendStatus
+                           A   219    	XDEF _putch
+                           A   220    	END
+
+
+Errors: 0
+Warnings: 0
+Lines Assembled: 221

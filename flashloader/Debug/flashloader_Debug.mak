@@ -160,6 +160,14 @@ clean:
             $(RM) "$(WORKDIR)\agontimer.lst"
 	@if exist "$(WORKDIR)\agontimer.src"  \
             $(RM) "$(WORKDIR)\agontimer.src"
+	@if exist "$(WORKDIR)\protocol.obj"  \
+            $(RM) "$(WORKDIR)\protocol.obj"
+	@if exist "$(WORKDIR)\protocol.lis"  \
+            $(RM) "$(WORKDIR)\protocol.lis"
+	@if exist "$(WORKDIR)\protocol.lst"  \
+            $(RM) "$(WORKDIR)\protocol.lst"
+	@if exist "$(WORKDIR)\protocol.src"  \
+            $(RM) "$(WORKDIR)\protocol.src"
 
 relist: 
 	$(AS) $(ASFLAGS) -relist:"C:\source\agon-vdpflash\flashloader\Debug\flashloader.map" \
@@ -182,6 +190,8 @@ relist:
             C:\source\agon-vdpflash\flashloader\serial.asm
 	$(AS) $(ASFLAGS) -relist:"C:\source\agon-vdpflash\flashloader\Debug\flashloader.map" \
             C:\source\agon-vdpflash\flashloader\Debug\agontimer.src
+	$(AS) $(ASFLAGS) -relist:"C:\source\agon-vdpflash\flashloader\Debug\flashloader.map" \
+            C:\source\agon-vdpflash\flashloader\Debug\protocol.src
 
 # pre-4.11.0 compatibility
 rebuildall: buildall 
@@ -198,7 +208,8 @@ OBJS =  \
             $(WORKDIR_ESCSPACE)\spi.obj  \
             $(WORKDIR_ESCSPACE)\timer.obj  \
             $(WORKDIR_ESCSPACE)\serial.obj  \
-            $(WORKDIR_ESCSPACE)\agontimer.obj
+            $(WORKDIR_ESCSPACE)\agontimer.obj  \
+            $(WORKDIR_ESCSPACE)\protocol.obj
 
 flashloader: $(OBJS)
 	 $(LD) $(LDFLAGS)
@@ -317,4 +328,8 @@ $(WORKDIR_ESCSPACE)\serial.obj :  \
 $(WORKDIR_ESCSPACE)\agontimer.obj :  \
             $(PRJDIR_ESCSPACE)\agontimer.c
 	 $(CC) $(CFLAGS) "$(PRJDIR)\agontimer.c"
+
+$(WORKDIR_ESCSPACE)\protocol.obj :  \
+            $(PRJDIR_ESCSPACE)\protocol.c
+	 $(CC) $(CFLAGS) "$(PRJDIR)\protocol.c"
 

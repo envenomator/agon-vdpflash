@@ -31,19 +31,26 @@ int main(int argc, char * argv[]) {
 	UINT24 addressto,addressfrom;
 	UINT8	value;
 	UINT24 timer;
-
+	UINT8 head;
 	UINT8* ptr;
-	
-	*((UINT8*)DONE) = 0; 
-	ptr = (UINT8*)VALUESTART;
-	
-	for(value = 0; value < 20; value++) {
-		//waitZDI(value, value);
-		*ptr = value;
-		ptr++;
+	UINT8 done;
+
+	*((UINT8*)DONE) = 0;
+	head = 0;
+	done = 0;
+	while(1) {	
+		ptr = (UINT8*)VALUESTART;	
+		for(value = 0; value < 2; value++) {
+			*ptr = value + head;
+			ptr++;
+		}
+		done = 128;
+		*((UINT8*)DONE) = done;
+		while(done == 128) {
+			done = *((volatile UINT8*)DONE);
+		}
+		head += 0x10;
 	}
-	*((UINT8*)DONE) = 128;
-	waitZDI(1,0);
 	while(1);
 	
 	

@@ -12,11 +12,6 @@
 #define ZDI_TCKPIN 26
 #define ZDI_TDIPIN 27
 
-#define DONE                0x70000
-#define VALUESTART          0x80000
-#define FLASHLOADER_RESULT  0x60000
-#define FLASHLOADER_VALUE   0x60001
-
 fabgl::PS2Controller    PS2Controller;
 fabgl::VGA16Controller  DisplayController;
 fabgl::Terminal         terminal;
@@ -37,43 +32,6 @@ void term_printf (const char* format, ...) {
         terminal.write (buffer, size);
    	}
    	va_end(list);
-}
-
-void waitcontinueLoader(void) {
-    uint32_t pc;
-    while(cpu->isRunning());// delay(100); // wait for ez80 to hit breakpoint
-    //cpu->setBreak();
-    pc = cpu->pc();
-    cpu->bc(0x100); // write '1' to register B, don't care about 'C'
-    //result = cpu->hl();
-    cpu->pc(pc);
-    cpu->setContinue();
-    //return result;
-}
-
-uint8_t get_flashloader_result(void) {
-    uint8_t result;
-
-    zdi->read_memory(FLASHLOADER_RESULT, 1, &result);
-    return result;
-}
-
-void wait_debugdone(void) {
-    uint8_t result = 0;
-
-    while(result != 128) {
-        zdi->read_memory(DONE, 1, &result);
-    }
-}
-
-uint32_t get_flashloader_value(void) {
-    uint8_t buffer[3];
-    uint32_t result = 0;
-    zdi->read_memory(FLASHLOADER_VALUE, 3, buffer);
-    result = result | buffer[0];
-    result = result | (buffer[1] << 8);
-    result = result | (buffer[2] << 16);
-    return result;
 }
 
 void fg_white(void) {
@@ -218,11 +176,9 @@ void ZDI_upload(void) {
 
     while(filesize > PAGESIZE) {
         zdi->write_memory(address, PAGESIZE, buffer);
-        terminal.write(".");
         address += PAGESIZE;
         buffer += PAGESIZE;
         filesize -= PAGESIZE;
-        sys_delay_ms(1);
     }
     zdi->write_memory(address, filesize, buffer);
 }
@@ -256,6 +212,7 @@ void loop() {
 
     terminal.write(" Done\r\n");
 
+    loaderinitial();
     cpu->pc(USERLOAD);
     cpu->setBreakpoint(0, BREAKPOINT);
     cpu->enableBreakpoint(0);
@@ -265,46 +222,13 @@ void loop() {
     //waitcontinueLoader();
     //terminal.write("Done\r\n");
 
-
-//  DEBUG
-    uint8_t result;
-    uint8_t value;
-    uint32_t address;
-
-    //for(int n = 0; n < 20; n++) {
-    //    waitcontinueLoader();
-    //    result= get_flashloader_result();
-    //    value = get_flashloader_value();
-    //
-    //    sprintf(buffer, "Result %02d: 0x%02X, Value: 0x%02X\r\n", n, result, value);
-    //    terminal.write(buffer);
-    //}
-
     terminal.write("Waiting for payload\r\n");
-    //wait_debugdone();
-    waitcontinueLoader();
-    address = VALUESTART;
-
-    cpu->setBreak();
-    for(int n = 0; n < 20; n++) {
-        zdi->read_memory(address, 1, &value);
-        sprintf(buffer, "Position %02d: 0x%02X\r\n", n, value);
-        terminal.write(buffer);
-        address++;
-    }
-    cpu->setContinue();
-    while(1);
-
-
-    // NOrmal program here
-
-
 
 
 
     terminal.write("Opening file from SD card     - ");
     
-    waitcontinueLoader();
+    //waitcontinueLoader();
     if(get_flashloader_result() == 0) {
         fg_red();
         terminal.write("Error opening \"MOS.bin\"");
@@ -324,7 +248,7 @@ void loop() {
     terminal.write(")\r\n");
     
     terminal.write("Reading file to ez80 memory   - ");
-    waitcontinueLoader();
+    //waitcontinueLoader();
     readsize = get_flashloader_value();
     //readsize = waitcontinueLoader();
     if(filesize == readsize) terminal.write("Done\r\n");
@@ -337,12 +261,12 @@ void loop() {
         while(1);
     }
     ask_proceed();
-    waitcontinueLoader();
+    //waitcontinueLoader();
 
     terminal.write("Erasing flash                 - ");
     //delay(6000);
     //pages = waitcontinueLoader();
-    waitcontinueLoader();
+    //waitcontinueLoader();
     pages = get_flashloader_value();
     //waitcontinueLoader();
     // determine number of pages to write
@@ -354,26 +278,9 @@ void loop() {
 
     terminal.write(" - ");
 
-
-    //terminal.write("%x-",(pages >> 24)&0xFF);
-    //terminal.write("%x-",(pages >> 16)&0xFF);
-    //terminal.write("%x-",(pages >> 8)&0xFF);
-    //terminal.write("%x ",(pages)&0xFF);
-
     terminal.write("Done\r\n");
 
     terminal.write("Programming ");
-
-    // Temp wait
-    //delay(10000);
-    //page = 0;
-    //do {
-    //    page++;
-    //    terminal.write(".");
-    //    waitcontinueLoader();
-    //
-    //}
-    //while(page < pages);
 
     terminal.write(" - ");
 

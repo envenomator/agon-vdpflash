@@ -4,7 +4,7 @@ Copyright (C) 1999-2008 Zilog, Inc. All Rights Reserved
 
 LINK MAP:
 
-DATE:      Sat Oct 21 11:17:21 2023
+DATE:      Sat Oct 21 13:35:29 2023
 PROCESSOR: assembler
 FILES:     .\init.obj             .\main.obj             .\sd.obj               
            .\ffunicode.obj        .\ff.obj               .\diskio.obj           
@@ -46,8 +46,8 @@ SPACE ALLOCATION:
 
 Space                     Base         Top      Size      Used    Unused
 ------------------ ----------- ----------- --------- --------- ---------
-RAM                   D:040000    D:0446C3    80000H     46C4H    7B93CH
-                                          (   524288     18116    506172)
+RAM                   D:040000    D:0446DC    80000H     46DDH    7B923H
+                                          (   524288     18141    506147)
 ROM                   C:045000    C:04543A     B000H      43BH     ABC5H
                                           (    45056      1083     43973)
 
@@ -57,9 +57,9 @@ SEGMENTS WITHIN SPACE:
 
 RAM                               Type        Base         Top      Size
 ------------------ ------------------- ----------- ----------- ---------
-BSS                normal data            D:04448F    D:0446C3      235h
-CODE               normal data            D:040000    D:044475     4476h
-STRSECT            normal data            D:044476    D:04448E       19h
+BSS                normal data            D:0444A8    D:0446DC      235h
+CODE               normal data            D:040000    D:04448E     448fh
+STRSECT            normal data            D:04448F    D:0444A7       19h
 
 
 ROM                               Type        Base         Top      Size
@@ -69,470 +69,470 @@ TEXT               normal data            C:045000    C:04543A      43bh
 SEGMENTS WITHIN MODULES:
 ========================
 
-Module: ..\main.c (File: main.obj) Version: 1:0 10/21/2023 11:17:20
+Module: ..\main.c (File: main.obj) Version: 1:0 10/21/2023 13:35:27
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: BSS                               D:04448F    D:0446BC      22eh
-    Segment: CODE                              D:04016A    D:04027F      116h
+    Segment: BSS                               D:0444A8    D:0446D5      22eh
+    Segment: CODE                              D:04016E    D:040298      12bh
 
 
-Module: ..\sd.c (File: sd.obj) Version: 1:0 10/21/2023 11:17:21
-
-    Name                                           Base         Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:040280    D:0409DC      75dh
-
-
-Module: ..\spi.c (File: spi.obj) Version: 1:0 10/21/2023 11:17:21
+Module: ..\sd.c (File: sd.obj) Version: 1:0 10/21/2023 13:35:28
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:043DA4    D:043EDF      13ch
+    Segment: CODE                              D:040299    D:0409F5      75dh
+
+
+Module: ..\spi.c (File: spi.obj) Version: 1:0 10/21/2023 13:35:28
+
+    Name                                           Base         Top      Size
+    --------------------------------------- ----------- ----------- ---------
+    Segment: CODE                              D:043DBD    D:043EF8      13ch
 
 
 Module: ..\src\boot\common\zsldevinitdummy.asm (File: zsldevinitdummy.obj) Version: 1:0 10/02/2022 22:49:19
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:043FC9    D:043FC9        1h
+    Segment: CODE                              D:043FE2    D:043FE2        1h
 
 
-Module: ..\src_fatfs\diskio.c (File: diskio.obj) Version: 1:0 10/21/2023 11:17:20
-
-    Name                                           Base         Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: BSS                               D:0446C3    D:0446C3        1h
-    Segment: CODE                              D:043C56    D:043DA3      14eh
-
-
-Module: ..\src_fatfs\ff.c (File: ff.obj) Version: 1:0 10/21/2023 11:17:20
+Module: ..\src_fatfs\diskio.c (File: diskio.obj) Version: 1:0 10/21/2023 13:35:27
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: BSS                               D:0446BD    D:0446C2        6h
-    Segment: CODE                              D:040CDD    D:043C55     2f79h
-    Segment: STRSECT                           D:044476    D:04448E       19h
+    Segment: BSS                               D:0446DC    D:0446DC        1h
+    Segment: CODE                              D:043C6F    D:043DBC      14eh
+
+
+Module: ..\src_fatfs\ff.c (File: ff.obj) Version: 1:0 10/21/2023 13:35:28
+
+    Name                                           Base         Top      Size
+    --------------------------------------- ----------- ----------- ---------
+    Segment: BSS                               D:0446D6    D:0446DB        6h
+    Segment: CODE                              D:040CF6    D:043C6E     2f79h
+    Segment: STRSECT                           D:04448F    D:0444A7       19h
     Segment: TEXT                              C:0453AE    C:04543A       8dh
 
 
-Module: ..\src_fatfs\ffunicode.c (File: ffunicode.obj) Version: 1:0 10/21/2023 11:17:21
+Module: ..\src_fatfs\ffunicode.c (File: ffunicode.obj) Version: 1:0 10/21/2023 13:35:28
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:0409DD    D:040CDC      300h
+    Segment: CODE                              D:0409F6    D:040CF5      300h
     Segment: TEXT                              C:045000    C:0453AD      3aeh
 
 
-Module: ..\timer.c (File: timer.obj) Version: 1:0 10/21/2023 11:17:21
+Module: ..\timer.c (File: timer.obj) Version: 1:0 10/21/2023 13:35:28
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:043EE0    D:043FC8       e9h
+    Segment: CODE                              D:043EF9    D:043FE1       e9h
 
 
 Module: .\rtl\common\bshl.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:49
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:04446D    D:044475        9h
+    Segment: CODE                              D:044486    D:04448E        9h
 
 
 Module: .\rtl\common\case16D.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:52
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:0440BC    D:0440FA       3fh
+    Segment: CODE                              D:0440D5    D:044113       3fh
 
 
 Module: .\rtl\common\case8D.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:53
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:0442E1    D:04431A       3ah
+    Segment: CODE                              D:0442FA    D:044333       3ah
 
 
 Module: .\rtl\common\iand.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:044337    D:044351       1bh
+    Segment: CODE                              D:044350    D:04436A       1bh
 
 
 Module: .\rtl\common\icmpzero.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:52
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:044228    D:044233        ch
+    Segment: CODE                              D:044241    D:04424C        ch
 
 
 Module: .\rtl\common\idivs.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:044266    D:04429E       39h
+    Segment: CODE                              D:04427F    D:0442B7       39h
 
 
 Module: .\rtl\common\idivu.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:04414B    D:04416B       21h
+    Segment: CODE                              D:044164    D:044184       21h
 
 
 Module: .\rtl\common\ildix.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:0443D6    D:0443E1        ch
+    Segment: CODE                              D:0443EF    D:0443FA        ch
 
 
 Module: .\rtl\common\imulu.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:04438E    D:0443D5       48h
+    Segment: CODE                              D:0443A7    D:0443EE       48h
 
 
 Module: .\rtl\common\ior.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:04409B    D:0440B5       1bh
+    Segment: CODE                              D:0440B4    D:0440CE       1bh
 
 
 Module: .\rtl\common\irems.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:043FEE    D:044025       38h
+    Segment: CODE                              D:044007    D:04403E       38h
 
 
 Module: .\rtl\common\iremu.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:044092    D:04409A        9h
+    Segment: CODE                              D:0440AB    D:0440B3        9h
 
 
 Module: .\rtl\common\ishl.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:044373    D:044384       12h
+    Segment: CODE                              D:04438C    D:04439D       12h
 
 
 Module: .\rtl\common\ishrs.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:044026    D:04404A       25h
+    Segment: CODE                              D:04403F    D:044063       25h
 
 
 Module: .\rtl\common\ishru.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:04429F    D:0442C3       25h
+    Segment: CODE                              D:0442B8    D:0442DC       25h
 
 
 Module: .\rtl\common\istix.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:044086    D:044091        ch
+    Segment: CODE                              D:04409F    D:0440AA        ch
 
 
 Module: .\rtl\common\itol.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:0442C4    D:0442CA        7h
+    Segment: CODE                              D:0442DD    D:0442E3        7h
 
 
 Module: .\rtl\common\ladd.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:043FCA    D:043FDE       15h
+    Segment: CODE                              D:043FE3    D:043FF7       15h
 
 
 Module: .\rtl\common\land.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:0443F7    D:0443FF        9h
+    Segment: CODE                              D:044410    D:044418        9h
 
 
 Module: .\rtl\common\lcmpu.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:0442CB    D:0442E0       16h
+    Segment: CODE                              D:0442E4    D:0442F9       16h
 
 
 Module: .\rtl\common\lcmpzero.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:52
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:0440FB    D:04410E       14h
+    Segment: CODE                              D:044114    D:044127       14h
 
 
 Module: .\rtl\common\ldivs.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:04410F    D:04413D       2fh
+    Segment: CODE                              D:044128    D:044156       2fh
 
 
 Module: .\rtl\common\ldivu.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:04416C    D:0441A1       36h
+    Segment: CODE                              D:044185    D:0441BA       36h
 
 
 Module: .\rtl\common\lmulu.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:044400    D:04446C       6dh
+    Segment: CODE                              D:044419    D:044485       6dh
 
 
 Module: .\rtl\common\lneg.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:04413E    D:04414A        dh
+    Segment: CODE                              D:044157    D:044163        dh
 
 
 Module: .\rtl\common\lor.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:50
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:044216    D:04421E        9h
+    Segment: CODE                              D:04422F    D:044237        9h
 
 
 Module: .\rtl\common\lshl.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:51
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:044328    D:044336        fh
+    Segment: CODE                              D:044341    D:04434F        fh
 
 
 Module: .\rtl\common\lshru.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:51
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:0441CA    D:0441EB       22h
+    Segment: CODE                              D:0441E3    D:044204       22h
 
 
 Module: .\rtl\common\lsub.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:51
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:0441BE    D:0441C9        ch
+    Segment: CODE                              D:0441D7    D:0441E2        ch
 
 
 Module: .\rtl\common\memcmp.asm (Library: crtD.lib) Version: 1:0 10/02/2022 22:48:13
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:0441EC    D:044215       2ah
+    Segment: CODE                              D:044205    D:04422E       2ah
 
 
 Module: .\rtl\common\memcpy.asm (Library: crtD.lib) Version: 1:0 10/02/2022 22:48:13
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:0441A2    D:0441BD       1ch
+    Segment: CODE                              D:0441BB    D:0441D6       1ch
 
 
 Module: .\rtl\common\memset.asm (Library: crtD.lib) Version: 1:0 10/02/2022 22:48:13
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:044352    D:044372       21h
+    Segment: CODE                              D:04436B    D:04438B       21h
 
 
 Module: .\rtl\common\sand.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:51
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:04421F    D:044227        9h
+    Segment: CODE                              D:044238    D:044240        9h
 
 
 Module: .\rtl\common\scmpzero.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:52
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:04431B    D:044327        dh
+    Segment: CODE                              D:044334    D:044340        dh
 
 
 Module: .\rtl\common\seqcaseD.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:52
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:04404B    D:044085       3bh
+    Segment: CODE                              D:044064    D:04409E       3bh
 
 
 Module: .\rtl\common\setflag.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:52
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:043FDF    D:043FED        fh
+    Segment: CODE                              D:043FF8    D:044006        fh
 
 
 Module: .\rtl\common\smulu.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:51
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:0443E2    D:0443F6       15h
+    Segment: CODE                              D:0443FB    D:04440F       15h
 
 
 Module: .\rtl\common\sor.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:51
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:044385    D:04438D        9h
+    Segment: CODE                              D:04439E    D:0443A6        9h
 
 
 Module: .\rtl\common\stoiu.asm (Library: chelpD.lib) Version: 1:0 10/02/2022 22:48:51
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:0440B6    D:0440BB        6h
+    Segment: CODE                              D:0440CF    D:0440D4        6h
 
 
 Module: .\strchr.asm (Library: crtD.lib) Version: 1:0 10/02/2022 22:48:13
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:044234    D:044250       1dh
+    Segment: CODE                              D:04424D    D:044269       1dh
 
 
 Module: .\strlen.asm (Library: crtD.lib) Version: 1:0 10/02/2022 22:48:13
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:044251    D:044265       15h
+    Segment: CODE                              D:04426A    D:04427E       15h
 
 
-Module: C:\source\agon-vdpflash\flashloader_memtransfer\init.asm (File: init.obj) Version: 1:0 10/21/2023 11:17:20
+Module: C:\source\agon-vdpflash\flashloader_memtransfer\init.asm (File: init.obj) Version: 1:0 10/21/2023 13:35:27
 
     Name                                           Base         Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:040000    D:040169      16ah
+    Segment: CODE                              D:040000    D:04016D      16eh
 
 EXTERNAL DEFINITIONS:
 =====================
 
 Symbol                               Address Module          Segment
 -------------------------------- ----------- --------------- --------------------------------
-__bshl                              D:04446D bshl            CODE                            
-__case16D                           D:0440BC case16D         CODE                            
-__case8D                            D:0442E1 case8D          CODE                            
-__close_periphdevice                D:043FC9 zsldevinitdummy CODE                            
-__iand                              D:044337 iand            CODE                            
-__icmpzero                          D:044228 icmpzero        CODE                            
-__idivs                             D:044266 idivs           CODE                            
-__idivu                             D:04414B idivu           CODE                            
-__idvrmu                            D:044155 idivu           CODE                            
-__ildix                             D:0443D6 ildix           CODE                            
-__imul_b                            D:04438E imulu           CODE                            
-__imuls                             D:04439A imulu           CODE                            
-__imulu                             D:04439A imulu           CODE                            
-__ior                               D:04409B ior             CODE                            
-__irems                             D:043FEE irems           CODE                            
-__iremu                             D:044092 iremu           CODE                            
-__ishl                              D:04437B ishl            CODE                            
-__ishl_b                            D:044373 ishl            CODE                            
-__ishrs                             D:04402E ishrs           CODE                            
-__ishrs_b                           D:044026 ishrs           CODE                            
-__ishru                             D:0442A7 ishru           CODE                            
-__ishru_b                           D:04429F ishru           CODE                            
-__istix                             D:044086 istix           CODE                            
-__itol                              D:0442C4 itol            CODE                            
-__ladd                              D:043FD9 ladd            CODE                            
-__ladd_b                            D:043FCA ladd            CODE                            
-__land                              D:0443F7 land            CODE                            
-__lcmps                             D:0442CB lcmpu           CODE                            
-__lcmpu                             D:0442CB lcmpu           CODE                            
-__lcmpzero                          D:0440FB lcmpzero        CODE                            
-__ldivs                             D:04410F ldivs           CODE                            
-__ldivu                             D:04416C ldivu           CODE                            
-__ldvrmu                            D:04417E ldivu           CODE                            
+__bshl                              D:044486 bshl            CODE                            
+__case16D                           D:0440D5 case16D         CODE                            
+__case8D                            D:0442FA case8D          CODE                            
+__close_periphdevice                D:043FE2 zsldevinitdummy CODE                            
+__iand                              D:044350 iand            CODE                            
+__icmpzero                          D:044241 icmpzero        CODE                            
+__idivs                             D:04427F idivs           CODE                            
+__idivu                             D:044164 idivu           CODE                            
+__idvrmu                            D:04416E idivu           CODE                            
+__ildix                             D:0443EF ildix           CODE                            
+__imul_b                            D:0443A7 imulu           CODE                            
+__imuls                             D:0443B3 imulu           CODE                            
+__imulu                             D:0443B3 imulu           CODE                            
+__ior                               D:0440B4 ior             CODE                            
+__irems                             D:044007 irems           CODE                            
+__iremu                             D:0440AB iremu           CODE                            
+__ishl                              D:044394 ishl            CODE                            
+__ishl_b                            D:04438C ishl            CODE                            
+__ishrs                             D:044047 ishrs           CODE                            
+__ishrs_b                           D:04403F ishrs           CODE                            
+__ishru                             D:0442C0 ishru           CODE                            
+__ishru_b                           D:0442B8 ishru           CODE                            
+__istix                             D:04409F istix           CODE                            
+__itol                              D:0442DD itol            CODE                            
+__ladd                              D:043FF2 ladd            CODE                            
+__ladd_b                            D:043FE3 ladd            CODE                            
+__land                              D:044410 land            CODE                            
+__lcmps                             D:0442E4 lcmpu           CODE                            
+__lcmpu                             D:0442E4 lcmpu           CODE                            
+__lcmpzero                          D:044114 lcmpzero        CODE                            
+__ldivs                             D:044128 ldivs           CODE                            
+__ldivu                             D:044185 ldivu           CODE                            
+__ldvrmu                            D:044197 ldivu           CODE                            
 __len_bss                           00000235 (User Defined)
-__lmuls                             D:044400 lmulu           CODE                            
-__lmulu                             D:044400 lmulu           CODE                            
-__lneg                              D:04413E lneg            CODE                            
-__lor                               D:044216 lor             CODE                            
-__low_bss                           0004448F (User Defined)
-__lshl                              D:044328 lshl            CODE                            
-__lshru                             D:0441CA lshru           CODE                            
-__lsub                              D:0441BE lsub            CODE                            
-__open_periphdevice                 D:043FC9 zsldevinitdummy CODE                            
-__sand                              D:04421F sand            CODE                            
-__scmpzero                          D:04431B scmpzero        CODE                            
-__seqcaseD                          D:04404B seqcaseD        CODE                            
-__setflag                           D:043FDF setflag         CODE                            
-__smuls                             D:0443E2 smulu           CODE                            
-__smulu                             D:0443E2 smulu           CODE                            
-__sor                               D:044385 sor             CODE                            
-__stoiu                             D:0440B6 stoiu           CODE                            
-_close_periphdevice                 D:043FC9 zsldevinitdummy CODE                            
-_disk_initialize                    D:043C65 diskio          CODE                            
-_disk_ioctl                         D:043CBB diskio          CODE                            
-_disk_read                          D:043C83 diskio          CODE                            
-_disk_status                        D:043C56 diskio          CODE                            
-_enable_timer0                      D:043F6D timer           CODE                            
+__lmuls                             D:044419 lmulu           CODE                            
+__lmulu                             D:044419 lmulu           CODE                            
+__lneg                              D:044157 lneg            CODE                            
+__lor                               D:04422F lor             CODE                            
+__low_bss                           000444A8 (User Defined)
+__lshl                              D:044341 lshl            CODE                            
+__lshru                             D:0441E3 lshru           CODE                            
+__lsub                              D:0441D7 lsub            CODE                            
+__open_periphdevice                 D:043FE2 zsldevinitdummy CODE                            
+__sand                              D:044238 sand            CODE                            
+__scmpzero                          D:044334 scmpzero        CODE                            
+__seqcaseD                          D:044064 seqcaseD        CODE                            
+__setflag                           D:043FF8 setflag         CODE                            
+__smuls                             D:0443FB smulu           CODE                            
+__smulu                             D:0443FB smulu           CODE                            
+__sor                               D:04439E sor             CODE                            
+__stoiu                             D:0440CF stoiu           CODE                            
+_close_periphdevice                 D:043FE2 zsldevinitdummy CODE                            
+_disk_initialize                    D:043C7E diskio          CODE                            
+_disk_ioctl                         D:043CD4 diskio          CODE                            
+_disk_read                          D:043C9C diskio          CODE                            
+_disk_status                        D:043C6F diskio          CODE                            
+_enable_timer0                      D:043F86 timer           CODE                            
 _enableFlashKeyRegister             D:0400F9 init            CODE                            
-_f_chdir                            D:0436F3 ff              CODE                            
-_f_chdrive                          D:0436C1 ff              CODE                            
-_f_close                            D:04368C ff              CODE                            
-_f_getcwd                           D:0437A4 ff              CODE                            
-_f_getlabel                         D:043A0E ff              CODE                            
-_f_gets                             D:043BA1 ff              CODE                            
-_f_mount                            D:043175 ff              CODE                            
-_f_open                             D:043201 ff              CODE                            
-_f_read                             D:043351 ff              CODE                            
+_f_chdir                            D:04370C ff              CODE                            
+_f_chdrive                          D:0436DA ff              CODE                            
+_f_close                            D:0436A5 ff              CODE                            
+_f_getcwd                           D:0437BD ff              CODE                            
+_f_getlabel                         D:043A27 ff              CODE                            
+_f_gets                             D:043BBA ff              CODE                            
+_f_mount                            D:04318E ff              CODE                            
+_f_open                             D:04321A ff              CODE                            
+_f_read                             D:04336A ff              CODE                            
 _fastmemcpy                         D:040126 init            CODE                            
-_ff_oem2uni                         D:040A88 ffunicode       CODE                            
-_ff_uni2oem                         D:0409DD ffunicode       CODE                            
-_ff_wtoupper                        D:040AF0 ffunicode       CODE                            
-_fs                                 D:04448F main            BSS                             
-_get_fattime                        D:043CCC diskio          CODE                            
-_get_timer0                         D:043F9C timer           CODE                            
-_init_spi                           D:043E0B spi             CODE                            
-_init_timer0                        D:043EE0 timer           CODE                            
+_ff_oem2uni                         D:040AA1 ffunicode       CODE                            
+_ff_uni2oem                         D:0409F6 ffunicode       CODE                            
+_ff_wtoupper                        D:040B09 ffunicode       CODE                            
+_fs                                 D:0444A8 main            BSS                             
+_get_fattime                        D:043CE5 diskio          CODE                            
+_get_timer0                         D:043FB5 timer           CODE                            
+_init_spi                           D:043E24 spi             CODE                            
+_init_timer0                        D:043EF9 timer           CODE                            
 _lockFlashKeyRegister               D:040111 init            CODE                            
-_main                               D:04016A main            CODE                            
-_memcmp                             D:0441EC memcmp          CODE                            
-_memcpy                             D:0441A2 memcpy          CODE                            
-_memset                             D:044352 memset          CODE                            
-_mode_spi                           D:043EAB spi             CODE                            
-_open_periphdevice                  D:043FC9 zsldevinitdummy CODE                            
+_main                               D:04016E main            CODE                            
+_memcmp                             D:044205 memcmp          CODE                            
+_memcpy                             D:0441BB memcpy          CODE                            
+_memset                             D:04436B memset          CODE                            
+_mode_spi                           D:043EC4 spi             CODE                            
+_open_periphdevice                  D:043FE2 zsldevinitdummy CODE                            
 _reset                              D:040124 init            CODE                            
-_rtc                                D:0446C3 diskio          BSS                             
-_SD_command                         D:040280 sd              CODE                            
-_SD_CS_disable                      D:043DBA spi             CODE                            
-_SD_CS_enable                       D:043DA4 spi             CODE                            
-_SD_goIdleState                     D:040393 sd              CODE                            
-_SD_init                            D:0408FF sd              CODE                            
-_SD_powerUpSeq                      D:040570 sd              CODE                            
-_SD_readBlocks                      D:0405C1 sd              CODE                            
-_SD_readOCR                         D:040515 sd              CODE                            
-_SD_readRes1                        D:0402EE sd              CODE                            
-_SD_readRes7                        D:040322 sd              CODE                            
-_SD_readSingleBlock                 D:040800 sd              CODE                            
-_SD_sendApp                         D:040453 sd              CODE                            
-_SD_sendIfCond                      D:0403F0 sd              CODE                            
-_SD_sendOpCond                      D:0404B0 sd              CODE                            
-_SD_writeBlocks                     D:040651 sd              CODE                            
-_SD_writeSingleBlock                D:0406E0 sd              CODE                            
-_spi_transfer                       D:043DD0 spi             CODE                            
-_strchr                             D:044234 strchr          CODE                            
-_strlen                             D:044251 strlen          CODE                            
+_rtc                                D:0446DC diskio          BSS                             
+_SD_command                         D:040299 sd              CODE                            
+_SD_CS_disable                      D:043DD3 spi             CODE                            
+_SD_CS_enable                       D:043DBD spi             CODE                            
+_SD_goIdleState                     D:0403AC sd              CODE                            
+_SD_init                            D:040918 sd              CODE                            
+_SD_powerUpSeq                      D:040589 sd              CODE                            
+_SD_readBlocks                      D:0405DA sd              CODE                            
+_SD_readOCR                         D:04052E sd              CODE                            
+_SD_readRes1                        D:040307 sd              CODE                            
+_SD_readRes7                        D:04033B sd              CODE                            
+_SD_readSingleBlock                 D:040819 sd              CODE                            
+_SD_sendApp                         D:04046C sd              CODE                            
+_SD_sendIfCond                      D:040409 sd              CODE                            
+_SD_sendOpCond                      D:0404C9 sd              CODE                            
+_SD_writeBlocks                     D:04066A sd              CODE                            
+_SD_writeSingleBlock                D:0406F9 sd              CODE                            
+_spi_transfer                       D:043DE9 spi             CODE                            
+_strchr                             D:04424D strchr          CODE                            
+_strlen                             D:04426A strlen          CODE                            
 _wait_timer0                        D:0400E3 init            CODE                            
 _waitZDI                            D:040145 init            CODE                            
 waitBreakpoint                      D:040020 init            CODE                            
@@ -744,8 +744,8 @@ waitBreakpoint                    Defined     C:\source\agon-vdpflash\flashloade
 
 OUTPUT CHECKSUM
 ===============
-flashloader.hex      21DB3D
-flashloader.lod      21DB3D
+flashloader.hex      2200FF
+flashloader.lod      2200FF
 
 
 

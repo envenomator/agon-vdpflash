@@ -7,9 +7,10 @@
 	SEGMENT CODE
 ;    1	#include "protocol.h"
 ;    2	
-;    3	// Blocking non-interrupt putch to UART0
-;    4	int putch(int c)
-;    5	{
+;    3	//#define UART_LSR_TEMT	0x40
+;    4	// Blocking non-interrupt putch to UART0
+;    5	int putch(int c)
+;    6	{
 _putch:
 .DEFINE "_putch"
 
@@ -21,9 +22,9 @@ _putch:
 
 .ENDEF
 
-.BEGFUNC "putch",5,"_putch"
+.BEGFUNC "putch",6,"_putch"
 
-.LINE 5
+.LINE 6
 
 .DEFINE "c"
 
@@ -38,11 +39,9 @@ _putch:
 	ADD	IX,SP
 .ENDEF
 
-;    6		//UINT8 lsr,temt;
-;    7		
-;    8		while((UART0_LSR & 0x40) == 0);
+;    7		while((UART0_LSR & UART_LSR_TEMT) == 0);
 L_1:
-.LINE 8
+.LINE 7
 
 	IN0	A,(197)
 	AND	A,%40
@@ -50,17 +49,17 @@ L_1:
 	LD	L,A
 	CALL	__icmpzero
 	JR	Z,L_1
-;    9		UART0_THR = c;
-.LINE 9
+;    8		UART0_THR = c;
+.LINE 8
 
 	LD	A,(IX+%6)
 	OUT0	(192),A
-;   10		return c;
-.LINE 10
+;    9		return c;
+.LINE 9
 
 	LD	HL,(IX+%6)
-;   11	}
-.LINE 11
+;   10	}
+.LINE 10
 
 	LD	SP,IX
 	POP	IX
@@ -76,9 +75,9 @@ L_1:
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "putch",11,"_putch"
-;   12	
-;   13	void sendStatus(char state, UINT8 status, UINT32 result) {
+.ENDFUNC "putch",10,"_putch"
+;   11	
+;   12	void sendStatus(char state, UINT8 status, UINT32 result) {
 _sendStatus:
 .DEFINE "_sendStatus"
 
@@ -90,9 +89,9 @@ _sendStatus:
 
 .ENDEF
 
-.BEGFUNC "sendStatus",13,"_sendStatus"
+.BEGFUNC "sendStatus",12,"_sendStatus"
 
-.LINE 13
+.LINE 12
 
 .DEFINE "state"
 
@@ -127,8 +126,8 @@ _sendStatus:
 	PUSH	IX
 	LD	IX,0
 	ADD	IX,SP
-;   14		putch(state);
-.LINE 14
+;   13		putch(state);
+.LINE 13
 
 	LD	A,(IX+%6)
 	SEXT	HL
@@ -136,8 +135,8 @@ _sendStatus:
 	PUSH	HL
 	CALL	_putch
 	POP	BC
-;   15		putch(status);
-.LINE 15
+;   14		putch(status);
+.LINE 14
 
 	LD	A,(IX+%9)
 	UEXT	HL
@@ -145,8 +144,8 @@ _sendStatus:
 	PUSH	HL
 	CALL	_putch
 	POP	BC
-;   16		putch((result) & 0xFF);
-.LINE 16
+;   15		putch((result) & 0xFF);
+.LINE 15
 
 	LD	HL,(IX+%C)
 	LD	A,L
@@ -155,8 +154,8 @@ _sendStatus:
 	PUSH	HL
 	CALL	_putch
 	POP	BC
-;   17		putch((result >> 8) & 0xFF);
-.LINE 17
+;   16		putch((result >> 8) & 0xFF);
+.LINE 16
 
 	LD	BC,(IX+%C)
 	LD	A,(IX+%F)
@@ -169,8 +168,8 @@ _sendStatus:
 	PUSH	HL
 	CALL	_putch
 	POP	BC
-;   18		putch((result >> 16) & 0xFF);
-.LINE 18
+;   17		putch((result >> 16) & 0xFF);
+.LINE 17
 
 	LD	BC,(IX+%C)
 	LD	A,(IX+%F)
@@ -183,8 +182,8 @@ _sendStatus:
 	PUSH	HL
 	CALL	_putch
 	POP	BC
-;   19		putch((result >> 24) & 0xFF);
-.LINE 19
+;   18		putch((result >> 24) & 0xFF);
+.LINE 18
 
 	LD	A,(IX+%F)
 	UEXT	HL
@@ -192,8 +191,8 @@ _sendStatus:
 	PUSH	HL
 	CALL	_putch
 	POP	BC
-;   20	}
-.LINE 20
+;   19	}
+.LINE 19
 
 	LD	SP,IX
 	POP	IX
@@ -212,9 +211,352 @@ _sendStatus:
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "sendStatus",20,"_sendStatus"
+.ENDFUNC "sendStatus",19,"_sendStatus"
+;   20	
+;   21	UCHAR read_UART0(CHAR *pData, int *nbytes) {
+_read_UART0:
+.DEFINE "_read_UART0"
+
+.VALUE _read_UART0
+
+.CLASS 2
+
+.TYPE 76
+
+.ENDEF
+
+.BEGFUNC "read_UART0",21,"_read_UART0"
+
+.LINE 21
+
+.DEFINE "pData"
+
+.CLASS 65
+
+.VALUE 6
+
+.TYPE 34
+
+.ENDEF
+
+.DEFINE "nbytes"
+
+.CLASS 65
+
+.VALUE 9
+
+.TYPE 36
+
+.ENDEF
+
+.DEFINE "status"
+
+.CLASS 65
+
+.VALUE -1
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "lsr"
+
+.CLASS 65
+
+.VALUE -2
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "index"
+
+.CLASS 65
+
+.VALUE -5
+
+.TYPE 4
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	PUSH	BC
+	DEC	SP
+	DEC	SP
+;   22		UCHAR lsr ;
+;   23		UCHAR status = UART_ERR_NONE ;
+.LINE 23
+
+	LD	(IX+%FFFFFFFF),%0
+;   24		int   index = 0 ;
+.LINE 24
+
+	LD	BC,0
+	LD	(IX+%FFFFFFFB),BC
+;   25	
+;   26		while( UART_ERR_NONE == status ) {
+.LINE 26
+
+	JR	L_17
+L_18:
+;   27			lsr = UART0_LSR ;											//! Read the line status.
+.LINE 27
+
+	IN0	A,(197)
+	LD	(IX+%FFFFFFFE),A
+;   28			
+;   29			if( 0 != (lsr & UART_LSR_BREAKINDICATIONERR) ) {			//! Check if there is any Break Indication Error.
+.LINE 29
+
+	AND	A,%10
+	JR	Z,L_7
+;   30				status = UART_ERR_BREAKINDICATIONERR ;					//! Failure code.
+.LINE 30
+
+	LD	(IX+%FFFFFFFF),%5
+;   31			}
+L_7:
+.LINE 31
+
+;   32			if( 0 != (lsr & UART_LSR_FRAMINGERR) ) {					//! Check if there is any Framing error.
+.LINE 32
+
+	LD	A,(IX+%FFFFFFFE)
+	AND	A,%8
+	JR	Z,L_9
+;   33				status = UART_ERR_FRAMINGERR ;							//! Failure code.
+.LINE 33
+
+	LD	(IX+%FFFFFFFF),%2
+;   34			}
+L_9:
+.LINE 34
+
+;   35			if( 0 != (lsr & UART_LSR_PARITYERR) ) {						//! Check if there is any Parity error.
+.LINE 35
+
+	LD	A,(IX+%FFFFFFFE)
+	AND	A,%4
+	JR	Z,L_11
+;   36				status = UART_ERR_PARITYERR ;							//! Failure code.
+.LINE 36
+
+	LD	(IX+%FFFFFFFF),%3
+;   37			}
+L_11:
+.LINE 37
+
+;   38			if( 0 != (lsr & UART_LSR_OVERRRUNERR) )	{					//! Check if there is any Overrun error.
+.LINE 38
+
+	LD	A,(IX+%FFFFFFFE)
+	AND	A,%2
+	JR	Z,L_14
+;   39				status = UART_ERR_OVERRUNERR ;							//! Failure code.
+.LINE 39
+
+	LD	(IX+%FFFFFFFF),%4
+;   40			}
+L_14:
+.LINE 40
+
+;   41			if( 0 != (lsr & UART_LSR_DATA_READY) ) {					//! See if there is any data byte to be read.
+.LINE 41
+
+	LD	A,(IX+%FFFFFFFE)
+	AND	A,%1
+	JR	Z,L_16
+;   42				pData[ index++ ] = UART0_RBR ;							//! Read it from the receive buffer register.
+.LINE 42
+
+	LD	BC,(IX+%FFFFFFFB)
+	LD	HL,(IX+%6)
+	ADD	HL,BC
+	IN0	A,(192)
+	LD	(HL),A
+	LD	BC,(IX+%FFFFFFFB)
+	INC	BC
+	LD	(IX+%FFFFFFFB),BC
+;   43			}
+L_16:
+.LINE 43
+
+;   44			if( index == (*nbytes) ) {									//! On completion break the while loop.
+.LINE 44
+
+	LD	HL,(IX+%9)
+	LD	BC,(IX+%FFFFFFFB)
+	LD	HL,(HL)
+	OR	A,A
+	SBC	HL,BC
+	JR	Z,L_19
+;   45				break ;
+;   46			}
+;   47		}
+L_17:
+.LINE 47
+
+	LD	A,(IX+%FFFFFFFF)
+	OR	A,A
+	JR	Z,L_18
+L_19:
+;   48		*nbytes = index ;
+.LINE 48
+
+	LD	HL,(IX+%9)
+	LD	BC,(IX+%FFFFFFFB)
+	LD	(HL),BC
+;   49		return status ;
+.LINE 49
+
+	LD	A,(IX+%FFFFFFFF)
+;   50		
+;   51	}
+.LINE 51
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _read_UART0 ***************************
+;Name                         Addr/Register   Size   Type
+;index                                 IX-5      3   variable
+;lsr                                   IX-2      1   variable
+;status                                IX-1      1   variable
+;nbytes                                IX+9      3   parameter
+;pData                                 IX+6      3   parameter
+
+
+; Stack Frame Size: 17 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "read_UART0",51,"_read_UART0"
+;   52	
+;   53	int getch(void) {
+_getch:
+.DEFINE "_getch"
+
+.VALUE _getch
+
+.CLASS 2
+
+.TYPE 68
+
+.ENDEF
+
+.BEGFUNC "getch",53,"_getch"
+
+.LINE 53
+
+.DEFINE "nbytes"
+
+.CLASS 65
+
+.VALUE -3
+
+.TYPE 4
+
+.ENDEF
+
+.DEFINE "ch"
+
+.CLASS 65
+
+.VALUE -4
+
+.TYPE 2
+
+.ENDEF
+
+.DEFINE "status"
+
+.CLASS 65
+
+.VALUE -5
+
+.TYPE 12
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	PUSH	BC
+	PUSH	BC
+	DEC	SP
+	DEC	SP
+;   54		CHAR ch;
+;   55		int nbytes = 1;
+.LINE 55
+
+	LD	BC,1
+	LD	(IX+%FFFFFFFD),BC
+;   56		UCHAR status = read_UART0(&ch, &nbytes);
+.LINE 56
+
+	PEA	IX+%FFFFFFFD
+	PEA	IX+%FFFFFFFC
+	CALL	_read_UART0
+	POP	BC
+	POP	BC
+	LD	(IX+%FFFFFFFB),A
+;   57		nbytes = (UINT)ch;
+.LINE 57
+
+	LD	A,(IX+%FFFFFFFC)
+	SEXT	HL
+	LD	L,(IX+%FFFFFFFC)
+	LD	(IX+%FFFFFFFD),HL
+;   58		nbytes = (nbytes & 0x0000FF);
+.LINE 58
+
+	LD	A,(IX+%FFFFFFFD)
+	UEXT	HL
+	LD	L,A
+	LD	(IX+%FFFFFFFD),HL
+;   59		return (UART_ERR_NONE!=status) ? -1 : nbytes;
+.LINE 59
+
+	LD	A,(IX+%FFFFFFFB)
+	OR	A,A
+	JR	Z,L_23
+	LD	BC,16777215
+	LD	(IX+%FFFFFFF8),BC
+	JR	L_24
+L_23:
+	LD	BC,(IX+%FFFFFFFD)
+	LD	(IX+%FFFFFFF8),BC
+L_24:
+	LD	HL,(IX+%FFFFFFF8)
+;   60	}
+.LINE 60
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _getch ***************************
+;Name                         Addr/Register   Size   Type
+;temp21                                IX-8      3   variable
+;status                                IX-5      1   variable
+;ch                                    IX-4      1   variable
+;nbytes                                IX-3      3   variable
+
+
+; Stack Frame Size: 14 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "getch",60,"_getch"
 	XREF __lshru:ROM
 	XREF __icmpzero:ROM
+	XDEF _getch
+	XDEF _read_UART0
 	XDEF _sendStatus
 	XDEF _putch
 	END

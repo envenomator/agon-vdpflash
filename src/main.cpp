@@ -245,6 +245,8 @@ void loop() {
         status = getStatus();
         sprintf(buffer, "Status: <%c> <%d> <0x%08X\r\n", status.state, status.status, status.result);
         terminal.write(buffer);
+        delay(1000);
+        Serial2.write('C');
     }
 
     // DEBUG

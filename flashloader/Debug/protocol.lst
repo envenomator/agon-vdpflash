@@ -1,4 +1,4 @@
-Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     17:00:55     page:   1
+Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     17:27:23     page:   1
 
 
 PC     Object              I  Line    Source 
@@ -11,219 +11,561 @@ PC     Object              I  Line    Source
                            A     7    	SEGMENT CODE
                            A     8    ;    1	#include "protocol.h"
                            A     9    ;    2	
-                           A    10    ;    3	// Blocking non-interrupt putch to UART
-                           A    11    ;    4	int putch(int c)
-                           A    12    ;    5	{
-04405F                     A    13    _putch:
-                           A    14    .DEFINE "_putch"
-                           A    15    
-                           A    16    .VALUE _putch
-                           A    17    
-                           A    18    .CLASS 2
-                           A    19    
-                           A    20    .TYPE 68
-                           A    21    
-                           A    22    .ENDEF
-                           A    23    
-                           A    24    .BEGFUNC "putch",5,"_putch"
-                           A    25    
-                           A    26    .LINE 5
-                           A    27    
-                           A    28    .DEFINE "c"
-                           A    29    
-                           A    30    .CLASS 65
-                           A    31    
-                           A    32    .VALUE 6
-                           A    33    
-                           A    34    .TYPE 4
-                           A    35    
-04405F DDE5                A    36    	PUSH	IX
-044061 DD210000 00         A    37    	LD	IX,0
-044066 DD39                A    38    	ADD	IX,SP
-                           A    39    .ENDEF
-                           A    40    
-                           A    41    ;    6		//UINT8 lsr,temt;
-                           A    42    ;    7		
-                           A    43    ;    8		while((UART0_LSR & 0x40) == 0);
-044068                     A    44    L_1:
-                           A    45    .LINE 8
-                           A    46    
-044068 ED38C5              A    47    	IN0	A,(197)
-04406B E640                A    48    	AND	A,%40
-04406D B7ED62              A    49    	UEXT	HL
-044070 6F                  A    50    	LD	L,A
-044071 CD 5B 43 04         A    51    	CALL	__icmpzero
-044075 28 F1               A    52    	JR	Z,L_1
-                           A    53    ;    9		UART0_THR = c;
-                           A    54    .LINE 9
-                           A    55    
-044077 DD7E06              A    56    	LD	A,(IX+%6)
-04407A ED39C0              A    57    	OUT0	(192),A
-                           A    58    ;   10		return c;
-                           A    59    .LINE 10
-                           A    60    
-04407D DD2706              A    61    	LD	HL,(IX+%6)
-                           A    62    ;   11	}
-                           A    63    .LINE 11
-                           A    64    
-044080 DDF9                A    65    	LD	SP,IX
-044082 DDE1                A    66    	POP	IX
-044084 C9                  A    67    	RET	
+                           A    10    ;    3	//#define UART_LSR_TEMT	0x40
+                           A    11    ;    4	// Blocking non-interrupt putch to UART
+                           A    12    ;    5	int putch(int c)
+                           A    13    ;    6	{
+044053                     A    14    _putch:
+                           A    15    .DEFINE "_putch"
+                           A    16    
+                           A    17    .VALUE _putch
+                           A    18    
+                           A    19    .CLASS 2
+                           A    20    
+                           A    21    .TYPE 68
+                           A    22    
+                           A    23    .ENDEF
+                           A    24    
+                           A    25    .BEGFUNC "putch",6,"_putch"
+                           A    26    
+                           A    27    .LINE 6
+                           A    28    
+                           A    29    .DEFINE "c"
+                           A    30    
+                           A    31    .CLASS 65
+                           A    32    
+                           A    33    .VALUE 6
+                           A    34    
+                           A    35    .TYPE 4
+                           A    36    
+044053 DDE5                A    37    	PUSH	IX
+044055 DD210000 00         A    38    	LD	IX,0
+04405A DD39                A    39    	ADD	IX,SP
+                           A    40    .ENDEF
+                           A    41    
+                           A    42    ;    7		while((UART0_LSR & UART_LSR_TEMT) =
+04405C                     A    43    L_1:
+                           A    44    .LINE 7
+                           A    45    
+04405C ED38C5              A    46    	IN0	A,(197)
+04405F E640                A    47    	AND	A,%40
+044061 B7ED62              A    48    	UEXT	HL
+044064 6F                  A    49    	LD	L,A
+044065 CD 29 44 04         A    50    	CALL	__icmpzero
+044069 28 F1               A    51    	JR	Z,L_1
+                           A    52    ;    8		UART0_THR = c;
+                           A    53    .LINE 8
+                           A    54    
+04406B DD7E06              A    55    	LD	A,(IX+%6)
+04406E ED39C0              A    56    	OUT0	(192),A
+                           A    57    ;    9		return c;
+                           A    58    .LINE 9
+                           A    59    
+044071 DD2706              A    60    	LD	HL,(IX+%6)
+                           A    61    ;   10	}
+                           A    62    .LINE 10
+                           A    63    
+044074 DDF9                A    64    	LD	SP,IX
+044076 DDE1                A    65    	POP	IX
+044078 C9                  A    66    	RET	
+                           A    67    
                            A    68    
-                           A    69    
-                           A    70    ;**************************** _putch **********
-                           A    71    ;Name                         Addr/Register   S
-                           A    72    ;c                                     IX+6    
+                           A    69    ;**************************** _putch **********
+                           A    70    ;Name                         Addr/Register   S
+                           A    71    ;c                                     IX+6    
+                           A    72    
                            A    73    
-                           A    74    
-                           A    75    ; Stack Frame Size: 9 (bytes)
-                           A    76    ;       Spill Code: 0 (instruction)
+                           A    74    ; Stack Frame Size: 9 (bytes)
+                           A    75    ;       Spill Code: 0 (instruction)
+                           A    76    
                            A    77    
-                           A    78    
-                           A    79    .ENDFUNC "putch",11,"_putch"
-                           A    80    ;   12	
-                           A    81    ;   13	void sendStatus(char state, UINT8 statu
-044085                     A    82    _sendStatus:
-                           A    83    .DEFINE "_sendStatus"
-                           A    84    
-                           A    85    .VALUE _sendStatus
-                           A    86    
-                           A    87    .CLASS 2
-                           A    88    
-                           A    89    .TYPE 65
-                           A    90    
-                           A    91    .ENDEF
-                           A    92    
-                           A    93    .BEGFUNC "sendStatus",13,"_sendStatus"
-                           A    94    
-                           A    95    .LINE 13
-                           A    96    
-                           A    97    .DEFINE "state"
-                           A    98    
-                           A    99    .CLASS 65
-                           A   100    
-                           A   101    .VALUE 6
-                           A   102    
-                           A   103    .TYPE 2
-                           A   104    
-                           A   105    .ENDEF
-                           A   106    
-                           A   107    .DEFINE "status"
-                           A   108    
-                           A   109    .CLASS 65
-                           A   110    
-                           A   111    .VALUE 9
-                           A   112    
-                           A   113    .TYPE 12
-                           A   114    
-                           A   115    .ENDEF
-                           A   116    
-                           A   117    .DEFINE "result"
-                           A   118    
-                           A   119    .CLASS 65
-                           A   120    
-                           A   121    .VALUE 12
-                           A   122    
-                           A   123    .TYPE 15
-                           A   124    
-                           A   125    .ENDEF
-                           A   126    
-044085 DDE5                A   127    	PUSH	IX
-044087 DD210000 00         A   128    	LD	IX,0
-04408C DD39                A   129    	ADD	IX,SP
-                           A   130    ;   14		putch(state);
-                           A   131    .LINE 14
-                           A   132    
-04408E DD7E06              A   133    	LD	A,(IX+%6)
-044091 17ED62              A   134    	SEXT	HL
-044094 DD6E06              A   135    	LD	L,(IX+%6)
-044097 E5                  A   136    	PUSH	HL
-044098 CD 5F 40 04         A   137    	CALL	_putch
-04409C C1                  A   138    	POP	BC
-                           A   139    ;   15		putch(status);
-                           A   140    .LINE 15
-                           A   141    
-04409D DD7E09              A   142    	LD	A,(IX+%9)
-0440A0 B7ED62              A   143    	UEXT	HL
-0440A3 6F                  A   144    	LD	L,A
-0440A4 E5                  A   145    	PUSH	HL
-0440A5 CD 5F 40 04         A   146    	CALL	_putch
-0440A9 C1                  A   147    	POP	BC
-                           A   148    ;   16		putch((result) & 0xFF);
-                           A   149    .LINE 16
-                           A   150    
-0440AA DD270C              A   151    	LD	HL,(IX+%C)
-0440AD 7D                  A   152    	LD	A,L
-0440AE B7ED62              A   153    	UEXT	HL
-0440B1 6F                  A   154    	LD	L,A
-0440B2 E5                  A   155    	PUSH	HL
-0440B3 CD 5F 40 04         A   156    	CALL	_putch
-0440B7 C1                  A   157    	POP	BC
-                           A   158    ;   17		putch((result >> 8) & 0xFF);
-                           A   159    .LINE 17
-                           A   160    
-0440B8 DD070C              A   161    	LD	BC,(IX+%C)
-0440BB DD7E0F              A   162    	LD	A,(IX+%F)
-0440BE 2E08                A   163    	LD	L,%8
-0440C0 CD FD 42 04         A   164    	CALL	__lshru
-0440C4 C5E1                A   165    	LD	HL,BC
-0440C6 7D                  A   166    	LD	A,L
-0440C7 B7ED62              A   167    	UEXT	HL
-0440CA 6F                  A   168    	LD	L,A
-0440CB E5                  A   169    	PUSH	HL
-0440CC CD 5F 40 04         A   170    	CALL	_putch
-0440D0 C1                  A   171    	POP	BC
-                           A   172    ;   18		putch((result >> 16) & 0xFF);
-                           A   173    .LINE 18
-                           A   174    
-0440D1 DD070C              A   175    	LD	BC,(IX+%C)
-0440D4 DD7E0F              A   176    	LD	A,(IX+%F)
-0440D7 2E10                A   177    	LD	L,%10
-0440D9 CD FD 42 04         A   178    	CALL	__lshru
-0440DD C5E1                A   179    	LD	HL,BC
-0440DF 7D                  A   180    	LD	A,L
-0440E0 B7ED62              A   181    	UEXT	HL
-0440E3 6F                  A   182    	LD	L,A
-0440E4 E5                  A   183    	PUSH	HL
-0440E5 CD 5F 40 04         A   184    	CALL	_putch
-0440E9 C1                  A   185    	POP	BC
-                           A   186    ;   19		putch((result >> 24) & 0xFF);
-                           A   187    .LINE 19
-                           A   188    
-0440EA DD7E0F              A   189    	LD	A,(IX+%F)
-0440ED B7ED62              A   190    	UEXT	HL
-0440F0 6F                  A   191    	LD	L,A
-0440F1 E5                  A   192    	PUSH	HL
-0440F2 CD 5F 40 04         A   193    	CALL	_putch
-0440F6 C1                  A   194    	POP	BC
-                           A   195    ;   20	}
-                           A   196    .LINE 20
-                           A   197    
-0440F7 DDF9                A   198    	LD	SP,IX
-0440F9 DDE1                A   199    	POP	IX
-0440FB C9                  A   200    	RET	
+                           A    78    .ENDFUNC "putch",10,"_putch"
+                           A    79    ;   11	
+                           A    80    ;   12	void sendStatus(char state, UINT8 statu
+044079                     A    81    _sendStatus:
+                           A    82    .DEFINE "_sendStatus"
+                           A    83    
+                           A    84    .VALUE _sendStatus
+                           A    85    
+                           A    86    .CLASS 2
+                           A    87    
+                           A    88    .TYPE 65
+                           A    89    
+                           A    90    .ENDEF
+                           A    91    
+                           A    92    .BEGFUNC "sendStatus",12,"_sendStatus"
+                           A    93    
+                           A    94    .LINE 12
+                           A    95    
+                           A    96    .DEFINE "state"
+                           A    97    
+                           A    98    .CLASS 65
+                           A    99    
+                           A   100    .VALUE 6
+                           A   101    
+                           A   102    .TYPE 2
+                           A   103    
+                           A   104    .ENDEF
+                           A   105    
+                           A   106    .DEFINE "status"
+                           A   107    
+                           A   108    .CLASS 65
+                           A   109    
+                           A   110    .VALUE 9
+                           A   111    
+                           A   112    .TYPE 12
+                           A   113    
+                           A   114    .ENDEF
+                           A   115    
+                           A   116    .DEFINE "result"
+                           A   117    
+                           A   118    .CLASS 65
+                           A   119    
+                           A   120    .VALUE 12
+                           A   121    
+                           A   122    .TYPE 15
+                           A   123    
+                           A   124    .ENDEF
+                           A   125    
+044079 DDE5                A   126    	PUSH	IX
+04407B DD210000 00         A   127    	LD	IX,0
+044080 DD39                A   128    	ADD	IX,SP
+                           A   129    ;   13		putch(state);
+                           A   130    .LINE 13
+                           A   131    
+044082 DD7E06              A   132    	LD	A,(IX+%6)
+044085 17ED62              A   133    	SEXT	HL
+044088 DD6E06              A   134    	LD	L,(IX+%6)
+04408B E5                  A   135    	PUSH	HL
+04408C CD 53 40 04         A   136    	CALL	_putch
+044090 C1                  A   137    	POP	BC
+                           A   138    ;   14		putch(status);
+                           A   139    .LINE 14
+                           A   140    
+044091 DD7E09              A   141    	LD	A,(IX+%9)
+044094 B7ED62              A   142    	UEXT	HL
+044097 6F                  A   143    	LD	L,A
+044098 E5                  A   144    	PUSH	HL
+044099 CD 53 40 04         A   145    	CALL	_putch
+04409D C1                  A   146    	POP	BC
+                           A   147    ;   15		putch((result) & 0xFF);
+                           A   148    .LINE 15
+                           A   149    
+04409E DD270C              A   150    	LD	HL,(IX+%C)
+0440A1 7D                  A   151    	LD	A,L
+0440A2 B7ED62              A   152    	UEXT	HL
+0440A5 6F                  A   153    	LD	L,A
+0440A6 E5                  A   154    	PUSH	HL
+0440A7 CD 53 40 04         A   155    	CALL	_putch
+0440AB C1                  A   156    	POP	BC
+                           A   157    ;   16		putch((result >> 8) & 0xFF);
+                           A   158    .LINE 16
+                           A   159    
+0440AC DD070C              A   160    	LD	BC,(IX+%C)
+0440AF DD7E0F              A   161    	LD	A,(IX+%F)
+0440B2 2E08                A   162    	LD	L,%8
+0440B4 CD CB 43 04         A   163    	CALL	__lshru
+0440B8 C5E1                A   164    	LD	HL,BC
+0440BA 7D                  A   165    	LD	A,L
+0440BB B7ED62              A   166    	UEXT	HL
+0440BE 6F                  A   167    	LD	L,A
+0440BF E5                  A   168    	PUSH	HL
+0440C0 CD 53 40 04         A   169    	CALL	_putch
+0440C4 C1                  A   170    	POP	BC
+                           A   171    ;   17		putch((result >> 16) & 0xFF);
+                           A   172    .LINE 17
+                           A   173    
+0440C5 DD070C              A   174    	LD	BC,(IX+%C)
+0440C8 DD7E0F              A   175    	LD	A,(IX+%F)
+0440CB 2E10                A   176    	LD	L,%10
+0440CD CD CB 43 04         A   177    	CALL	__lshru
+0440D1 C5E1                A   178    	LD	HL,BC
+0440D3 7D                  A   179    	LD	A,L
+0440D4 B7ED62              A   180    	UEXT	HL
+0440D7 6F                  A   181    	LD	L,A
+0440D8 E5                  A   182    	PUSH	HL
+0440D9 CD 53 40 04         A   183    	CALL	_putch
+0440DD C1                  A   184    	POP	BC
+                           A   185    ;   18		putch((result >> 24) & 0xFF);
+                           A   186    .LINE 18
+                           A   187    
+0440DE DD7E0F              A   188    	LD	A,(IX+%F)
+0440E1 B7ED62              A   189    	UEXT	HL
+0440E4 6F                  A   190    	LD	L,A
+0440E5 E5                  A   191    	PUSH	HL
+0440E6 CD 53 40 04         A   192    	CALL	_putch
+0440EA C1                  A   193    	POP	BC
+                           A   194    ;   19	}
+                           A   195    .LINE 19
+                           A   196    
+0440EB DDF9                A   197    	LD	SP,IX
+0440ED DDE1                A   198    	POP	IX
+0440EF C9                  A   199    	RET	
+                           A   200    
                            A   201    
-                           A   202    
-                           A   203    ;**************************** _sendStatus *****
-                           A   204    ;Name                         Addr/Register   S
-                           A   205    ;_putch                              IMPORT  --
-                           A   206    ;result                               IX+12    
-                           A   207    ;status                                IX+9    
-                           A   208    ;state                                 IX+6    
+                           A   202    ;**************************** _sendStatus *****
+                           A   203    ;Name                         Addr/Register   S
+                           A   204    ;_putch                              IMPORT  --
+                           A   205    ;result                               IX+12    
+                           A   206    ;status                                IX+9    
+                           A   207    ;state                                 IX+6    
+                           A   208    
                            A   209    
-                           A   210    
-                           A   211    ; Stack Frame Size: 18 (bytes)
-                           A   212    ;       Spill Code: 0 (instruction)
+                           A   210    ; Stack Frame Size: 18 (bytes)
+                           A   211    ;       Spill Code: 0 (instruction)
+                           A   212    
                            A   213    
-                           A   214    
-                           A   215    .ENDFUNC "sendStatus",20,"_sendStatus"
-                           A   216    	XREF __lshru:ROM
-                           A   217    	XREF __icmpzero:ROM
-                           A   218    	XDEF _sendStatus
-                           A   219    	XDEF _putch
-                           A   220    	END
+                           A   214    .ENDFUNC "sendStatus",19,"_sendStatus"
+                           A   215    ;   20	
+                           A   216    ;   21	UCHAR read_UART0(CHAR *pData, int *nbyt
+0440F0                     A   217    _read_UART0:
+                           A   218    .DEFINE "_read_UART0"
+                           A   219    
+                           A   220    .VALUE _read_UART0
+                           A   221    
+                           A   222    .CLASS 2
+                           A   223    
+                           A   224    .TYPE 76
+                           A   225    
+                           A   226    .ENDEF
+                           A   227    
+                           A   228    .BEGFUNC "read_UART0",21,"_read_UART0"
+                           A   229    
+                           A   230    .LINE 21
+                           A   231    
+                           A   232    .DEFINE "pData"
+                           A   233    
+                           A   234    .CLASS 65
+                           A   235    
+                           A   236    .VALUE 6
+                           A   237    
+                           A   238    .TYPE 34
+                           A   239    
+                           A   240    .ENDEF
+                           A   241    
+                           A   242    .DEFINE "nbytes"
+                           A   243    
+                           A   244    .CLASS 65
+                           A   245    
+                           A   246    .VALUE 9
+                           A   247    
+                           A   248    .TYPE 36
+                           A   249    
+                           A   250    .ENDEF
+                           A   251    
+                           A   252    .DEFINE "status"
+                           A   253    
+                           A   254    .CLASS 65
+                           A   255    
+                           A   256    .VALUE -1
+                           A   257    
+                           A   258    .TYPE 12
+                           A   259    
+                           A   260    .ENDEF
+                           A   261    
+                           A   262    .DEFINE "lsr"
+                           A   263    
+                           A   264    .CLASS 65
+                           A   265    
+                           A   266    .VALUE -2
+                           A   267    
+                           A   268    .TYPE 12
+                           A   269    
+                           A   270    .ENDEF
+                           A   271    
+                           A   272    .DEFINE "index"
+                           A   273    
+                           A   274    .CLASS 65
+                           A   275    
+                           A   276    .VALUE -5
+                           A   277    
+                           A   278    .TYPE 4
+                           A   279    
+                           A   280    .ENDEF
+                           A   281    
+0440F0 DDE5                A   282    	PUSH	IX
+0440F2 DD210000 00         A   283    	LD	IX,0
+0440F7 DD39                A   284    	ADD	IX,SP
+0440F9 C5                  A   285    	PUSH	BC
+0440FA 3B                  A   286    	DEC	SP
+0440FB 3B                  A   287    	DEC	SP
+                           A   288    ;   22		UCHAR lsr ;
+                           A   289    ;   23		UCHAR status = UART_ERR_NONE ;
+                           A   290    .LINE 23
+                           A   291    
+0440FC DD36FF00            A   292    	LD	(IX+%FFFFFFFF),%0
+                           A   293    ;   24		int   index = 0 ;
+                           A   294    .LINE 24
+                           A   295    
+044100 01000000            A   296    	LD	BC,0
+044104 DD0FFB              A   297    	LD	(IX+%FFFFFFFB),BC
+                           A   298    ;   25	
+                           A   299    ;   26		while( UART_ERR_NONE == status ) {
+                           A   300    .LINE 26
+                           A   301    
+044107 18 55               A   302    	JR	L_17
+044109                     A   303    L_18:
+                           A   304    ;   27			lsr = UART0_LSR ;				
+                           A   305    .LINE 27
+                           A   306    
+044109 ED38C5              A   307    	IN0	A,(197)
+04410C DD77FE              A   308    	LD	(IX+%FFFFFFFE),A
+                           A   309    ;   28			
+                           A   310    ;   29			if( 0 != (lsr & UART_LSR_BREAKI
+                           A   311    .LINE 29
+                           A   312    
+04410F E610                A   313    	AND	A,%10
+044111 28 04               A   314    	JR	Z,L_7
+                           A   315    ;   30				status = UART_ERR_BREAKINDI
+                           A   316    .LINE 30
+                           A   317    
+044113 DD36FF05            A   318    	LD	(IX+%FFFFFFFF),%5
+                           A   319    ;   31			}
+044117                     A   320    L_7:
+                           A   321    .LINE 31
+                           A   322    
+                           A   323    ;   32			if( 0 != (lsr & UART_LSR_FRAMIN
+                           A   324    .LINE 32
+                           A   325    
+044117 DD7EFE              A   326    	LD	A,(IX+%FFFFFFFE)
+04411A E608                A   327    	AND	A,%8
+04411C 28 04               A   328    	JR	Z,L_9
+                           A   329    ;   33				status = UART_ERR_FRAMINGER
+                           A   330    .LINE 33
+                           A   331    
+04411E DD36FF02            A   332    	LD	(IX+%FFFFFFFF),%2
+                           A   333    ;   34			}
+044122                     A   334    L_9:
+                           A   335    .LINE 34
+                           A   336    
+                           A   337    ;   35			if( 0 != (lsr & UART_LSR_PARITY
+                           A   338    .LINE 35
+                           A   339    
+044122 DD7EFE              A   340    	LD	A,(IX+%FFFFFFFE)
+044125 E604                A   341    	AND	A,%4
+044127 28 04               A   342    	JR	Z,L_11
+                           A   343    ;   36				status = UART_ERR_PARITYERR
+                           A   344    .LINE 36
+                           A   345    
+044129 DD36FF03            A   346    	LD	(IX+%FFFFFFFF),%3
+                           A   347    ;   37			}
+04412D                     A   348    L_11:
+                           A   349    .LINE 37
+                           A   350    
+                           A   351    ;   38			if( 0 != (lsr & UART_LSR_OVERRR
+                           A   352    .LINE 38
+                           A   353    
+04412D DD7EFE              A   354    	LD	A,(IX+%FFFFFFFE)
+044130 E602                A   355    	AND	A,%2
+044132 28 04               A   356    	JR	Z,L_14
+                           A   357    ;   39				status = UART_ERR_OVERRUNER
+                           A   358    .LINE 39
+                           A   359    
+044134 DD36FF04            A   360    	LD	(IX+%FFFFFFFF),%4
+                           A   361    ;   40			}
+044138                     A   362    L_14:
+                           A   363    .LINE 40
+                           A   364    
+                           A   365    ;   41			if( 0 != (lsr & UART_LSR_DATA_R
+                           A   366    .LINE 41
+                           A   367    
+044138 DD7EFE              A   368    	LD	A,(IX+%FFFFFFFE)
+04413B E601                A   369    	AND	A,%1
+04413D 28 12               A   370    	JR	Z,L_16
+                           A   371    ;   42				pData[ index++ ] = UART0_RB
+                           A   372    .LINE 42
+                           A   373    
+04413F DD07FB              A   374    	LD	BC,(IX+%FFFFFFFB)
+044142 DD2706              A   375    	LD	HL,(IX+%6)
+044145 09                  A   376    	ADD	HL,BC
+044146 ED38C0              A   377    	IN0	A,(192)
+044149 77                  A   378    	LD	(HL),A
+04414A DD07FB              A   379    	LD	BC,(IX+%FFFFFFFB)
+04414D 03                  A   380    	INC	BC
+04414E DD0FFB              A   381    	LD	(IX+%FFFFFFFB),BC
+                           A   382    ;   43			}
+044151                     A   383    L_16:
+                           A   384    .LINE 43
+                           A   385    
+                           A   386    ;   44			if( index == (*nbytes) ) {		
+                           A   387    .LINE 44
+                           A   388    
+044151 DD2709              A   389    	LD	HL,(IX+%9)
+044154 DD07FB              A   390    	LD	BC,(IX+%FFFFFFFB)
+044157 ED27                A   391    	LD	HL,(HL)
+044159 B7                  A   392    	OR	A,A
+04415A ED42                A   393    	SBC	HL,BC
+04415C 28 06               A   394    	JR	Z,L_19
+                           A   395    ;   45				break ;
+                           A   396    ;   46			}
+                           A   397    ;   47		}
+04415E                     A   398    L_17:
+                           A   399    .LINE 47
+                           A   400    
+04415E DD7EFF              A   401    	LD	A,(IX+%FFFFFFFF)
+044161 B7                  A   402    	OR	A,A
+044162 28 A5               A   403    	JR	Z,L_18
+044164                     A   404    L_19:
+                           A   405    ;   48		*nbytes = index ;
+                           A   406    .LINE 48
+                           A   407    
+044164 DD2709              A   408    	LD	HL,(IX+%9)
+044167 DD07FB              A   409    	LD	BC,(IX+%FFFFFFFB)
+04416A ED0F                A   410    	LD	(HL),BC
+                           A   411    ;   49		return status ;
+                           A   412    .LINE 49
+                           A   413    
+04416C DD7EFF              A   414    	LD	A,(IX+%FFFFFFFF)
+                           A   415    ;   50		
+                           A   416    ;   51	}
+                           A   417    .LINE 51
+                           A   418    
+04416F DDF9                A   419    	LD	SP,IX
+044171 DDE1                A   420    	POP	IX
+044173 C9                  A   421    	RET	
+                           A   422    
+                           A   423    
+                           A   424    ;**************************** _read_UART0 *****
+                           A   425    ;Name                         Addr/Register   S
+                           A   426    ;index                                 IX-5    
+                           A   427    ;lsr                                   IX-2    
+                           A   428    ;status                                IX-1    
+                           A   429    ;nbytes                                IX+9    
+                           A   430    ;pData                                 IX+6    
+                           A   431    
+                           A   432    
+                           A   433    ; Stack Frame Size: 17 (bytes)
+                           A   434    ;       Spill Code: 0 (instruction)
+                           A   435    
+                           A   436    
+                           A   437    .ENDFUNC "read_UART0",51,"_read_UART0"
+                           A   438    ;   52	
+                           A   439    ;   53	int getch(void) {
+044174                     A   440    _getch:
+                           A   441    .DEFINE "_getch"
+                           A   442    
+                           A   443    .VALUE _getch
+                           A   444    
+                           A   445    .CLASS 2
+                           A   446    
+                           A   447    .TYPE 68
+                           A   448    
+                           A   449    .ENDEF
+                           A   450    
+                           A   451    .BEGFUNC "getch",53,"_getch"
+                           A   452    
+                           A   453    .LINE 53
+                           A   454    
+                           A   455    .DEFINE "nbytes"
+                           A   456    
+                           A   457    .CLASS 65
+                           A   458    
+                           A   459    .VALUE -3
+                           A   460    
+                           A   461    .TYPE 4
+                           A   462    
+                           A   463    .ENDEF
+                           A   464    
+                           A   465    .DEFINE "ch"
+                           A   466    
+                           A   467    .CLASS 65
+                           A   468    
+                           A   469    .VALUE -4
+                           A   470    
+                           A   471    .TYPE 2
+                           A   472    
+                           A   473    .ENDEF
+                           A   474    
+                           A   475    .DEFINE "status"
+                           A   476    
+                           A   477    .CLASS 65
+                           A   478    
+                           A   479    .VALUE -5
+                           A   480    
+                           A   481    .TYPE 12
+                           A   482    
+                           A   483    .ENDEF
+                           A   484    
+044174 DDE5                A   485    	PUSH	IX
+044176 DD210000 00         A   486    	LD	IX,0
+04417B DD39                A   487    	ADD	IX,SP
+04417D C5                  A   488    	PUSH	BC
+04417E C5                  A   489    	PUSH	BC
+04417F 3B                  A   490    	DEC	SP
+044180 3B                  A   491    	DEC	SP
+                           A   492    ;   54		CHAR ch;
+                           A   493    ;   55		int nbytes = 1;
+                           A   494    .LINE 55
+                           A   495    
+044181 01010000            A   496    	LD	BC,1
+044185 DD0FFD              A   497    	LD	(IX+%FFFFFFFD),BC
+                           A   498    ;   56		UCHAR status = read_UART0(&ch, &nby
+                           A   499    .LINE 56
+                           A   500    
+044188 ED65FD              A   501    	PEA	IX+%FFFFFFFD
+04418B ED65FC              A   502    	PEA	IX+%FFFFFFFC
+04418E CD F0 40 04         A   503    	CALL	_read_UART0
+044192 C1                  A   504    	POP	BC
+044193 C1                  A   505    	POP	BC
+044194 DD77FB              A   506    	LD	(IX+%FFFFFFFB),A
+                           A   507    ;   57		nbytes = (UINT)ch;
+                           A   508    .LINE 57
+                           A   509    
+044197 DD7EFC              A   510    	LD	A,(IX+%FFFFFFFC)
+04419A 17ED62              A   511    	SEXT	HL
+04419D DD6EFC              A   512    	LD	L,(IX+%FFFFFFFC)
+0441A0 DD2FFD              A   513    	LD	(IX+%FFFFFFFD),HL
+                           A   514    ;   58		nbytes = (nbytes & 0x0000FF);
+                           A   515    .LINE 58
+                           A   516    
+0441A3 DD7EFD              A   517    	LD	A,(IX+%FFFFFFFD)
+0441A6 B7ED62              A   518    	UEXT	HL
+0441A9 6F                  A   519    	LD	L,A
+0441AA DD2FFD              A   520    	LD	(IX+%FFFFFFFD),HL
+                           A   521    ;   59		return (UART_ERR_NONE!=status) ? -1
+                           A   522    .LINE 59
+                           A   523    
+0441AD DD7EFB              A   524    	LD	A,(IX+%FFFFFFFB)
+0441B0 B7                  A   525    	OR	A,A
+0441B1 28 09               A   526    	JR	Z,L_23
+0441B3 01FFFFFF            A   527    	LD	BC,16777215
+0441B7 DD0FF8              A   528    	LD	(IX+%FFFFFFF8),BC
+0441BA 18 06               A   529    	JR	L_24
+0441BC                     A   530    L_23:
+0441BC DD07FD              A   531    	LD	BC,(IX+%FFFFFFFD)
+0441BF DD0FF8              A   532    	LD	(IX+%FFFFFFF8),BC
+0441C2                     A   533    L_24:
+0441C2 DD27F8              A   534    	LD	HL,(IX+%FFFFFFF8)
+                           A   535    ;   60	}
+                           A   536    .LINE 60
+                           A   537    
+0441C5 DDF9                A   538    	LD	SP,IX
+0441C7 DDE1                A   539    	POP	IX
+0441C9 C9                  A   540    	RET	
+                           A   541    
+                           A   542    
+                           A   543    ;**************************** _getch **********
+                           A   544    ;Name                         Addr/Register   S
+                           A   545    ;temp21                                IX-8    
+                           A   546    ;status                                IX-5    
+                           A   547    ;ch                                    IX-4    
+                           A   548    ;nbytes                                IX-3    
+                           A   549    
+                           A   550    
+                           A   551    ; Stack Frame Size: 14 (bytes)
+                           A   552    ;       Spill Code: 0 (instruction)
+                           A   553    
+                           A   554    
+                           A   555    .ENDFUNC "getch",60,"_getch"
+                           A   556    	XREF __lshru:ROM
+                           A   557    	XREF __icmpzero:ROM
+                           A   558    	XDEF _getch
+                           A   559    	XDEF _read_UART0
+                           A   560    	XDEF _sendStatus
+                           A   561    	XDEF _putch
+                           A   562    	END
 
 
 Errors: 0
 Warnings: 0
-Lines Assembled: 221
+Lines Assembled: 563

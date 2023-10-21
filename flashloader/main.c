@@ -47,13 +47,12 @@ int main(int argc, char * argv[]) {
 	*/
 	while(1) {
 		sendStatus('S', 1, 0xAABBCCDD);
-		delayms(500);
+		getch();
+		//delayms(500);
 		sendStatus('E', 1, 0);
-		delayms(500);
+		getch();
+		//delayms(500);
 	}
-
-
-
 
 	f_mount(&fs, "", 1);
 

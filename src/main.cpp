@@ -12,6 +12,11 @@
 #define ZDI_TCKPIN 26
 #define ZDI_TDIPIN 27
 
+#define DONE                0x70000
+#define VALUESTART          0x80000
+#define FLASHLOADER_RESULT  0x60000
+#define FLASHLOADER_VALUE   0x60001
+
 fabgl::PS2Controller    PS2Controller;
 fabgl::VGA16Controller  DisplayController;
 fabgl::Terminal         terminal;
@@ -34,16 +39,40 @@ void term_printf (const char* format, ...) {
    	va_end(list);
 }
 
-uint32_t waitcontinueLoader(void) {
-    uint32_t result, pc;
-
+void waitcontinueLoader(void) {
+    uint32_t pc;
     while(cpu->isRunning());// delay(100); // wait for ez80 to hit breakpoint
-    cpu->setBreak();
+    //cpu->setBreak();
     pc = cpu->pc();
     cpu->bc(0x100); // write '1' to register B, don't care about 'C'
-    result = cpu->hl();
+    //result = cpu->hl();
     cpu->pc(pc);
     cpu->setContinue();
+    //return result;
+}
+
+uint8_t get_flashloader_result(void) {
+    uint8_t result;
+
+    zdi->read_memory(FLASHLOADER_RESULT, 1, &result);
+    return result;
+}
+
+void wait_debugdone(void) {
+    uint8_t result = 0;
+
+    while(result != 128) {
+        zdi->read_memory(DONE, 1, &result);
+    }
+}
+
+uint32_t get_flashloader_value(void) {
+    uint8_t buffer[3];
+    uint32_t result = 0;
+    zdi->read_memory(FLASHLOADER_VALUE, 3, buffer);
+    result = result | buffer[0];
+    result = result | (buffer[1] << 8);
+    result = result | (buffer[2] << 16);
     return result;
 }
 
@@ -122,6 +151,8 @@ void init_ez80(void) {
     cpu->setADLmode(true);
     cpu->instruction_di();  
     
+    // configure SPI
+    cpu->instruction_out (SPI_CTL, 0x04);
     // configure default GPIO
     cpu->instruction_out (PB_DDR, 0xff);
     cpu->instruction_out (PC_DDR, 0xff);
@@ -202,8 +233,8 @@ void loop() {
     uint8_t memval;
     char buffer[128];
 
-    boot_screen();
-    ask_initial();
+    //boot_screen();
+    //ask_initial();
  
     boot_screen();
     terminal.write("Action                          Status\r\n");
@@ -230,16 +261,56 @@ void loop() {
     cpu->enableBreakpoint(0);
     cpu->setContinue(); // start uploaded program
     
-    terminal.write("Starting flashloader          - ");
+    //terminal.write("Starting flashloader          - ");
+    //waitcontinueLoader();
+    //terminal.write("Done\r\n");
+
+
+//  DEBUG
+    uint8_t result;
+    uint8_t value;
+    uint32_t address;
+
+    //for(int n = 0; n < 20; n++) {
+    //    waitcontinueLoader();
+    //    result= get_flashloader_result();
+    //    value = get_flashloader_value();
+    //
+    //    sprintf(buffer, "Result %02d: 0x%02X, Value: 0x%02X\r\n", n, result, value);
+    //    terminal.write(buffer);
+    //}
+
+    terminal.write("Waiting for payload\r\n");
+    //wait_debugdone();
     waitcontinueLoader();
-    terminal.write("Done\r\n");   
+    address = VALUESTART;
+
+    cpu->setBreak();
+    for(int n = 0; n < 20; n++) {
+        zdi->read_memory(address, 1, &value);
+        sprintf(buffer, "Position %02d: 0x%02X\r\n", n, value);
+        terminal.write(buffer);
+        address++;
+    }
+    cpu->setContinue();
+    while(1);
+
+
+    // NOrmal program here
+
+
+
+
+
     terminal.write("Opening file from SD card     - ");
-    filesize = waitcontinueLoader();
-    if(filesize == 0) {
+    
+    waitcontinueLoader();
+    if(get_flashloader_result() == 0) {
         fg_red();
         terminal.write("Error opening \"MOS.bin\"");
         while(1);
     }
+    filesize = get_flashloader_value();
     if(filesize == 0xFFFFFF) {
         fg_red();
         terminal.write("Invalid file size for \"MOS.bin\"");
@@ -253,7 +324,9 @@ void loop() {
     terminal.write(")\r\n");
     
     terminal.write("Reading file to ez80 memory   - ");
-    readsize = waitcontinueLoader();
+    waitcontinueLoader();
+    readsize = get_flashloader_value();
+    //readsize = waitcontinueLoader();
     if(filesize == readsize) terminal.write("Done\r\n");
     else {
         fg_red();
@@ -268,7 +341,9 @@ void loop() {
 
     terminal.write("Erasing flash                 - ");
     //delay(6000);
-    pages = waitcontinueLoader();
+    //pages = waitcontinueLoader();
+    waitcontinueLoader();
+    pages = get_flashloader_value();
     //waitcontinueLoader();
     // determine number of pages to write
     //pages = filesize/1024;
@@ -302,7 +377,9 @@ void loop() {
 
     terminal.write(" - ");
 
-    pages = waitcontinueLoader();
+    //pages = waitcontinueLoader();
+    waitcontinueLoader();
+    pages = get_flashloader_value();
     sprintf(buffer, "%d pages written - ", pages);
     terminal.write(buffer);
 

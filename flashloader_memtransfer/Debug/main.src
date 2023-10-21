@@ -285,27 +285,19 @@ _fs:
 ;    9	
 ;   10	#define MOSFILENAME	"MOS.bin"
 ;   11	#define LOADADDRESS	0x50000
-;   12	#define RETURNCODE	0x60000
-;   13	#define	RETURNVALUE	0x60001
+;   12	#define DONE		0x70000
+;   13	#define	VALUESTART	0x80000
 ;   14	
-;   15	enum {
-;   16		FEEDBACK_OPEN,
-;   17		FEEDBACK_FILEDONE,
-;   18		FEEDBACK_PROCEED,
-;   19		FEEDBACK_ERASEDONE,
-;   20		FEEDBACK_PAGEWRITTEN,
-;   21	};
-;   22	
-;   23	extern void waitZDI(UINT8 status, UINT24 value);
-;   24	extern void enableFlashKeyRegister(void);
-;   25	extern void lockFlashKeyRegister(void);
-;   26	extern void fastmemcpy(UINT24 destination, UINT24 source, UINT24 size);
-;   27	extern void reset(void);
-;   28	
-;   29	FATFS 	fs;
+;   15	extern void waitZDI(UINT8 status, UINT24 value); // status: boolean success/failure 
+;   16	extern void enableFlashKeyRegister(void);
+;   17	extern void lockFlashKeyRegister(void);
+;   18	extern void fastmemcpy(UINT24 destination, UINT24 source, UINT24 size);
+;   19	extern void reset(void);
+;   20	
+;   21	FATFS 	fs;
 	SEGMENT CODE
-;   30	
-;   31	int main(int argc, char * argv[]) {
+;   22	
+;   23	int main(int argc, char * argv[]) {
 _main:
 .DEFINE "_main"
 
@@ -317,9 +309,9 @@ _main:
 
 .ENDEF
 
-.BEGFUNC "main",31,"_main"
+.BEGFUNC "main",23,"_main"
 
-.LINE 31
+.LINE 23
 
 .DEFINE "argc"
 
@@ -351,21 +343,41 @@ _main:
 
 .ENDEF
 
-.DEFINE "pagemax"
+.DEFINE "value"
 
 .CLASS 65
 
-.VALUE -6
+.VALUE -4
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "ptr"
+
+.CLASS 65
+
+.VALUE -7
+
+.TYPE 44
+
+.ENDEF
+
+.DEFINE "addressfrom"
+
+.CLASS 65
+
+.VALUE -10
 
 .TYPE 14
 
 .ENDEF
 
-.DEFINE "size"
+.DEFINE "pagemax"
 
 .CLASS 65
 
-.VALUE -9
+.VALUE -13
 
 .TYPE 14
 
@@ -375,29 +387,19 @@ _main:
 
 .CLASS 65
 
-.VALUE -12
-
-.TYPE 14
-
-.ENDEF
-
-.DEFINE "addressfrom"
-
-.CLASS 65
-
-.VALUE -15
-
-.TYPE 14
-
-.ENDEF
-
-.DEFINE "value"
-
-.CLASS 65
-
 .VALUE -16
 
-.TYPE 12
+.TYPE 14
+
+.ENDEF
+
+.DEFINE "size"
+
+.CLASS 65
+
+.VALUE -22
+
+.TYPE 14
 
 .ENDEF
 
@@ -405,435 +407,300 @@ _main:
 
 .CLASS 65
 
-.VALUE -19
+.VALUE -25
 
 .TYPE 14
-
-.ENDEF
-
-.DEFINE "fr"
-
-.CLASS 65
-
-.VALUE -22
-
-.TYPE 4
-
-.ENDEF
-
-.DEFINE "br"
-
-.CLASS 65
-
-.VALUE -28
-
-.TYPE 14
-
-.ENDEF
-
-.DEFINE "dest"
-
-.CLASS 65
-
-.VALUE -31
-
-.TYPE 33
-
-.ENDEF
-
-.DEFINE "timer"
-
-.CLASS 65
-
-.VALUE -34
-
-.TYPE 14
-
-.ENDEF
-
-.DEFINE "fil"
-
-.CLASS 65
-
-.VALUE -63
-
-.TAG "NONAME2"
-
-.TYPE 8
 
 .ENDEF
 
 	PUSH	IX
 	LD	IX,0
 	ADD	IX,SP
-	LEA	HL,IX+%FFFFFFC1
+	LEA	HL,IX+%FFFFFFE7
 	LD	SP,HL
-;   32		FRESULT	fr;
-;   33		FIL	   	fil;
-;   34		UINT24  br;	
-;   35		void * 	dest;
-;   36		UINT24 size;
-;   37		
-;   38		UINT24	counter,pagemax, lastpagebytes;
-;   39		UINT24 addressto,addressfrom;
-;   40		UINT8	value;
-;   41		UINT24 timer;
-;   42		
-;   43		waitZDI(1,0);
-.LINE 43
-
-	LD	BC,0
-	PUSH	BC
-	LD	BC,1
-	PUSH	BC
-	CALL	_waitZDI
-	POP	BC
-	POP	BC
-;   44		
-;   45		init_spi();
-.LINE 45
-
-	CALL	_init_spi
-;   46		f_mount(&fs, "", 1);
-.LINE 46
-
-	LD	BC,1
-	PUSH	BC
-	LD	BC,L__0
-	PUSH	BC
-	LD	BC,_fs
-	PUSH	BC
-	CALL	_f_mount
-	POP	BC
-	POP	BC
-	POP	BC
-;   47	
-;   48		addressto = FLASHSTART;
-.LINE 48
-
-	LD	BC,0
-	LD	(IX+%FFFFFFF4),BC
-;   49		addressfrom = LOADADDRESS;
-.LINE 49
-
-	LD	BC,327680
-	LD	(IX+%FFFFFFF1),BC
-;   50	
-;   51		fr = f_open(&fil, MOSFILENAME, FA_READ);
-.LINE 51
-
-	LD	BC,1
-	PUSH	BC
-	LD	BC,L__1
-	PUSH	BC
-	PEA	IX+%FFFFFFC1
-	CALL	_f_open
-	POP	BC
-	POP	BC
-	POP	BC
-	LD	(IX+%FFFFFFEA),HL
-;   52		if(fr == FR_OK) {
-.LINE 52
-
-	CALL	__icmpzero
-	JR	NZ,L_19
-;   53	
-;   54			di();
-.LINE 54
-
-	di
-;   55			size = f_size(&fil);
-.LINE 55
-
-	LD	BC,(IX+%FFFFFFCC)
-	LD	(IX+%FFFFFFF7),BC
-;   56			waitZDI(FEEDBACK_OPEN, size);
-.LINE 56
-
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	CALL	_waitZDI
-	POP	BC
-	POP	BC
-;   57	
-;   58			fr = f_read(&fil, (void *)LOADADDRESS, size, &br);
-.LINE 58
-
-	PEA	IX+%FFFFFFE4
-	LD	BC,(IX+%FFFFFFF7)
-	PUSH	BC
-	LD	BC,327680
-	PUSH	BC
-	PEA	IX+%FFFFFFC1
-	CALL	_f_read
-	POP	BC
-	POP	BC
-	POP	BC
-	POP	BC
-	LD	(IX+%FFFFFFEA),HL
-;   59	
-;   60			f_close(&fil);
-.LINE 60
-
-	PEA	IX+%FFFFFFC1
-	CALL	_f_close
-	POP	BC
-;   61			waitZDI(FEEDBACK_FILEDONE, br);
-.LINE 61
-
-	LD	BC,(IX+%FFFFFFE4)
-	PUSH	BC
-	LD	BC,1
-	PUSH	BC
-	CALL	_waitZDI
-	POP	BC
-	POP	BC
-;   62			
-;   63			// Wait for user to acknowledge proceed (remote ZDI)
-;   64			waitZDI(FEEDBACK_PROCEED, 0);
-.LINE 64
-
-	LD	BC,0
-	PUSH	BC
-	LD	BC,2
-	PUSH	BC
-	CALL	_waitZDI
-	POP	BC
-	POP	BC
-;   65			
-;   66			// Unprotect and erase flash
-;   67			enableFlashKeyRegister();	// unlock Flash Key Register, so we can write to the Flash Write/Erase protection registers
-.LINE 67
-
-	CALL	_enableFlashKeyRegister
-;   68			FLASH_PROT = 0;				// disable protection on all 8x16KB blocks in the flash
-.LINE 68
+;   24		FRESULT	fr;
+;   25		FIL	   	fil;
+;   26		UINT24  br;	
+;   27		void * 	dest;
+;   28		UINT24 size;
+;   29		
+;   30		UINT24	counter,pagemax, lastpagebytes;
+;   31		UINT24 addressto,addressfrom;
+;   32		UINT8	value;
+;   33		UINT24 timer;
+;   34	
+;   35		UINT8* ptr;
+;   36		
+;   37		*((UINT8*)DONE) = 0; 
+.LINE 37
 
 	XOR	A,A
-	OUT0	(250),A
-;   69			enableFlashKeyRegister();	// will need to unlock again after previous write to the flash protection register
-.LINE 69
+	LD	(458752),A
+;   38		ptr = (UINT8*)VALUESTART;
+.LINE 38
 
-	CALL	_enableFlashKeyRegister
-;   70			FLASH_FDIV = 0x5F;			// Ceiling(18Mhz * 5,1us) = 95, or 0x5F
-.LINE 70
+	LD	BC,524288
+	LD	(IX+%FFFFFFF9),BC
+;   39		
+;   40		for(value = 0; value < 20; value++) {
+.LINE 40
 
-	LD	A,%5F
-	OUT0	(249),A
-;   71	
-;   72			// Erase all flash pages
-;   73			for(counter = 0; counter < FLASHPAGES; counter++)
-.LINE 73
+	LD	(IX+%FFFFFFFC),%0
+	JR	L_4
+L_2:
+;   41			//waitZDI(value, value);
+;   42			*ptr = value;
+.LINE 42
+
+	LD	HL,(IX+%FFFFFFF9)
+	LD	A,(IX+%FFFFFFFC)
+	LD	(HL),A
+;   43			ptr++;
+.LINE 43
+
+	LD	BC,(IX+%FFFFFFF9)
+	INC	BC
+	LD	(IX+%FFFFFFF9),BC
+	INC	(IX+%FFFFFFFC)
+;   44		}
+L_4:
+.LINE 44
+
+	LD	A,(IX+%FFFFFFFC)
+	CP	A,%14
+	JR	C,L_2
+;   45		*((UINT8*)DONE) = 128;
+.LINE 45
+
+	LD	A,%80
+	LD	(458752),A
+;   46		waitZDI(1,0);
+.LINE 46
 
 	LD	BC,0
-	LD	(IX+%FFFFFFFD),BC
-	JR	L_5
-L_3:
-;   74			{
-;   75				FLASH_PAGE = counter;
-.LINE 75
+	PUSH	BC
+	LD	BC,1
+	PUSH	BC
+	CALL	_waitZDI
+	POP	BC
+	POP	BC
+;   47		while(1);
+L_7:
+.LINE 47
+
+	JR	L_7
+;   48		
+;   49		
+;   50		
+;   51		
+;   52		
+;   53		
+;   54		waitZDI(1,0);
+;   55		
+;   56		init_spi();
+;   57		f_mount(&fs, "", 1);
+;   58	
+;   59		addressto = FLASHSTART;
+;   60		addressfrom = LOADADDRESS;
+;   61	
+;   62		fr = f_open(&fil, MOSFILENAME, FA_READ);
+;   63		if(fr == FR_OK) {
+;   64	
+;   65			di();
+;   66			size = f_size(&fil);
+;   67			waitZDI(1, size);
+;   68	
+;   69			fr = f_read(&fil, (void *)LOADADDRESS, size, &br);
+;   70	
+;   71			f_close(&fil);
+;   72			waitZDI(1, br);
+;   73			
+;   74			// Wait for user to acknowledge proceed (remote ZDI)
+;   75			waitZDI(1, 0);
+;   76			
+;   77			// Unprotect and erase flash
+;   78			enableFlashKeyRegister();	// unlock Flash Key Register, so we can write to the Flash Write/Erase protection registers
+;   79			FLASH_PROT = 0;				// disable protection on all 8x16KB blocks in the flash
+;   80			enableFlashKeyRegister();	// will need to unlock again after previous write to the flash protection register
+;   81			FLASH_FDIV = 0x5F;			// Ceiling(18Mhz * 5,1us) = 95, or 0x5F
+;   82	
+;   83			// Erase all flash pages
+;   84			for(counter = 0; counter < FLASHPAGES; counter++)
+L_12:
+.LINE 84
+
+;   85			{
+;   86				FLASH_PAGE = counter;
+.LINE 86
 
 	LD	A,(IX+%FFFFFFFD)
 	OUT0	(252),A
-;   76				FLASH_PGCTL = 0x02;			// Page erase bit enable, start erase
-.LINE 76
+;   87				FLASH_PGCTL = 0x02;			// Page erase bit enable, start erase
+.LINE 87
 
 	LD	A,%2
 	OUT0	(255),A
-;   77	
-;   78				do
-L_1:
-.LINE 78
+;   88	
+;   89				do
+L_10:
+.LINE 89
 
-;   79				{
-;   80					value = FLASH_PGCTL;
-.LINE 80
+;   90				{
+;   91					value = FLASH_PGCTL;
+.LINE 91
 
 	IN0	A,(255)
-	LD	(IX+%FFFFFFF0),A
-;   81				}
-;   82				while(value & 0x02);// wait for completion of erase			
-.LINE 82
+	LD	(IX+%FFFFFFFC),A
+;   92				}
+;   93				while(value & 0x02);// wait for completion of erase			
+.LINE 93
 
 	AND	A,%2
-	JR	NZ,L_1
+	JR	NZ,L_10
 	LD	BC,(IX+%FFFFFFFD)
 	INC	BC
 	LD	(IX+%FFFFFFFD),BC
-;   83			}
-L_5:
-.LINE 83
-
 	LD	BC,128
 	LD	HL,(IX+%FFFFFFFD)
 	OR	A,A
 	SBC	HL,BC
-	JR	C,L_3
-;   84			
-;   85			// determine number of pages to write
-;   86			pagemax = size/PAGESIZE;
-.LINE 86
-
-	LD	HL,(IX+%FFFFFFF7)
-	LD	A,%A
-	CALL	__ishru_b
-	LD	(IX+%FFFFFFFA),HL
-;   87			if(size%PAGESIZE) // last page has less than PAGESIZE bytes
-.LINE 87
+	JR	C,L_12
+;   94			}
+;   95			
+;   96			// determine number of pages to write
+;   97			pagemax = size/PAGESIZE;
+;   98			if(size%PAGESIZE) // last page has less than PAGESIZE bytes
+.LINE 98
 
 	LD	BC,1023
-	LD	HL,(IX+%FFFFFFF7)
+	LD	HL,(IX+%FFFFFFEA)
 	CALL	__iand
-	LD	(IX+%FFFFFFE7),HL
+	LD	(IX+%FFFFFFED),HL
 	CALL	__icmpzero
-	JR	Z,L_8
-;   88			{
-;   89				pagemax += 1;
-.LINE 89
+;   99			{
+;  100				pagemax += 1;
+;  101				lastpagebytes = size%PAGESIZE;			
+;  102			}
+;  103			else lastpagebytes = PAGESIZE; // normal last page
+.LINE 103
 
-	LD	BC,(IX+%FFFFFFFA)
-	INC	BC
-	LD	(IX+%FFFFFFFA),BC
-;   90				lastpagebytes = size%PAGESIZE;			
-.LINE 90
+;  104	
+;  105			waitZDI(1, pagemax);
+.LINE 105
 
-	LD	BC,(IX+%FFFFFFE7)
-	LD	(IX+%FFFFFFED),BC
-;   91			}
-;   92			else lastpagebytes = PAGESIZE; // normal last page
-.LINE 92
-
-	JR	L_9
-L_8:
-	LD	BC,1024
-	LD	(IX+%FFFFFFED),BC
-L_9:
-;   93	
-;   94			waitZDI(FEEDBACK_ERASEDONE, pagemax);
-.LINE 94
-
-	LD	BC,(IX+%FFFFFFFA)
+	LD	BC,(IX+%FFFFFFF3)
 	PUSH	BC
-	LD	BC,3
+	LD	BC,1
 	PUSH	BC
 	CALL	_waitZDI
 	POP	BC
 	POP	BC
-;   95	
-;   96			// write out each page to flash
-;   97			for(counter = 0; counter < pagemax; counter++)
-.LINE 97
+;  106	
+;  107			// write out each page to flash
+;  108			for(counter = 0; counter < pagemax; counter++)
+.LINE 108
 
 	LD	BC,0
 	LD	(IX+%FFFFFFFD),BC
-	JR	L_16
-L_14:
-;   98			{
-;   99				if(counter == (pagemax - 1)) // last page to write - might need to write less than PAGESIZE
-.LINE 99
+	JR	L_25
+L_23:
+;  109			{
+;  110				if(counter == (pagemax - 1)) // last page to write - might need to write less than PAGESIZE
+.LINE 110
 
-	LD	IY,(IX+%FFFFFFFA)
+	LD	IY,(IX+%FFFFFFF3)
 	LEA	HL,IY+%FFFFFFFF
 	LD	BC,(IX+%FFFFFFFD)
 	OR	A,A
 	SBC	HL,BC
-	JR	NZ,L_12
-;  100					fastmemcpy(addressto,addressfrom,lastpagebytes);				
-.LINE 100
+	JR	NZ,L_21
+;  111					fastmemcpy(addressto,addressfrom,lastpagebytes);				
+.LINE 111
 
-	LD	BC,(IX+%FFFFFFED)
+	LD	BC,(IX+%FFFFFFE7)
 	PUSH	BC
-	LD	BC,(IX+%FFFFFFF1)
+	LD	BC,(IX+%FFFFFFF6)
 	PUSH	BC
-	LD	BC,(IX+%FFFFFFF4)
+	LD	BC,(IX+%FFFFFFF0)
 	PUSH	BC
 	CALL	_fastmemcpy
 	POP	BC
 	POP	BC
 	POP	BC
-;  101				else 
-.LINE 101
+;  112				else 
+.LINE 112
 
-	JR	L_13
-L_12:
-;  102					fastmemcpy(addressto,addressfrom,PAGESIZE);
-.LINE 102
+	JR	L_22
+L_21:
+;  113					fastmemcpy(addressto,addressfrom,PAGESIZE);
+.LINE 113
 
 	LD	BC,1024
 	PUSH	BC
-	LD	BC,(IX+%FFFFFFF1)
+	LD	BC,(IX+%FFFFFFF6)
 	PUSH	BC
-	LD	BC,(IX+%FFFFFFF4)
+	LD	BC,(IX+%FFFFFFF0)
 	PUSH	BC
 	CALL	_fastmemcpy
 	POP	BC
 	POP	BC
 	POP	BC
-L_13:
-;  103			
-;  104				addressto += PAGESIZE;
-.LINE 104
+L_22:
+;  114			
+;  115				addressto += PAGESIZE;
+.LINE 115
 
 	LD	BC,1024
-	LD	HL,(IX+%FFFFFFF4)
+	LD	HL,(IX+%FFFFFFF0)
 	ADD	HL,BC
-	LD	(IX+%FFFFFFF4),HL
-;  105				addressfrom += PAGESIZE;
-.LINE 105
+	LD	(IX+%FFFFFFF0),HL
+;  116				addressfrom += PAGESIZE;
+.LINE 116
 
-	LD	HL,(IX+%FFFFFFF1)
+	LD	HL,(IX+%FFFFFFF6)
 	ADD	HL,BC
-	LD	(IX+%FFFFFFF1),HL
+	LD	(IX+%FFFFFFF6),HL
 	LD	BC,(IX+%FFFFFFFD)
 	INC	BC
 	LD	(IX+%FFFFFFFD),BC
-;  106				//timer = 0;
-;  107				//while(timer++ < 32768);
-;  108				//waitZDI(FEEDBACK_PAGEWRITTEN, counter);
-;  109			}
-L_16:
-.LINE 109
+;  117				//timer = 0;
+;  118				//while(timer++ < 32768);
+;  119				//waitZDI(FEEDBACK_PAGEWRITTEN, counter);
+;  120			}
+L_25:
+.LINE 120
 
-	LD	BC,(IX+%FFFFFFFA)
+	LD	BC,(IX+%FFFFFFF3)
 	LD	HL,(IX+%FFFFFFFD)
 	OR	A,A
 	SBC	HL,BC
-	JR	C,L_14
-;  110			lockFlashKeyRegister();	// lock the flash before WARM reset
-.LINE 110
+	JR	C,L_23
+;  121			lockFlashKeyRegister();	// lock the flash before WARM reset
+.LINE 121
 
 	CALL	_lockFlashKeyRegister
-;  111			waitZDI(FEEDBACK_PAGEWRITTEN, counter);
-.LINE 111
+;  122			waitZDI(1, counter);
+.LINE 122
 
 	LD	BC,(IX+%FFFFFFFD)
 	PUSH	BC
-	LD	BC,4
+	LD	BC,1
 	PUSH	BC
 	CALL	_waitZDI
 	POP	BC
 	POP	BC
-;  112		}
-;  113		else waitZDI(FEEDBACK_OPEN, 0);
-.LINE 113
+;  123		}
+;  124		else waitZDI(0, 0);
+.LINE 124
 
-	JR	L_21
-L_19:
-	LD	BC,0
-	PUSH	BC
-	PUSH	BC
-	CALL	_waitZDI
-	POP	BC
-	POP	BC
-;  114		while(1);
-L_21:
-.LINE 114
+;  125		while(1);
+L_30:
+.LINE 125
 
-	JR	L_21
-;  115		return 0;
-;  116	}
-.LINE 116
+	JR	L_30
+;  126		return 0;
+;  127	}
+.LINE 127
 
 	LD	SP,IX
 	POP	IX
@@ -844,54 +711,30 @@ L_21:
 ;Name                         Addr/Register   Size   Type
 ;_lockFlashKeyRegister               IMPORT  -----   function
 ;_fastmemcpy                         IMPORT  -----   function
-;_enableFlashKeyRegister             IMPORT  -----   function
-;_f_close                            IMPORT  -----   function
-;_f_read                             IMPORT  -----   function
-;_f_open                             IMPORT  -----   function
-;_fs                                 STATIC    558   variable
-;_f_mount                            IMPORT  -----   function
-;_init_spi                           IMPORT  -----   function
 ;_waitZDI                            IMPORT  -----   function
-;fil                                  IX-63     29   variable
-;timer                                IX-34      3   variable
-;dest                                 IX-31      3   variable
-;br                                   IX-28      3   variable
-;G_0                                  IX-25      3   variable
-;fr                                   IX-22      3   variable
-;lastpagebytes                        IX-19      3   variable
-;value                                IX-16      1   variable
-;addressfrom                          IX-15      3   variable
-;addressto                            IX-12      3   variable
-;size                                  IX-9      3   variable
-;pagemax                               IX-6      3   variable
+;lastpagebytes                        IX-25      3   variable
+;size                                 IX-22      3   variable
+;G_0                                  IX-19      3   variable
+;addressto                            IX-16      3   variable
+;pagemax                              IX-13      3   variable
+;addressfrom                          IX-10      3   variable
+;ptr                                   IX-7      3   variable
+;value                                 IX-4      1   variable
 ;counter                               IX-3      3   variable
 ;argv                                  IX+9      3   parameter
 ;argc                                  IX+6      3   parameter
 
 
-; Stack Frame Size: 75 (bytes)
+; Stack Frame Size: 37 (bytes)
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "main",116,"_main"
-	SEGMENT STRSECT
-L__0:
-	DB	0
-L__1:
-	DB	"MOS.bin"
-	DB	0
+.ENDFUNC "main",127,"_main"
 	XREF _fastmemcpy:ROM
 	XREF _lockFlashKeyRegister:ROM
-	XREF _enableFlashKeyRegister:ROM
 	XREF _waitZDI:ROM
-	XREF _init_spi:ROM
-	XREF _f_mount:ROM
-	XREF _f_read:ROM
-	XREF _f_close:ROM
-	XREF _f_open:ROM
 	XREF __iand:ROM
 	XREF __icmpzero:ROM
-	XREF __ishru_b:ROM
 	XDEF _main
 	XDEF _fs
 	END

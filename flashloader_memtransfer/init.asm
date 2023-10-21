@@ -57,8 +57,6 @@ _exec_name:		DB	"FLASHLOADER.BIN", 0		; The executable name, only used in argv
 ;
 			ALIGN	32
 waitBreakpoint:
-			cp	a, b
-			jr	nz, waitBreakpoint
 			ret
 
 			ALIGN	64			; The executable header is from byte 64 onwards
@@ -233,8 +231,8 @@ _waitZDI:
 	ld		hl, RETURNVALUE
 	ld		(hl), de
 	ld		hl, de
-	ld		b, 0
-	ld		a, 1
+	;ld		b, 0
+	;ld		a, 1
 	call	waitBreakpoint
 	ld		sp,ix
 	pop		ix

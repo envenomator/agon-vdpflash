@@ -9,18 +9,10 @@
 
 #define MOSFILENAME	"MOS.bin"
 #define LOADADDRESS	0x50000
-#define RETURNCODE	0x60000
-#define	RETURNVALUE	0x60001
+#define DONE		0x70000
+#define	VALUESTART	0x80000
 
-enum {
-	FEEDBACK_OPEN,
-	FEEDBACK_FILEDONE,
-	FEEDBACK_PROCEED,
-	FEEDBACK_ERASEDONE,
-	FEEDBACK_PAGEWRITTEN,
-};
-
-extern void waitZDI(UINT8 status, UINT24 value);
+extern void waitZDI(UINT8 status, UINT24 value); // status: boolean success/failure 
 extern void enableFlashKeyRegister(void);
 extern void lockFlashKeyRegister(void);
 extern void fastmemcpy(UINT24 destination, UINT24 source, UINT24 size);
@@ -39,6 +31,25 @@ int main(int argc, char * argv[]) {
 	UINT24 addressto,addressfrom;
 	UINT8	value;
 	UINT24 timer;
+
+	UINT8* ptr;
+	
+	*((UINT8*)DONE) = 0; 
+	ptr = (UINT8*)VALUESTART;
+	
+	for(value = 0; value < 20; value++) {
+		//waitZDI(value, value);
+		*ptr = value;
+		ptr++;
+	}
+	*((UINT8*)DONE) = 128;
+	waitZDI(1,0);
+	while(1);
+	
+	
+	
+	
+	
 	
 	waitZDI(1,0);
 	
@@ -53,15 +64,15 @@ int main(int argc, char * argv[]) {
 
 		di();
 		size = f_size(&fil);
-		waitZDI(FEEDBACK_OPEN, size);
+		waitZDI(1, size);
 
 		fr = f_read(&fil, (void *)LOADADDRESS, size, &br);
 
 		f_close(&fil);
-		waitZDI(FEEDBACK_FILEDONE, br);
+		waitZDI(1, br);
 		
 		// Wait for user to acknowledge proceed (remote ZDI)
-		waitZDI(FEEDBACK_PROCEED, 0);
+		waitZDI(1, 0);
 		
 		// Unprotect and erase flash
 		enableFlashKeyRegister();	// unlock Flash Key Register, so we can write to the Flash Write/Erase protection registers
@@ -91,7 +102,7 @@ int main(int argc, char * argv[]) {
 		}
 		else lastpagebytes = PAGESIZE; // normal last page
 
-		waitZDI(FEEDBACK_ERASEDONE, pagemax);
+		waitZDI(1, pagemax);
 
 		// write out each page to flash
 		for(counter = 0; counter < pagemax; counter++)
@@ -108,9 +119,9 @@ int main(int argc, char * argv[]) {
 			//waitZDI(FEEDBACK_PAGEWRITTEN, counter);
 		}
 		lockFlashKeyRegister();	// lock the flash before WARM reset
-		waitZDI(FEEDBACK_PAGEWRITTEN, counter);
+		waitZDI(1, counter);
 	}
-	else waitZDI(FEEDBACK_OPEN, 0);
+	else waitZDI(0, 0);
 	while(1);
 	return 0;
 }

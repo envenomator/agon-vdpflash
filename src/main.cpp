@@ -249,7 +249,7 @@ void loop() {
     }
     if(status.result != 128) {
         fg_red();
-        sprintf(buffer, "Error erasing flash (%d pages erased)", status.result);
+        sprintf(buffer, "Error (%d pages erased)", status.result);
         terminal.write(buffer);
         while(1);
     }
@@ -257,7 +257,7 @@ void loop() {
     // determine number of pages to write
     pages = filesize/1024;
     if(filesize%1024) pages += 1;
-    terminal.write("Programming                   - ");
+    terminal.write("\r\nProgramming ");
     bool done = false;
     while(!done) {
         status = getStatus();
@@ -267,15 +267,15 @@ void loop() {
         else done = true;
     }
     if((status.state == 'P') && (status.status == 1))
-        terminal.write("Done\r\n");
+        terminal.write(" Done\r\n");
     else {
         fg_red();
-        terminal.write("Error writing to flash");
+        terminal.write("\r\nError writing to flash");
         while(1);
     }
     if(status.result != pages) {
         fg_red();
-        sprintf(buffer, "Error writing flash (%d pages written)", status.result);
+        sprintf(buffer, "\r\nError (%d pages written)", status.result);
         terminal.write(buffer);
         while(1);
     }

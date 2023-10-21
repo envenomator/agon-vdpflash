@@ -1,0 +1,424 @@
+; Zilog eZ80 ANSI C Compiler Release 3.4
+; -nomodsect -optsize -noreduceopt -nopadbranch -debug
+; -peephole -globalopt -localcse -const=ROM 
+	FILE	"..\timer.c"
+	.assume ADL=1
+.DEBUG "C"
+	SEGMENT CODE
+;    1	/*
+;    2	 * Title:			AGON MOS - Timer
+;    3	 * Author:			Dean Belfield
+;    4	 * Created:			19/06/2022
+;    5	 * Last Updated:	08/04/2023
+;    6	 * 
+;    7	 * Modinfo:
+;    8	 * 11/07/2022:		Removed unused functions
+;    9	 * 24/07/2022:		Moved interrupt handler to vectors16.asm and initialisation to main
+;   10	 * 13/03/2023:		Refactored
+;   11	 * 31/03/2023:		Added wait_VDP
+;   12	 * 08/04/2023:		Fixed timing loop in wait_VDP
+;   13	 */
+;   14	
+;   15	#include <eZ80.h>
+;   16	#include <defines.h>
+;   17	
+;   18	#include "timer.h"
+;   19	
+;   20	// Configure Timer 0
+;   21	// Parameters:
+;   22	// - interval: Interval in ms
+;   23	// - clkdiv: 4, 16, 64 or 256
+;   24	// - clkflag: Other clock flags (interrupt, etc)
+;   25	// Returns:
+;   26	// - interval value
+;   27	//
+;   28	unsigned short init_timer0(int interval, int clkdiv, unsigned char ctrlbits) {
+_init_timer0:
+.DEFINE "_init_timer0"
+
+.VALUE _init_timer0
+
+.CLASS 2
+
+.TYPE 77
+
+.ENDEF
+
+.BEGFUNC "init_timer0",28,"_init_timer0"
+
+.LINE 28
+
+.DEFINE "interval"
+
+.CLASS 65
+
+.VALUE 6
+
+.TYPE 4
+
+.ENDEF
+
+.DEFINE "clkdiv"
+
+.CLASS 65
+
+.VALUE 9
+
+.TYPE 4
+
+.ENDEF
+
+.DEFINE "ctrlbits"
+
+.CLASS 65
+
+.VALUE 12
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "clkbits"
+
+.CLASS 65
+
+.VALUE -1
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "rr"
+
+.CLASS 65
+
+.VALUE -3
+
+.TYPE 13
+
+.ENDEF
+
+.DEFINE "ctl"
+
+.CLASS 65
+
+.VALUE -4
+
+.TYPE 12
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	PUSH	BC
+	DEC	SP
+;   29		unsigned short	rr;
+;   30		unsigned char	clkbits = 0;
+.LINE 30
+
+	LD	(IX+%FFFFFFFF),%0
+;   31		unsigned char	ctl;
+;   32	
+;   33		switch(clkdiv) {
+.LINE 33
+
+	LD	HL,(IX+%9)
+	CALL	__case16D
+	JP	(HL)
+L__0:
+	DW	3
+	DW	16
+	DW24	L_0	
+
+	DW	64
+	DW24	L_1	
+
+	DW	256
+	DW24	L_2	
+
+	DW24	L_3	
+
+;   34			case  16: clkbits = 0x04; break;
+L_0:
+.LINE 34
+
+	LD	(IX+%FFFFFFFF),%4
+	JR	L_3
+;   35			case  64: clkbits = 0x08; break;	
+L_1:
+.LINE 35
+
+	LD	(IX+%FFFFFFFF),%8
+	JR	L_3
+;   36			case 256: clkbits = 0x0C; break;
+L_2:
+.LINE 36
+
+	LD	(IX+%FFFFFFFF),%C
+;   37		}
+L_3:
+.LINE 37
+
+;   38		ctl = (ctrlbits | clkbits);
+.LINE 38
+
+	LD	A,(IX+%C)
+	OR	A,(IX+%FFFFFFFF)
+	LD	(IX+%FFFFFFFC),A
+;   39	
+;   40		rr = (unsigned short)((SysClkFreq / 100) / clkdiv) * interval;
+.LINE 40
+
+	LD	BC,(IX+%9)
+	CALL	__itol
+	LD	HL,184320
+	LD	E,%0
+	CALL	__ldivs
+	LD	BC,HL
+	LD	HL,(IX+%6)
+	CALL	__smulu
+	LD	(IX+%FFFFFFFD),L
+	LD	(IX+%FFFFFFFE),H
+;   41	
+;   42		TMR0_CTL = 0x00;													// Disable the timer and clear all settings	
+.LINE 42
+
+	XOR	A,A
+	OUT0	(128),A
+;   43		TMR0_RR_L = (unsigned char)(rr);
+.LINE 43
+
+	LD	A,(IX+%FFFFFFFD)
+	OUT0	(129),A
+;   44		TMR0_RR_H = (unsigned char)(rr >> 8);
+.LINE 44
+
+	LD	BC,(IX+%FFFFFFFD)
+	CALL	__stoiu
+	LD	A,%8
+	CALL	__ishrs_b
+	LD	A,L
+	OUT0	(130),A
+;   45	    TMR0_CTL = ctl;
+.LINE 45
+
+	LD	A,(IX+%FFFFFFFC)
+	OUT0	(128),A
+;   46	
+;   47		return rr;
+.LINE 47
+
+	LD	HL,(IX+%FFFFFFFD)
+;   48	}
+.LINE 48
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _init_timer0 ***************************
+;Name                         Addr/Register   Size   Type
+;ctl                                   IX-4      1   variable
+;rr                                    IX-3      2   variable
+;clkbits                               IX-1      1   variable
+;ctrlbits                             IX+12      1   parameter
+;clkdiv                                IX+9      3   parameter
+;interval                              IX+6      3   parameter
+
+
+; Stack Frame Size: 19 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "init_timer0",48,"_init_timer0"
+;   49	
+;   50	// Enable Timer 0
+;   51	// Parameters:
+;   52	// - enable: 0 = disable, 1 = enable
+;   53	//
+;   54	void enable_timer0(unsigned char enable) {
+_enable_timer0:
+.DEFINE "_enable_timer0"
+
+.VALUE _enable_timer0
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "enable_timer0",54,"_enable_timer0"
+
+.LINE 54
+
+.DEFINE "enable"
+
+.CLASS 65
+
+.VALUE 6
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "b"
+
+.CLASS 65
+
+.VALUE -1
+
+.TYPE 12
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	DEC	SP
+;   55		unsigned char b;
+;   56	
+;   57		if(enable <= 1) {
+.LINE 57
+
+	LD	A,%1
+	CP	A,(IX+%6)
+	JR	C,L_6
+;   58			b = TMR0_CTL;
+.LINE 58
+
+	IN0	A,(128)
+	LD	(IX+%FFFFFFFF),A
+;   59			b &= 0xFC;
+.LINE 59
+
+	AND	A,%FC
+	LD	(IX+%FFFFFFFF),A
+;   60			b |= (enable | 2); 
+.LINE 60
+
+	LD	A,(IX+%6)
+	SET	%1,A
+	OR	A,(IX+%FFFFFFFF)
+	LD	(IX+%FFFFFFFF),A
+;   61			TMR0_CTL = b;	
+.LINE 61
+
+	OUT0	(128),A
+;   62		}
+;   63	}
+L_6:
+.LINE 63
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _enable_timer0 ***************************
+;Name                         Addr/Register   Size   Type
+;b                                     IX-1      1   variable
+;enable                                IX+6      1   parameter
+
+
+; Stack Frame Size: 10 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "enable_timer0",63,"_enable_timer0"
+;   64	
+;   65	// Get data count of Timer 0
+;   66	//
+;   67	unsigned short get_timer0() {
+_get_timer0:
+.DEFINE "_get_timer0"
+
+.VALUE _get_timer0
+
+.CLASS 2
+
+.TYPE 77
+
+.ENDEF
+
+.BEGFUNC "get_timer0",67,"_get_timer0"
+
+.LINE 67
+
+.DEFINE "l"
+
+.CLASS 65
+
+.VALUE -1
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "h"
+
+.CLASS 65
+
+.VALUE -2
+
+.TYPE 12
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	DEC	SP
+	DEC	SP
+;   68		unsigned char l = TMR0_DR_L;
+.LINE 68
+
+	IN0	A,(129)
+	LD	(IX+%FFFFFFFF),A
+;   69		unsigned char h = TMR0_DR_H;
+.LINE 69
+
+	IN0	A,(130)
+	LD	(IX+%FFFFFFFE),A
+;   70		return (h << 8) | l;
+.LINE 70
+
+	LD	C,(IX+%FFFFFFFE)
+	LD	B,%0
+	LD	HL,BC
+	LD	H,L
+	LD	L,%0
+	LD	C,(IX+%FFFFFFFF)
+	CALL	__sor
+;   71	}
+.LINE 71
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _get_timer0 ***************************
+;Name                         Addr/Register   Size   Type
+;h                                     IX-2      1   variable
+;l                                     IX-1      1   variable
+
+
+; Stack Frame Size: 8 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "get_timer0",71,"_get_timer0"
+	XREF __ldivs:ROM
+	XREF __sor:ROM
+	XREF __smulu:ROM
+	XREF __stoiu:ROM
+	XREF __itol:ROM
+	XREF __case16D:ROM
+	XREF __ishrs_b:ROM
+	XDEF _get_timer0
+	XDEF _enable_timer0
+	XDEF _init_timer0
+	END

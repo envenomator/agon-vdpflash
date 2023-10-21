@@ -1,0 +1,485 @@
+; Zilog eZ80 ANSI C Compiler Release 3.4
+; -nomodsect -optsize -noreduceopt -nopadbranch -debug
+; -peephole -globalopt -localcse -const=ROM 
+	FILE	"..\spi.c"
+	.assume ADL=1
+.DEBUG "C"
+	SEGMENT CODE
+;    1	/*
+;    2	 * Title:			AGON MOS - SPI
+;    3	 * Author:			Cocoacrumbs
+;    4	 * Modified by:		Dean Belfield
+;    5	 * Created:			19/06/2022
+;    6	 * Last Updated:	11/07/2022
+;    7	 * 
+;    8	 * Thank you to @CoCoaCrumbs fo this code https://www.cocoacrumbs.com/
+;    9	 *
+;   10	 * Modinfo:
+;   11	 * 11/07/2022:		Now includes defines.h; init_hw renamed to init_spi
+;   12	 */
+;   13	
+;   14	#include <ez80.h>
+;   15	#include <defines.h>
+;   16	
+;   17	#include "spi.h"
+;   18	#include "timer.h"
+;   19	
+;   20	// Delays, SPI and SD card retry constants 
+;   21	//
+;   22	#define WAIT4RESET  8000
+;   23	#define SPIRETRY    1000
+;   24	
+;   25	#define SD_CS       4	// PB4, was PB0
+;   26	
+;   27	#define SPI_MOSI    7   // PB7
+;   28	#define SPI_MISO    6   // PB6
+;   29	#define SPI_CLK     3   // PB3
+;   30	
+;   31	
+;   32	// Clear, set bits in registers
+;   33	//
+;   34	#define BIT(n)              (1 << n)
+;   35	#define CLEAR_BIT(reg, n)   (reg &= ~(1 << n))
+;   36	#define SET_BIT(reg, n)     (reg |=  (1 << n))
+;   37	
+;   38	void SD_CS_enable() {
+_SD_CS_enable:
+.DEFINE "_SD_CS_enable"
+
+.VALUE _SD_CS_enable
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "SD_CS_enable",38,"_SD_CS_enable"
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+;   39	     PB_DR &= ~BIT(SD_CS);
+.LINE 39
+
+	IN0	A,(154)
+	RES	%4,A
+	OUT0	(154),A
+;   40	} 
+.LINE 40
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _SD_CS_enable ***************************
+;Name                         Addr/Register   Size   Type
+
+
+; Stack Frame Size: 6 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "SD_CS_enable",40,"_SD_CS_enable"
+;   41	
+;   42	void SD_CS_disable() {
+_SD_CS_disable:
+.DEFINE "_SD_CS_disable"
+
+.VALUE _SD_CS_disable
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "SD_CS_disable",42,"_SD_CS_disable"
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+;   43	     PB_DR |= BIT(SD_CS); 
+.LINE 43
+
+	IN0	A,(154)
+	SET	%4,A
+	OUT0	(154),A
+;   44	} 
+.LINE 44
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _SD_CS_disable ***************************
+;Name                         Addr/Register   Size   Type
+
+
+; Stack Frame Size: 6 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "SD_CS_disable",44,"_SD_CS_disable"
+;   45	
+;   46	BYTE spi_transfer(BYTE d) {
+_spi_transfer:
+.DEFINE "_spi_transfer"
+
+.VALUE _spi_transfer
+
+.CLASS 2
+
+.TYPE 76
+
+.ENDEF
+
+.BEGFUNC "spi_transfer",46,"_spi_transfer"
+
+.LINE 46
+
+.DEFINE "d"
+
+.CLASS 65
+
+.VALUE 6
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "i"
+
+.CLASS 65
+
+.VALUE -3
+
+.TYPE 4
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	PUSH	BC
+;   47	    int i = 0;
+.LINE 47
+
+	LD	BC,0
+	LD	(IX+%FFFFFFFD),BC
+;   48	
+;   49	    // Write the data to exchange 
+;   50		//
+;   51	    SPI_TSR = d;
+.LINE 51
+
+	LD	A,(IX+%6)
+	OUT0	(188),A
+;   52	    do {
+L_5:
+.LINE 52
+
+;   53	        if (SPI_SR & (1 << 7))  {
+.LINE 53
+
+	IN0	A,(187)
+	AND	A,%80
+	JR	NZ,L_7
+;   54	            break;
+;   55	        } 
+;   56	        i++;
+.LINE 56
+
+	LD	BC,(IX+%FFFFFFFD)
+	INC	BC
+	LD	(IX+%FFFFFFFD),BC
+;   57	    } while (i < SPIRETRY);
+.LINE 57
+
+	LD	BC,1000
+	LD	HL,(IX+%FFFFFFFD)
+	OR	A,A
+	SBC	HL,BC
+	JP	M,L_5
+L_7:
+;   58	    return SPI_RBR;
+.LINE 58
+
+	IN0	A,(188)
+;   59	} 
+.LINE 59
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _spi_transfer ***************************
+;Name                         Addr/Register   Size   Type
+;i                                     IX-3      3   variable
+;d                                     IX+6      1   parameter
+
+
+; Stack Frame Size: 12 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "spi_transfer",59,"_spi_transfer"
+;   60	
+;   61	
+;   62	// Reset system devices
+;   63	void init_spi() {
+_init_spi:
+.DEFINE "_init_spi"
+
+.VALUE _init_spi
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "init_spi",63,"_init_spi"
+
+.LINE 63
+
+.DEFINE "i"
+
+.CLASS 65
+
+.VALUE -4
+
+.TYPE 5
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	PUSH	BC
+	DEC	SP
+;   64	    long i;
+;   65	
+;   66	    // SS must remain high for SPI to work properly 
+;   67		//
+;   68	    PB_DR   |=  BIT(2);
+.LINE 68
+
+	IN0	A,(154)
+	SET	%2,A
+	OUT0	(154),A
+;   69	    PB_ALT1 &= ~BIT(2);
+.LINE 69
+
+	IN0	A,(156)
+	RES	%2,A
+	OUT0	(156),A
+;   70	    PB_ALT2 &= ~BIT(2);
+.LINE 70
+
+	IN0	A,(157)
+	RES	%2,A
+	OUT0	(157),A
+;   71	    PB_DDR  &= ~BIT(2);
+.LINE 71
+
+	IN0	A,(155)
+	RES	%2,A
+	OUT0	(155),A
+;   72	
+;   73	    // Enable the chip select outputs and deselect
+;   74		//
+;   75	    PB_DR   |=  BIT(SD_CS);
+.LINE 75
+
+	IN0	A,(154)
+	SET	%4,A
+	OUT0	(154),A
+;   76	    PB_ALT1 &= ~BIT(SD_CS);
+.LINE 76
+
+	IN0	A,(156)
+	RES	%4,A
+	OUT0	(156),A
+;   77	    PB_ALT2 &= ~BIT(SD_CS);
+.LINE 77
+
+	IN0	A,(157)
+	RES	%4,A
+	OUT0	(157),A
+;   78	    PB_DDR  &= ~BIT(SD_CS);
+.LINE 78
+
+	IN0	A,(155)
+	RES	%4,A
+	OUT0	(155),A
+;   79		
+;   80	    // Set port B pins 7 (MOSI), 6 (MISO), 3 (SCK), 2 (/SS) to SPI 
+;   81		//
+;   82	    PB_ALT1 &= ~(BIT(SPI_MOSI) | BIT(SPI_MISO) | BIT(SPI_CLK));
+.LINE 82
+
+	IN0	A,(156)
+	AND	A,%37
+	OUT0	(156),A
+;   83	    PB_ALT2 |=  (BIT(SPI_MOSI) | BIT(SPI_MISO) | BIT(SPI_CLK));
+.LINE 83
+
+	IN0	A,(157)
+	OR	A,%C8
+	OUT0	(157),A
+;   84		
+;   85	    mode_spi(4);
+.LINE 85
+
+	LD	BC,4
+	PUSH	BC
+	CALL	_mode_spi
+	POP	BC
+;   86	
+;   87	    i = 0;
+.LINE 87
+
+	LD	BC,0
+	XOR	A,A
+	LD	(IX+%FFFFFFFC),BC
+	LD	(IX+%FFFFFFFF),A
+;   88	    while (i < WAIT4RESET)
+.LINE 88
+
+	JR	L_10
+L_11:
+;   89	        i++;
+.LINE 89
+
+	LD	HL,(IX+%FFFFFFFC)
+	LD	E,(IX+%FFFFFFFF)
+	LD	A,%1
+	CALL	__ladd_b
+	LD	(IX+%FFFFFFFC),HL
+	LD	(IX+%FFFFFFFF),E
+L_10:
+	LD	HL,(IX+%FFFFFFFC)
+	LD	E,(IX+%FFFFFFFF)
+	LD	BC,8000
+	XOR	A,A
+	CALL	__lcmps
+	CALL	__setflag
+	JP	M,L_11
+;   90	} 
+.LINE 90
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _init_spi ***************************
+;Name                         Addr/Register   Size   Type
+;_mode_spi                           IMPORT  -----   function
+;i                                     IX-4      4   variable
+
+
+; Stack Frame Size: 10 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "init_spi",90,"_init_spi"
+;   91	
+;   92	
+;   93	void mode_spi(int d) {
+_mode_spi:
+.DEFINE "_mode_spi"
+
+.VALUE _mode_spi
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "mode_spi",93,"_mode_spi"
+
+.LINE 93
+
+.DEFINE "d"
+
+.CLASS 65
+
+.VALUE 6
+
+.TYPE 4
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+;   94	    // Disable SPI
+;   95		//
+;   96	    SPI_CTL = 0;
+.LINE 96
+
+	XOR	A,A
+	OUT0	(186),A
+;   97	
+;   98	    // SPI Data Rate (bps) = System Clock Frequency / (2 X SPI Baud Rate Generator Divisor)
+;   99		//
+;  100	    SPI_BRG_H = d / 256;
+.LINE 100
+
+	LD	BC,256
+	LD	HL,(IX+%6)
+	CALL	__idivs
+	LD	A,L
+	OUT0	(185),A
+;  101	    SPI_BRG_L = d % 256;
+.LINE 101
+
+	LD	BC,256
+	LD	HL,(IX+%6)
+	CALL	__irems
+	LD	A,L
+	OUT0	(184),A
+;  102	
+;  103	    // Enable SPI
+;  104		//
+;  105	    SPI_CTL = 0x30;         // [5] SPI is enabled.
+.LINE 105
+
+	LD	A,%30
+	OUT0	(186),A
+;  106	                            // [4] When enabled, the SPI operates as a master.
+;  107	} 
+.LINE 107
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _mode_spi ***************************
+;Name                         Addr/Register   Size   Type
+;d                                     IX+6      3   parameter
+
+
+; Stack Frame Size: 9 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "mode_spi",107,"_mode_spi"
+	XREF __lcmps:ROM
+	XREF __idivs:ROM
+	XREF __irems:ROM
+	XREF __setflag:ROM
+	XREF __ladd_b:ROM
+	XDEF _mode_spi
+	XDEF _init_spi
+	XDEF _spi_transfer
+	XDEF _SD_CS_disable
+	XDEF _SD_CS_enable
+	END

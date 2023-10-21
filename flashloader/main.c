@@ -39,9 +39,9 @@ int main(int argc, char * argv[]) {
 
 	f_mount(&fs, "", 1);
 	sendStatus('S', 1, 0); // startup complete
+
 	addressto = FLASHSTART;
 	addressfrom = LOADADDRESS;
-
 	fr = f_open(&fil, MOSFILENAME, FA_READ);
 	if(fr == FR_OK) {
 		size = f_size(&fil);
@@ -51,7 +51,7 @@ int main(int argc, char * argv[]) {
 		sendStatus('M', 1, br); // file read into memory
 
 		f_close(&fil);
-		// Wait for user to acknowledge proceed (remote ZDI)
+		// Wait for user to acknowledge to proceed
 		getch();
 		
 		// Unprotect and erase flash
@@ -72,7 +72,6 @@ int main(int argc, char * argv[]) {
 			}
 			while(value & 0x02);// wait for completion of erase			
 		}
-
 		sendStatus('E', 1, counter); // number of pages erased
 
 		// determine number of pages to write
@@ -94,9 +93,7 @@ int main(int argc, char * argv[]) {
 		
 			addressto += PAGESIZE;
 			addressfrom += PAGESIZE;
-			//timer = 0;
-			//while(timer++ < 32768);
-			////waitZDI(FEEDBACK_PAGEWRITTEN, counter);
+			sendStatus('X', 1, counter+1);
 		}
 		lockFlashKeyRegister();	// lock the flash before WARM reset
 		sendStatus('P', 1, counter); // programming ok

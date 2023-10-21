@@ -45,23 +45,6 @@ void waitforKey(uint8_t key) {
     }
 }
 
-void ask_initial() {
-    terminal.write("This utility will (baremetal) program a new MOS to the Agon ez80 flash,\r\n");
-    terminal.write("from a file on the SD card. This can be performed in case of\r\n");
-    terminal.write("an initially erased or corrupted flash, or having previously flashed\r\n");
-    terminal.write("an incompatible MOS version.\r\n");
-    terminal.write("\r\nRequirements before proceeding:\r\n");
-    terminal.write(" 1) Connect two cables between the GPIO and ZDI ports:\r\n");
-    terminal.write("    - ESP GPIO26 to ZDI TCK (pin 4)\r\n");
-    terminal.write("    - ESP GPIO27 to ZDI TDI (pin 6)\r\n");
-    terminal.write(" 2) Place the required MOS version on the SD card's root directory\r\n"); 
-    terminal.write("    with filename \"MOS.bin\"\r\n");
-    terminal.write(" 3) Reset the board after inserting the SD card\r\n\r\n");
-    terminal.write("Press ENTER to proceed:");
-    //waitforKey(0x0D);
-    terminal.write("\r\n\r\n");
-}
-
 void ask_proceed(void) {
     terminal.write("\r\nPress [y] to start programming MOS:");
     waitforKey('y');
@@ -180,9 +163,6 @@ void loop() {
     char buffer[128];
     serialpackage_t status;
 
-    //boot_screen();
-    //ask_initial();
- 
     boot_screen();
     terminal.write("Action                          Status\r\n");
     terminal.write("--------------------------------------\r\n");
@@ -221,20 +201,7 @@ void loop() {
         while(1);
     }
 
-    /*
-    // DEBUG
-    serialpackage_t status;
-    while(1) {
-        status = getStatus();
-        sprintf(buffer, "Status: <%c> <%d> <0x%08X\r\n", status.state, status.status, status.result);
-        terminal.write(buffer);
-        delay(1000);
-        Serial2.write('C');
-    }
-
-    // DEBUG
-    */
-    terminal.write("Opening file from SD card     - ");
+    terminal.write("Opening MOS.bin from SD card  - ");
     status = getStatus();
     if((status.state == 'F') && (status.status == 1))
         terminal.write("Done");
@@ -252,7 +219,7 @@ void loop() {
     sprintf(buffer, " (%d bytes)\r\n", filesize);
     terminal.write(buffer);
     
-    terminal.write("Reading file to ez80 memory   - ");
+    terminal.write("Reading to ez80 memory        - ");
     status = getStatus();
     if((status.state == 'M') && (status.status == 1))
         terminal.write("Done");
@@ -291,7 +258,14 @@ void loop() {
     pages = filesize/1024;
     if(filesize%1024) pages += 1;
     terminal.write("Programming                   - ");
-    status = getStatus();
+    bool done = false;
+    while(!done) {
+        status = getStatus();
+        if(status.state == 'X') {
+            terminal.write(".");
+        }
+        else done = true;
+    }
     if((status.state == 'P') && (status.status == 1))
         terminal.write("Done\r\n");
     else {

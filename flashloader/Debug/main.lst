@@ -1,4 +1,4 @@
-Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     18:18:30     page:   1
+Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     18:50:18     page:   1
 
 
 PC     Object              I  Line    Source 
@@ -269,8 +269,8 @@ PC     Object              I  Line    Source
                            A   265    .ENDEF
                            A   266    .ENDREC "NONAME5"
                            A   267    	SEGMENT BSS
-0447A2                     A   268    _fs:
-0447A2                     A   269    	DS	558
+0447C4                     A   268    _fs:
+0447C4                     A   269    	DS	558
                            A   270    .DEFINE "fs"
                            A   271    .ALIAS "_fs"
                            A   272    .CLASS 83
@@ -460,22 +460,22 @@ PC     Object              I  Line    Source
                            A   456    ;   37		init_spi();
                            A   457    .LINE 37
                            A   458    
-040152 CD DA 3E 04         A   459    	CALL	_init_spi
+040152 CD FC 3E 04         A   459    	CALL	_init_spi
                            A   460    ;   38		init_UART0();
                            A   461    .LINE 38
                            A   462    
-040156 CD 98 40 04         A   463    	CALL	_init_UART0
+040156 CD BA 40 04         A   463    	CALL	_init_UART0
                            A   464    ;   39	
                            A   465    ;   40		f_mount(&fs, "", 1);
                            A   466    .LINE 40
                            A   467    
 04015A 01010000            A   468    	LD	BC,1
 04015E C5                  A   469    	PUSH	BC
-04015F 01 80 47 04         A   470    	LD	BC,L__0
+04015F 01 A2 47 04         A   470    	LD	BC,L__0
 040163 C5                  A   471    	PUSH	BC
-040164 01 A2 47 04         A   472    	LD	BC,_fs
+040164 01 C4 47 04         A   472    	LD	BC,_fs
 040168 C5                  A   473    	PUSH	BC
-040169 CD 44 32 04         A   474    	CALL	_f_mount
+040169 CD 66 32 04         A   474    	CALL	_f_mount
 04016D C1                  A   475    	POP	BC
 04016E C1                  A   476    	POP	BC
 04016F C1                  A   477    	POP	BC
@@ -489,31 +489,31 @@ PC     Object              I  Line    Source
 04017A C5                  A   485    	PUSH	BC
 04017B 01530000            A   486    	LD	BC,83
 04017F C5                  A   487    	PUSH	BC
-040180 CD 82 41 04         A   488    	CALL	_sendStatus
+040180 CD A4 41 04         A   488    	CALL	_sendStatus
 040184 C1                  A   489    	POP	BC
 040185 C1                  A   490    	POP	BC
 040186 C1                  A   491    	POP	BC
 040187 C1                  A   492    	POP	BC
-                           A   493    ;   42		addressto = FLASHSTART;
-                           A   494    .LINE 42
-                           A   495    
-040188 01000000            A   496    	LD	BC,0
-04018C DD0FF4              A   497    	LD	(IX+%FFFFFFF4),BC
-                           A   498    ;   43		addressfrom = LOADADDRESS;
-                           A   499    .LINE 43
-                           A   500    
-04018F 01000005            A   501    	LD	BC,327680
-040193 DD0FF1              A   502    	LD	(IX+%FFFFFFF1),BC
-                           A   503    ;   44	
+                           A   493    ;   42	
+                           A   494    ;   43		addressto = FLASHSTART;
+                           A   495    .LINE 43
+                           A   496    
+040188 01000000            A   497    	LD	BC,0
+04018C DD0FF4              A   498    	LD	(IX+%FFFFFFF4),BC
+                           A   499    ;   44		addressfrom = LOADADDRESS;
+                           A   500    .LINE 44
+                           A   501    
+04018F 01000005            A   502    	LD	BC,327680
+040193 DD0FF1              A   503    	LD	(IX+%FFFFFFF1),BC
                            A   504    ;   45		fr = f_open(&fil, MOSFILENAME, FA_R
                            A   505    .LINE 45
                            A   506    
 040196 01010000            A   507    	LD	BC,1
 04019A C5                  A   508    	PUSH	BC
-04019B 01 81 47 04         A   509    	LD	BC,L__1
+04019B 01 A3 47 04         A   509    	LD	BC,L__1
 04019F C5                  A   510    	PUSH	BC
 0401A0 ED65C7              A   511    	PEA	IX+%FFFFFFC7
-0401A3 CD D0 32 04         A   512    	CALL	_f_open
+0401A3 CD F2 32 04         A   512    	CALL	_f_open
 0401A7 C1                  A   513    	POP	BC
 0401A8 C1                  A   514    	POP	BC
 0401A9 C1                  A   515    	POP	BC
@@ -521,8 +521,8 @@ PC     Object              I  Line    Source
                            A   517    ;   46		if(fr == FR_OK) {
                            A   518    .LINE 46
                            A   519    
-0401AD CD 32 45 04         A   520    	CALL	__icmpzero
-0401B1 C2 34 03 04         A   521    	JR	NZ,L_19
+0401AD CD 54 45 04         A   520    	CALL	__icmpzero
+0401B1 C2 56 03 04         A   521    	JR	NZ,L_19
                            A   522    ;   47			size = f_size(&fil);
                            A   523    .LINE 47
                            A   524    
@@ -541,7 +541,7 @@ PC     Object              I  Line    Source
 0401C7 C5                  A   537    	PUSH	BC
 0401C8 01460000            A   538    	LD	BC,70
 0401CC C5                  A   539    	PUSH	BC
-0401CD CD 82 41 04         A   540    	CALL	_sendStatus
+0401CD CD A4 41 04         A   540    	CALL	_sendStatus
 0401D1 C1                  A   541    	POP	BC
 0401D2 C1                  A   542    	POP	BC
 0401D3 C1                  A   543    	POP	BC
@@ -556,7 +556,7 @@ PC     Object              I  Line    Source
 0401DC 01000005            A   552    	LD	BC,327680
 0401E0 C5                  A   553    	PUSH	BC
 0401E1 ED65C7              A   554    	PEA	IX+%FFFFFFC7
-0401E4 CD 20 34 04         A   555    	CALL	_f_read
+0401E4 CD 42 34 04         A   555    	CALL	_f_read
 0401E8 C1                  A   556    	POP	BC
 0401E9 C1                  A   557    	POP	BC
 0401EA C1                  A   558    	POP	BC
@@ -576,7 +576,7 @@ PC     Object              I  Line    Source
 0401FE C5                  A   572    	PUSH	BC
 0401FF 014D0000            A   573    	LD	BC,77
 040203 C5                  A   574    	PUSH	BC
-040204 CD 82 41 04         A   575    	CALL	_sendStatus
+040204 CD A4 41 04         A   575    	CALL	_sendStatus
 040208 C1                  A   576    	POP	BC
 040209 C1                  A   577    	POP	BC
 04020A C1                  A   578    	POP	BC
@@ -586,13 +586,13 @@ PC     Object              I  Line    Source
                            A   582    .LINE 53
                            A   583    
 04020C ED65C7              A   584    	PEA	IX+%FFFFFFC7
-04020F CD 5B 37 04         A   585    	CALL	_f_close
+04020F CD 7D 37 04         A   585    	CALL	_f_close
 040213 C1                  A   586    	POP	BC
                            A   587    ;   54			// Wait for user to acknowledge
                            A   588    ;   55			getch();
                            A   589    .LINE 55
                            A   590    
-040214 CD 7D 42 04         A   591    	CALL	_getch
+040214 CD 9F 42 04         A   591    	CALL	_getch
                            A   592    ;   56			
                            A   593    ;   57			// Unprotect and erase flash
                            A   594    ;   58			enableFlashKeyRegister();	// 
@@ -662,258 +662,276 @@ PC     Object              I  Line    Source
 040255 B7                  A   658    	OR	A,A
 040256 ED42                A   659    	SBC	HL,BC
 040258 38 D8               A   660    	JR	C,L_3
-                           A   661    ;   75	
-                           A   662    ;   76			sendStatus('E', 1, counter); //
-                           A   663    .LINE 76
-                           A   664    
-04025A DD07FD              A   665    	LD	BC,(IX+%FFFFFFFD)
-04025D AF                  A   666    	XOR	A,A
-04025E C5D1                A   667    	LD	DE,BC
-040260 4F                  A   668    	LD	C,A
-040261 0600                A   669    	LD	B,%0
-040263 C5                  A   670    	PUSH	BC
-040264 D5                  A   671    	PUSH	DE
-040265 01010000            A   672    	LD	BC,1
-040269 C5                  A   673    	PUSH	BC
-04026A 01450000            A   674    	LD	BC,69
-04026E C5                  A   675    	PUSH	BC
-04026F CD 82 41 04         A   676    	CALL	_sendStatus
-040273 C1                  A   677    	POP	BC
-040274 C1                  A   678    	POP	BC
-040275 C1                  A   679    	POP	BC
-040276 C1                  A   680    	POP	BC
-                           A   681    ;   77	
-                           A   682    ;   78			// determine number of pages to
-                           A   683    ;   79			pagemax = size/PAGESIZE;
-                           A   684    .LINE 79
-                           A   685    
-040277 DD27FA              A   686    	LD	HL,(IX+%FFFFFFFA)
-04027A 3E0A                A   687    	LD	A,%A
-04027C CD A9 45 04         A   688    	CALL	__ishru_b
-040280 DD2FF7              A   689    	LD	(IX+%FFFFFFF7),HL
-                           A   690    ;   80			if(size%PAGESIZE) // last page 
-                           A   691    .LINE 80
-                           A   692    
-040283 01FF0300            A   693    	LD	BC,1023
-040287 DD27FA              A   694    	LD	HL,(IX+%FFFFFFFA)
-04028A CD 41 46 04         A   695    	CALL	__iand
-04028E DD2FE7              A   696    	LD	(IX+%FFFFFFE7),HL
-040291 CD 32 45 04         A   697    	CALL	__icmpzero
-040295 28 0F               A   698    	JR	Z,L_8
-                           A   699    ;   81			{
-                           A   700    ;   82				pagemax += 1;
-                           A   701    .LINE 82
-                           A   702    
-040297 DD07F7              A   703    	LD	BC,(IX+%FFFFFFF7)
-04029A 03                  A   704    	INC	BC
-04029B DD0FF7              A   705    	LD	(IX+%FFFFFFF7),BC
-                           A   706    ;   83				lastpagebytes = size%PAGESI
-                           A   707    .LINE 83
-                           A   708    
-04029E DD07E7              A   709    	LD	BC,(IX+%FFFFFFE7)
-0402A1 DD0FED              A   710    	LD	(IX+%FFFFFFED),BC
-                           A   711    ;   84			}
-                           A   712    ;   85			else lastpagebytes = PAGESIZE; 
-                           A   713    .LINE 85
-                           A   714    
-0402A4 18 07               A   715    	JR	L_16
-0402A6                     A   716    L_8:
-0402A6 01000400            A   717    	LD	BC,1024
-0402AA DD0FED              A   718    	LD	(IX+%FFFFFFED),BC
-0402AD                     A   719    L_16:
-                           A   720    ;   86	
-                           A   721    ;   87			// write out each page to flash
-                           A   722    ;   88			for(counter = 0; counter < page
-                           A   723    .LINE 88
-                           A   724    
-0402AD 01000000            A   725    	LD	BC,0
-0402B1 DD0FFD              A   726    	LD	(IX+%FFFFFFFD),BC
-0402B4 18 50               A   727    	JR	L_15
-0402B6                     A   728    L_13:
-                           A   729    ;   89			{
-                           A   730    ;   90				if(counter == (pagemax - 1)
-                           A   731    .LINE 90
-                           A   732    
-0402B6 DD31F7              A   733    	LD	IY,(IX+%FFFFFFF7)
-0402B9 ED23FF              A   734    	LEA	HL,IY+%FFFFFFFF
-0402BC DD07FD              A   735    	LD	BC,(IX+%FFFFFFFD)
-0402BF B7                  A   736    	OR	A,A
-0402C0 ED42                A   737    	SBC	HL,BC
-0402C2 20 15               A   738    	JR	NZ,L_11
-                           A   739    ;   91					fastmemcpy(addressto,ad
-                           A   740    .LINE 91
-                           A   741    
-0402C4 DD07ED              A   742    	LD	BC,(IX+%FFFFFFED)
-0402C7 C5                  A   743    	PUSH	BC
-0402C8 DD07F1              A   744    	LD	BC,(IX+%FFFFFFF1)
-0402CB C5                  A   745    	PUSH	BC
-0402CC DD07F4              A   746    	LD	BC,(IX+%FFFFFFF4)
-0402CF C5                  A   747    	PUSH	BC
-0402D0 CD 26 01 04         A   748    	CALL	_fastmemcpy
-0402D4 C1                  A   749    	POP	BC
-0402D5 C1                  A   750    	POP	BC
-0402D6 C1                  A   751    	POP	BC
-                           A   752    ;   92				else 
-                           A   753    .LINE 92
-                           A   754    
-0402D7 18 14               A   755    	JR	L_12
-0402D9                     A   756    L_11:
-                           A   757    ;   93					fastmemcpy(addressto,ad
-                           A   758    .LINE 93
-                           A   759    
-0402D9 01000400            A   760    	LD	BC,1024
-0402DD C5                  A   761    	PUSH	BC
-0402DE DD07F1              A   762    	LD	BC,(IX+%FFFFFFF1)
-0402E1 C5                  A   763    	PUSH	BC
-0402E2 DD07F4              A   764    	LD	BC,(IX+%FFFFFFF4)
-0402E5 C5                  A   765    	PUSH	BC
-0402E6 CD 26 01 04         A   766    	CALL	_fastmemcpy
-0402EA C1                  A   767    	POP	BC
-0402EB C1                  A   768    	POP	BC
-0402EC C1                  A   769    	POP	BC
-0402ED                     A   770    L_12:
-                           A   771    ;   94			
-                           A   772    ;   95				addressto += PAGESIZE;
-                           A   773    .LINE 95
-                           A   774    
-0402ED 01000400            A   775    	LD	BC,1024
-0402F1 DD27F4              A   776    	LD	HL,(IX+%FFFFFFF4)
-0402F4 09                  A   777    	ADD	HL,BC
-0402F5 DD2FF4              A   778    	LD	(IX+%FFFFFFF4),HL
-                           A   779    ;   96				addressfrom += PAGESIZE;
-                           A   780    .LINE 96
-                           A   781    
-0402F8 DD27F1              A   782    	LD	HL,(IX+%FFFFFFF1)
-0402FB 09                  A   783    	ADD	HL,BC
-0402FC DD2FF1              A   784    	LD	(IX+%FFFFFFF1),HL
-0402FF DD07FD              A   785    	LD	BC,(IX+%FFFFFFFD)
-040302 03                  A   786    	INC	BC
-040303 DD0FFD              A   787    	LD	(IX+%FFFFFFFD),BC
-                           A   788    ;   97				//timer = 0;
-                           A   789    ;   98				//while(timer++ < 32768);
-                           A   790    ;   99				////waitZDI(FEEDBACK_PAGEWR
-                           A   791    ;  100			}
-040306                     A   792    L_15:
-                           A   793    .LINE 100
-                           A   794    
-040306 DD07F7              A   795    	LD	BC,(IX+%FFFFFFF7)
-040309 DD27FD              A   796    	LD	HL,(IX+%FFFFFFFD)
-04030C B7                  A   797    	OR	A,A
-04030D ED42                A   798    	SBC	HL,BC
-04030F 38 A5               A   799    	JR	C,L_13
-                           A   800    ;  101			lockFlashKeyRegister();	// lock
-                           A   801    .LINE 101
-                           A   802    
-040311 CD 11 01 04         A   803    	CALL	_lockFlashKeyRegister
-                           A   804    ;  102			sendStatus('P', 1, counter); //
-                           A   805    .LINE 102
-                           A   806    
-040315 DD07FD              A   807    	LD	BC,(IX+%FFFFFFFD)
-040318 AF                  A   808    	XOR	A,A
-040319 C5D1                A   809    	LD	DE,BC
-04031B 4F                  A   810    	LD	C,A
-04031C 0600                A   811    	LD	B,%0
-04031E C5                  A   812    	PUSH	BC
-04031F D5                  A   813    	PUSH	DE
-040320 01010000            A   814    	LD	BC,1
-040324 C5                  A   815    	PUSH	BC
-040325 01500000            A   816    	LD	BC,80
-040329 C5                  A   817    	PUSH	BC
-04032A CD 82 41 04         A   818    	CALL	_sendStatus
-04032E C1                  A   819    	POP	BC
-04032F C1                  A   820    	POP	BC
-040330 C1                  A   821    	POP	BC
-040331 C1                  A   822    	POP	BC
-                           A   823    ;  103		}
-                           A   824    ;  104		else sendStatus('F', 0, 0); // file
-                           A   825    .LINE 104
-                           A   826    
-040332 18 14               A   827    	JR	L_21
-040334                     A   828    L_19:
-040334 01000000            A   829    	LD	BC,0
-040338 C5                  A   830    	PUSH	BC
-040339 C5                  A   831    	PUSH	BC
-04033A C5                  A   832    	PUSH	BC
-04033B 01460000            A   833    	LD	BC,70
-04033F C5                  A   834    	PUSH	BC
-040340 CD 82 41 04         A   835    	CALL	_sendStatus
-040344 C1                  A   836    	POP	BC
-040345 C1                  A   837    	POP	BC
-040346 C1                  A   838    	POP	BC
-040347 C1                  A   839    	POP	BC
-                           A   840    ;  105		while(1);
-040348                     A   841    L_21:
-                           A   842    .LINE 105
+                           A   661    ;   75			sendStatus('E', 1, counter); //
+                           A   662    .LINE 75
+                           A   663    
+04025A DD07FD              A   664    	LD	BC,(IX+%FFFFFFFD)
+04025D AF                  A   665    	XOR	A,A
+04025E C5D1                A   666    	LD	DE,BC
+040260 4F                  A   667    	LD	C,A
+040261 0600                A   668    	LD	B,%0
+040263 C5                  A   669    	PUSH	BC
+040264 D5                  A   670    	PUSH	DE
+040265 01010000            A   671    	LD	BC,1
+040269 C5                  A   672    	PUSH	BC
+04026A 01450000            A   673    	LD	BC,69
+04026E C5                  A   674    	PUSH	BC
+04026F CD A4 41 04         A   675    	CALL	_sendStatus
+040273 C1                  A   676    	POP	BC
+040274 C1                  A   677    	POP	BC
+040275 C1                  A   678    	POP	BC
+040276 C1                  A   679    	POP	BC
+                           A   680    ;   76	
+                           A   681    ;   77			// determine number of pages to
+                           A   682    ;   78			pagemax = size/PAGESIZE;
+                           A   683    .LINE 78
+                           A   684    
+040277 DD27FA              A   685    	LD	HL,(IX+%FFFFFFFA)
+04027A 3E0A                A   686    	LD	A,%A
+04027C CD CB 45 04         A   687    	CALL	__ishru_b
+040280 DD2FF7              A   688    	LD	(IX+%FFFFFFF7),HL
+                           A   689    ;   79			if(size%PAGESIZE) // last page 
+                           A   690    .LINE 79
+                           A   691    
+040283 01FF0300            A   692    	LD	BC,1023
+040287 DD27FA              A   693    	LD	HL,(IX+%FFFFFFFA)
+04028A CD 63 46 04         A   694    	CALL	__iand
+04028E DD2FE7              A   695    	LD	(IX+%FFFFFFE7),HL
+040291 CD 54 45 04         A   696    	CALL	__icmpzero
+040295 28 0F               A   697    	JR	Z,L_8
+                           A   698    ;   80			{
+                           A   699    ;   81				pagemax += 1;
+                           A   700    .LINE 81
+                           A   701    
+040297 DD07F7              A   702    	LD	BC,(IX+%FFFFFFF7)
+04029A 03                  A   703    	INC	BC
+04029B DD0FF7              A   704    	LD	(IX+%FFFFFFF7),BC
+                           A   705    ;   82				lastpagebytes = size%PAGESI
+                           A   706    .LINE 82
+                           A   707    
+04029E DD07E7              A   708    	LD	BC,(IX+%FFFFFFE7)
+0402A1 DD0FED              A   709    	LD	(IX+%FFFFFFED),BC
+                           A   710    ;   83			}
+                           A   711    ;   84			else lastpagebytes = PAGESIZE; 
+                           A   712    .LINE 84
+                           A   713    
+0402A4 18 07               A   714    	JR	L_16
+0402A6                     A   715    L_8:
+0402A6 01000400            A   716    	LD	BC,1024
+0402AA DD0FED              A   717    	LD	(IX+%FFFFFFED),BC
+0402AD                     A   718    L_16:
+                           A   719    ;   85	
+                           A   720    ;   86			// write out each page to flash
+                           A   721    ;   87			for(counter = 0; counter < page
+                           A   722    .LINE 87
+                           A   723    
+0402AD 01000000            A   724    	LD	BC,0
+0402B1 DD0FFD              A   725    	LD	(IX+%FFFFFFFD),BC
+0402B4 18 72               A   726    	JR	L_15
+0402B6                     A   727    L_13:
+                           A   728    ;   88			{
+                           A   729    ;   89				if(counter == (pagemax - 1)
+                           A   730    .LINE 89
+                           A   731    
+0402B6 DD31F7              A   732    	LD	IY,(IX+%FFFFFFF7)
+0402B9 ED23FF              A   733    	LEA	HL,IY+%FFFFFFFF
+0402BC DD07FD              A   734    	LD	BC,(IX+%FFFFFFFD)
+0402BF B7                  A   735    	OR	A,A
+0402C0 ED42                A   736    	SBC	HL,BC
+0402C2 20 15               A   737    	JR	NZ,L_11
+                           A   738    ;   90					fastmemcpy(addressto,ad
+                           A   739    .LINE 90
+                           A   740    
+0402C4 DD07ED              A   741    	LD	BC,(IX+%FFFFFFED)
+0402C7 C5                  A   742    	PUSH	BC
+0402C8 DD07F1              A   743    	LD	BC,(IX+%FFFFFFF1)
+0402CB C5                  A   744    	PUSH	BC
+0402CC DD07F4              A   745    	LD	BC,(IX+%FFFFFFF4)
+0402CF C5                  A   746    	PUSH	BC
+0402D0 CD 26 01 04         A   747    	CALL	_fastmemcpy
+0402D4 C1                  A   748    	POP	BC
+0402D5 C1                  A   749    	POP	BC
+0402D6 C1                  A   750    	POP	BC
+                           A   751    ;   91				else 
+                           A   752    .LINE 91
+                           A   753    
+0402D7 18 14               A   754    	JR	L_12
+0402D9                     A   755    L_11:
+                           A   756    ;   92					fastmemcpy(addressto,ad
+                           A   757    .LINE 92
+                           A   758    
+0402D9 01000400            A   759    	LD	BC,1024
+0402DD C5                  A   760    	PUSH	BC
+0402DE DD07F1              A   761    	LD	BC,(IX+%FFFFFFF1)
+0402E1 C5                  A   762    	PUSH	BC
+0402E2 DD07F4              A   763    	LD	BC,(IX+%FFFFFFF4)
+0402E5 C5                  A   764    	PUSH	BC
+0402E6 CD 26 01 04         A   765    	CALL	_fastmemcpy
+0402EA C1                  A   766    	POP	BC
+0402EB C1                  A   767    	POP	BC
+0402EC C1                  A   768    	POP	BC
+0402ED                     A   769    L_12:
+                           A   770    ;   93			
+                           A   771    ;   94				addressto += PAGESIZE;
+                           A   772    .LINE 94
+                           A   773    
+0402ED 01000400            A   774    	LD	BC,1024
+0402F1 DD27F4              A   775    	LD	HL,(IX+%FFFFFFF4)
+0402F4 09                  A   776    	ADD	HL,BC
+0402F5 DD2FF4              A   777    	LD	(IX+%FFFFFFF4),HL
+                           A   778    ;   95				addressfrom += PAGESIZE;
+                           A   779    .LINE 95
+                           A   780    
+0402F8 DD27F1              A   781    	LD	HL,(IX+%FFFFFFF1)
+0402FB 09                  A   782    	ADD	HL,BC
+0402FC DD2FF1              A   783    	LD	(IX+%FFFFFFF1),HL
+                           A   784    ;   96				sendStatus('X', 1, counter+
+                           A   785    .LINE 96
+                           A   786    
+0402FF AF                  A   787    	XOR	A,A
+040300 5F                  A   788    	LD	E,A
+040301 DD27FD              A   789    	LD	HL,(IX+%FFFFFFFD)
+040304 3E01                A   790    	LD	A,%1
+040306 CD F6 42 04         A   791    	CALL	__ladd_b
+04030A 4B                  A   792    	LD	C,E
+04030B 0600                A   793    	LD	B,%0
+04030D C5                  A   794    	PUSH	BC
+04030E E5                  A   795    	PUSH	HL
+04030F 01010000            A   796    	LD	BC,1
+040313 C5                  A   797    	PUSH	BC
+040314 01580000            A   798    	LD	BC,88
+040318 C5                  A   799    	PUSH	BC
+040319 CD A4 41 04         A   800    	CALL	_sendStatus
+04031D C1                  A   801    	POP	BC
+04031E C1                  A   802    	POP	BC
+04031F C1                  A   803    	POP	BC
+040320 C1                  A   804    	POP	BC
+040321 DD07FD              A   805    	LD	BC,(IX+%FFFFFFFD)
+040324 03                  A   806    	INC	BC
+040325 DD0FFD              A   807    	LD	(IX+%FFFFFFFD),BC
+                           A   808    ;   97			}
+040328                     A   809    L_15:
+                           A   810    .LINE 97
+                           A   811    
+040328 DD07F7              A   812    	LD	BC,(IX+%FFFFFFF7)
+04032B DD27FD              A   813    	LD	HL,(IX+%FFFFFFFD)
+04032E B7                  A   814    	OR	A,A
+04032F ED42                A   815    	SBC	HL,BC
+040331 38 83               A   816    	JR	C,L_13
+                           A   817    ;   98			lockFlashKeyRegister();	// lock
+                           A   818    .LINE 98
+                           A   819    
+040333 CD 11 01 04         A   820    	CALL	_lockFlashKeyRegister
+                           A   821    ;   99			sendStatus('P', 1, counter); //
+                           A   822    .LINE 99
+                           A   823    
+040337 DD07FD              A   824    	LD	BC,(IX+%FFFFFFFD)
+04033A AF                  A   825    	XOR	A,A
+04033B C5D1                A   826    	LD	DE,BC
+04033D 4F                  A   827    	LD	C,A
+04033E 0600                A   828    	LD	B,%0
+040340 C5                  A   829    	PUSH	BC
+040341 D5                  A   830    	PUSH	DE
+040342 01010000            A   831    	LD	BC,1
+040346 C5                  A   832    	PUSH	BC
+040347 01500000            A   833    	LD	BC,80
+04034B C5                  A   834    	PUSH	BC
+04034C CD A4 41 04         A   835    	CALL	_sendStatus
+040350 C1                  A   836    	POP	BC
+040351 C1                  A   837    	POP	BC
+040352 C1                  A   838    	POP	BC
+040353 C1                  A   839    	POP	BC
+                           A   840    ;  100		}
+                           A   841    ;  101		else sendStatus('F', 0, 0); // file
+                           A   842    .LINE 101
                            A   843    
-040348 18 FE               A   844    	JR	L_21
-                           A   845    ;  106		return 0;
-                           A   846    ;  107	}
-                           A   847    .LINE 107
-                           A   848    
-04034A DDF9                A   849    	LD	SP,IX
-04034C DDE1                A   850    	POP	IX
-04034E C9                  A   851    	RET	
-                           A   852    
-                           A   853    
-                           A   854    ;**************************** _main ***********
-                           A   855    ;Name                         Addr/Register   S
-                           A   856    ;_lockFlashKeyRegister               IMPORT  --
-                           A   857    ;_fastmemcpy                         IMPORT  --
-                           A   858    ;_enableFlashKeyRegister             IMPORT  --
-                           A   859    ;_getch                              IMPORT  --
-                           A   860    ;_f_close                            IMPORT  --
-                           A   861    ;_f_read                             IMPORT  --
-                           A   862    ;_f_open                             IMPORT  --
-                           A   863    ;_sendStatus                         IMPORT  --
-                           A   864    ;_fs                                 STATIC    
-                           A   865    ;_f_mount                            IMPORT  --
-                           A   866    ;_init_UART0                         IMPORT  --
-                           A   867    ;_init_spi                           IMPORT  --
-                           A   868    ;fil                                  IX-57    
-                           A   869    ;br                                   IX-28    
-                           A   870    ;G_0                                  IX-25    
-                           A   871    ;fr                                   IX-22    
-                           A   872    ;lastpagebytes                        IX-19    
-                           A   873    ;value                                IX-16    
-                           A   874    ;addressfrom                          IX-15    
-                           A   875    ;addressto                            IX-12    
-                           A   876    ;pagemax                               IX-9    
-                           A   877    ;size                                  IX-6    
-                           A   878    ;counter                               IX-3    
-                           A   879    ;argv                                  IX+9    
-                           A   880    ;argc                                  IX+6    
-                           A   881    
-                           A   882    
-                           A   883    ; Stack Frame Size: 69 (bytes)
-                           A   884    ;       Spill Code: 0 (instruction)
-                           A   885    
-                           A   886    
-                           A   887    .ENDFUNC "main",107,"_main"
-                           A   888    	SEGMENT STRSECT
-044780                     A   889    L__0:
-044780 00                  A   890    	DB	0
-044781                     A   891    L__1:
-044781 4D4F532E 62696E     A   892    	DB	"MOS.bin"
-044788 00                  A   893    	DB	0
-                           A   894    	XREF _fastmemcpy:ROM
-                           A   895    	XREF _lockFlashKeyRegister:ROM
-                           A   896    	XREF _enableFlashKeyRegister:ROM
-                           A   897    	XREF _init_UART0:ROM
-                           A   898    	XREF _getch:ROM
-                           A   899    	XREF _sendStatus:ROM
-                           A   900    	XREF _init_spi:ROM
-                           A   901    	XREF _f_mount:ROM
-                           A   902    	XREF _f_read:ROM
-                           A   903    	XREF _f_close:ROM
-                           A   904    	XREF _f_open:ROM
-                           A   905    	XREF __iand:ROM
-                           A   906    	XREF __icmpzero:ROM
-                           A   907    	XREF __ishru_b:ROM
-                           A   908    	XDEF _main
-                           A   909    	XDEF _fs
-                           A   910    	END
+040354 18 14               A   844    	JR	L_21
+040356                     A   845    L_19:
+040356 01000000            A   846    	LD	BC,0
+04035A C5                  A   847    	PUSH	BC
+04035B C5                  A   848    	PUSH	BC
+04035C C5                  A   849    	PUSH	BC
+04035D 01460000            A   850    	LD	BC,70
+040361 C5                  A   851    	PUSH	BC
+040362 CD A4 41 04         A   852    	CALL	_sendStatus
+040366 C1                  A   853    	POP	BC
+040367 C1                  A   854    	POP	BC
+040368 C1                  A   855    	POP	BC
+040369 C1                  A   856    	POP	BC
+                           A   857    ;  102		while(1);
+04036A                     A   858    L_21:
+                           A   859    .LINE 102
+                           A   860    
+04036A 18 FE               A   861    	JR	L_21
+                           A   862    ;  103		return 0;
+                           A   863    ;  104	}
+                           A   864    .LINE 104
+                           A   865    
+04036C DDF9                A   866    	LD	SP,IX
+04036E DDE1                A   867    	POP	IX
+040370 C9                  A   868    	RET	
+                           A   869    
+                           A   870    
+                           A   871    ;**************************** _main ***********
+                           A   872    ;Name                         Addr/Register   S
+                           A   873    ;_lockFlashKeyRegister               IMPORT  --
+                           A   874    ;_fastmemcpy                         IMPORT  --
+                           A   875    ;_enableFlashKeyRegister             IMPORT  --
+                           A   876    ;_getch                              IMPORT  --
+                           A   877    ;_f_close                            IMPORT  --
+                           A   878    ;_f_read                             IMPORT  --
+                           A   879    ;_f_open                             IMPORT  --
+                           A   880    ;_sendStatus                         IMPORT  --
+                           A   881    ;_fs                                 STATIC    
+                           A   882    ;_f_mount                            IMPORT  --
+                           A   883    ;_init_UART0                         IMPORT  --
+                           A   884    ;_init_spi                           IMPORT  --
+                           A   885    ;fil                                  IX-57    
+                           A   886    ;br                                   IX-28    
+                           A   887    ;G_0                                  IX-25    
+                           A   888    ;fr                                   IX-22    
+                           A   889    ;lastpagebytes                        IX-19    
+                           A   890    ;value                                IX-16    
+                           A   891    ;addressfrom                          IX-15    
+                           A   892    ;addressto                            IX-12    
+                           A   893    ;pagemax                               IX-9    
+                           A   894    ;size                                  IX-6    
+                           A   895    ;counter                               IX-3    
+                           A   896    ;argv                                  IX+9    
+                           A   897    ;argc                                  IX+6    
+                           A   898    
+                           A   899    
+                           A   900    ; Stack Frame Size: 69 (bytes)
+                           A   901    ;       Spill Code: 0 (instruction)
+                           A   902    
+                           A   903    
+                           A   904    .ENDFUNC "main",104,"_main"
+                           A   905    	SEGMENT STRSECT
+0447A2                     A   906    L__0:
+0447A2 00                  A   907    	DB	0
+0447A3                     A   908    L__1:
+0447A3 4D4F532E 62696E     A   909    	DB	"MOS.bin"
+0447AA 00                  A   910    	DB	0
+                           A   911    	XREF _fastmemcpy:ROM
+                           A   912    	XREF _lockFlashKeyRegister:ROM
+                           A   913    	XREF _enableFlashKeyRegister:ROM
+                           A   914    	XREF _init_UART0:ROM
+                           A   915    	XREF _getch:ROM
+                           A   916    	XREF _sendStatus:ROM
+                           A   917    	XREF _init_spi:ROM
+                           A   918    	XREF _f_mount:ROM
+                           A   919    	XREF _f_read:ROM
+                           A   920    	XREF _f_close:ROM
+                           A   921    	XREF _f_open:ROM
+                           A   922    	XREF __iand:ROM
+                           A   923    	XREF __icmpzero:ROM
+                           A   924    	XREF __ladd_b:ROM
+                           A   925    	XREF __ishru_b:ROM
+                           A   926    	XDEF _main
+                           A   927    	XDEF _fs
+                           A   928    	END
 
 
 Errors: 0
 Warnings: 0
-Lines Assembled: 911
+Lines Assembled: 929

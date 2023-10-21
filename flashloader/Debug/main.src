@@ -490,17 +490,17 @@ _main:
 	POP	BC
 	POP	BC
 	POP	BC
-;   42		addressto = FLASHSTART;
-.LINE 42
+;   42	
+;   43		addressto = FLASHSTART;
+.LINE 43
 
 	LD	BC,0
 	LD	(IX+%FFFFFFF4),BC
-;   43		addressfrom = LOADADDRESS;
-.LINE 43
+;   44		addressfrom = LOADADDRESS;
+.LINE 44
 
 	LD	BC,327680
 	LD	(IX+%FFFFFFF1),BC
-;   44	
 ;   45		fr = f_open(&fil, MOSFILENAME, FA_READ);
 .LINE 45
 
@@ -584,7 +584,7 @@ _main:
 	PEA	IX+%FFFFFFC7
 	CALL	_f_close
 	POP	BC
-;   54			// Wait for user to acknowledge proceed (remote ZDI)
+;   54			// Wait for user to acknowledge to proceed
 ;   55			getch();
 .LINE 55
 
@@ -658,9 +658,8 @@ L_5:
 	OR	A,A
 	SBC	HL,BC
 	JR	C,L_3
-;   75	
-;   76			sendStatus('E', 1, counter); // number of pages erased
-.LINE 76
+;   75			sendStatus('E', 1, counter); // number of pages erased
+.LINE 75
 
 	LD	BC,(IX+%FFFFFFFD)
 	XOR	A,A
@@ -678,17 +677,17 @@ L_5:
 	POP	BC
 	POP	BC
 	POP	BC
-;   77	
-;   78			// determine number of pages to write
-;   79			pagemax = size/PAGESIZE;
-.LINE 79
+;   76	
+;   77			// determine number of pages to write
+;   78			pagemax = size/PAGESIZE;
+.LINE 78
 
 	LD	HL,(IX+%FFFFFFFA)
 	LD	A,%A
 	CALL	__ishru_b
 	LD	(IX+%FFFFFFF7),HL
-;   80			if(size%PAGESIZE) // last page has less than PAGESIZE bytes
-.LINE 80
+;   79			if(size%PAGESIZE) // last page has less than PAGESIZE bytes
+.LINE 79
 
 	LD	BC,1023
 	LD	HL,(IX+%FFFFFFFA)
@@ -696,39 +695,39 @@ L_5:
 	LD	(IX+%FFFFFFE7),HL
 	CALL	__icmpzero
 	JR	Z,L_8
-;   81			{
-;   82				pagemax += 1;
-.LINE 82
+;   80			{
+;   81				pagemax += 1;
+.LINE 81
 
 	LD	BC,(IX+%FFFFFFF7)
 	INC	BC
 	LD	(IX+%FFFFFFF7),BC
-;   83				lastpagebytes = size%PAGESIZE;			
-.LINE 83
+;   82				lastpagebytes = size%PAGESIZE;			
+.LINE 82
 
 	LD	BC,(IX+%FFFFFFE7)
 	LD	(IX+%FFFFFFED),BC
-;   84			}
-;   85			else lastpagebytes = PAGESIZE; // normal last page
-.LINE 85
+;   83			}
+;   84			else lastpagebytes = PAGESIZE; // normal last page
+.LINE 84
 
 	JR	L_16
 L_8:
 	LD	BC,1024
 	LD	(IX+%FFFFFFED),BC
 L_16:
-;   86	
-;   87			// write out each page to flash
-;   88			for(counter = 0; counter < pagemax; counter++)
-.LINE 88
+;   85	
+;   86			// write out each page to flash
+;   87			for(counter = 0; counter < pagemax; counter++)
+.LINE 87
 
 	LD	BC,0
 	LD	(IX+%FFFFFFFD),BC
 	JR	L_15
 L_13:
-;   89			{
-;   90				if(counter == (pagemax - 1)) // last page to write - might need to write less than PAGESIZE
-.LINE 90
+;   88			{
+;   89				if(counter == (pagemax - 1)) // last page to write - might need to write less than PAGESIZE
+.LINE 89
 
 	LD	IY,(IX+%FFFFFFF7)
 	LEA	HL,IY+%FFFFFFFF
@@ -736,8 +735,8 @@ L_13:
 	OR	A,A
 	SBC	HL,BC
 	JR	NZ,L_11
-;   91					fastmemcpy(addressto,addressfrom,lastpagebytes);				
-.LINE 91
+;   90					fastmemcpy(addressto,addressfrom,lastpagebytes);				
+.LINE 90
 
 	LD	BC,(IX+%FFFFFFED)
 	PUSH	BC
@@ -749,13 +748,13 @@ L_13:
 	POP	BC
 	POP	BC
 	POP	BC
-;   92				else 
-.LINE 92
+;   91				else 
+.LINE 91
 
 	JR	L_12
 L_11:
-;   93					fastmemcpy(addressto,addressfrom,PAGESIZE);
-.LINE 93
+;   92					fastmemcpy(addressto,addressfrom,PAGESIZE);
+.LINE 92
 
 	LD	BC,1024
 	PUSH	BC
@@ -768,41 +767,59 @@ L_11:
 	POP	BC
 	POP	BC
 L_12:
-;   94			
-;   95				addressto += PAGESIZE;
-.LINE 95
+;   93			
+;   94				addressto += PAGESIZE;
+.LINE 94
 
 	LD	BC,1024
 	LD	HL,(IX+%FFFFFFF4)
 	ADD	HL,BC
 	LD	(IX+%FFFFFFF4),HL
-;   96				addressfrom += PAGESIZE;
-.LINE 96
+;   95				addressfrom += PAGESIZE;
+.LINE 95
 
 	LD	HL,(IX+%FFFFFFF1)
 	ADD	HL,BC
 	LD	(IX+%FFFFFFF1),HL
+;   96				sendStatus('X', 1, counter+1);
+.LINE 96
+
+	XOR	A,A
+	LD	E,A
+	LD	HL,(IX+%FFFFFFFD)
+	LD	A,%1
+	CALL	__ladd_b
+	LD	C,E
+	LD	B,%0
+	PUSH	BC
+	PUSH	HL
+	LD	BC,1
+	PUSH	BC
+	LD	BC,88
+	PUSH	BC
+	CALL	_sendStatus
+	POP	BC
+	POP	BC
+	POP	BC
+	POP	BC
 	LD	BC,(IX+%FFFFFFFD)
 	INC	BC
 	LD	(IX+%FFFFFFFD),BC
-;   97				//timer = 0;
-;   98				//while(timer++ < 32768);
-;   99				////waitZDI(FEEDBACK_PAGEWRITTEN, counter);
-;  100			}
+;   97			}
 L_15:
-.LINE 100
+.LINE 97
 
 	LD	BC,(IX+%FFFFFFF7)
 	LD	HL,(IX+%FFFFFFFD)
 	OR	A,A
 	SBC	HL,BC
 	JR	C,L_13
-;  101			lockFlashKeyRegister();	// lock the flash before WARM reset
-.LINE 101
+;   98			lockFlashKeyRegister();	// lock the flash before WARM reset
+.LINE 98
 
 	CALL	_lockFlashKeyRegister
-;  102			sendStatus('P', 1, counter); // programming ok
-.LINE 102
+;   99			sendStatus('P', 1, counter); // programming ok
+.LINE 99
 
 	LD	BC,(IX+%FFFFFFFD)
 	XOR	A,A
@@ -820,9 +837,9 @@ L_15:
 	POP	BC
 	POP	BC
 	POP	BC
-;  103		}
-;  104		else sendStatus('F', 0, 0); // file not read ok
-.LINE 104
+;  100		}
+;  101		else sendStatus('F', 0, 0); // file not read ok
+.LINE 101
 
 	JR	L_21
 L_19:
@@ -837,14 +854,14 @@ L_19:
 	POP	BC
 	POP	BC
 	POP	BC
-;  105		while(1);
+;  102		while(1);
 L_21:
-.LINE 105
+.LINE 102
 
 	JR	L_21
-;  106		return 0;
-;  107	}
-.LINE 107
+;  103		return 0;
+;  104	}
+.LINE 104
 
 	LD	SP,IX
 	POP	IX
@@ -884,7 +901,7 @@ L_21:
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "main",107,"_main"
+.ENDFUNC "main",104,"_main"
 	SEGMENT STRSECT
 L__0:
 	DB	0
@@ -904,6 +921,7 @@ L__1:
 	XREF _f_open:ROM
 	XREF __iand:ROM
 	XREF __icmpzero:ROM
+	XREF __ladd_b:ROM
 	XREF __ishru_b:ROM
 	XDEF _main
 	XDEF _fs

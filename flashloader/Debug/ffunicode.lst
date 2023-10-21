@@ -1,4 +1,4 @@
-Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     18:18:30     page:   1
+Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     18:50:18     page:   1
 
 
 PC     Object              I  Line    Source 
@@ -13776,7 +13776,7 @@ PC     Object              I  Line    Source
                            A 13772    ;13368		WORD	cp		/* Code page for th
                            A 13773    ;13369	)
                            A 13774    ;13370	{
-040AAC                     A 13775    _ff_uni2oem:
+040ACE                     A 13775    _ff_uni2oem:
                            A 13776    .DEFINE "_ff_uni2oem"
                            A 13777    
                            A 13778    .VALUE _ff_uni2oem
@@ -13821,111 +13821,111 @@ PC     Object              I  Line    Source
                            A 13817    
                            A 13818    .ENDEF
                            A 13819    
-040AAC DDE5                A 13820    	PUSH	IX
-040AAE DD210000 00         A 13821    	LD	IX,0
-040AB3 DD39                A 13822    	ADD	IX,SP
-040AB5 3B                  A 13823    	DEC	SP
-040AB6 3B                  A 13824    	DEC	SP
+040ACE DDE5                A 13820    	PUSH	IX
+040AD0 DD210000 00         A 13821    	LD	IX,0
+040AD5 DD39                A 13822    	ADD	IX,SP
+040AD7 3B                  A 13823    	DEC	SP
+040AD8 3B                  A 13824    	DEC	SP
                            A 13825    ;13371		WCHAR c = 0;
                            A 13826    .LINE 13371
                            A 13827    
-040AB7 DD36FE00            A 13828    	LD	(IX+%FFFFFFFE),%0
-040ABB DD36FF00            A 13829    	LD	(IX+%FFFFFFFF),%0
+040AD9 DD36FE00            A 13828    	LD	(IX+%FFFFFFFE),%0
+040ADD DD36FF00            A 13829    	LD	(IX+%FFFFFFFF),%0
                            A 13830    ;13372		const WCHAR *p = CVTBL(uc, FF_CODE_
                            A 13831    ;13373	
                            A 13832    ;13374	
                            A 13833    ;13375		if (uni < 0x80) {	/* ASCII? */
                            A 13834    .LINE 13375
                            A 13835    
-040ABF DD2706              A 13836    	LD	HL,(IX+%6)
-040AC2 DD5E09              A 13837    	LD	E,(IX+%9)
-040AC5 01800000            A 13838    	LD	BC,128
-040AC9 AF                  A 13839    	XOR	A,A
-040ACA CD D5 45 04         A 13840    	CALL	__lcmpu
-040ACE 30 0B               A 13841    	JR	NC,L_9
+040AE1 DD2706              A 13836    	LD	HL,(IX+%6)
+040AE4 DD5E09              A 13837    	LD	E,(IX+%9)
+040AE7 01800000            A 13838    	LD	BC,128
+040AEB AF                  A 13839    	XOR	A,A
+040AEC CD F7 45 04         A 13840    	CALL	__lcmpu
+040AF0 30 0B               A 13841    	JR	NC,L_9
                            A 13842    ;13376			c = (WCHAR)uni;
                            A 13843    .LINE 13376
                            A 13844    
-040AD0 DD2706              A 13845    	LD	HL,(IX+%6)
-040AD3 DD75FE              A 13846    	LD	(IX+%FFFFFFFE),L
-040AD6 DD74FF              A 13847    	LD	(IX+%FFFFFFFF),H
+040AF2 DD2706              A 13845    	LD	HL,(IX+%6)
+040AF5 DD75FE              A 13846    	LD	(IX+%FFFFFFFE),L
+040AF8 DD74FF              A 13847    	LD	(IX+%FFFFFFFF),H
                            A 13848    ;13377	
                            A 13849    ;13378		} else {			/* Non-ASCII */
                            A 13850    .LINE 13378
                            A 13851    
-040AD9 18 74               A 13852    	JR	L_10
-040ADB                     A 13853    L_9:
+040AFB 18 74               A 13852    	JR	L_10
+040AFD                     A 13853    L_9:
                            A 13854    ;13379			if (uni < 0x10000 && cp == FF_C
                            A 13855    .LINE 13379
                            A 13856    
-040ADB DD2706              A 13857    	LD	HL,(IX+%6)
-040ADE DD5E09              A 13858    	LD	E,(IX+%9)
-040AE1 01000001            A 13859    	LD	BC,65536
-040AE5 AF                  A 13860    	XOR	A,A
-040AE6 CD D5 45 04         A 13861    	CALL	__lcmpu
-040AEA 30 63               A 13862    	JR	NC,L_10
-040AEC 4901B501            A 13863    	LD.LIS	BC,437
-040AF0 DD270C              A 13864    	LD	HL,(IX+%C)
-040AF3 B7                  A 13865    	OR	A,A
-040AF4 40ED42              A 13866    	SBC.SIS	HL,BC
-040AF7 20 56               A 13867    	JR	NZ,L_10
+040AFD DD2706              A 13857    	LD	HL,(IX+%6)
+040B00 DD5E09              A 13858    	LD	E,(IX+%9)
+040B03 01000001            A 13859    	LD	BC,65536
+040B07 AF                  A 13860    	XOR	A,A
+040B08 CD F7 45 04         A 13861    	CALL	__lcmpu
+040B0C 30 63               A 13862    	JR	NC,L_10
+040B0E 4901B501            A 13863    	LD.LIS	BC,437
+040B12 DD270C              A 13864    	LD	HL,(IX+%C)
+040B15 B7                  A 13865    	OR	A,A
+040B16 40ED42              A 13866    	SBC.SIS	HL,BC
+040B19 20 56               A 13867    	JR	NZ,L_10
                            A 13868    ;13380				for (c = 0; c < 0x80 && uni
                            A 13869    .LINE 13380
                            A 13870    
-040AF9 DD36FE00            A 13871    	LD	(IX+%FFFFFFFE),%0
-040AFD DD36FF00            A 13872    	LD	(IX+%FFFFFFFF),%0
-040B01 18 0A               A 13873    	JR	L_5
-040B03                     A 13874    L_3:
-040B03 DD27FE              A 13875    	LD	HL,(IX+%FFFFFFFE)
-040B06 23                  A 13876    	INC	HL
-040B07 DD75FE              A 13877    	LD	(IX+%FFFFFFFE),L
-040B0A DD74FF              A 13878    	LD	(IX+%FFFFFFFF),H
-040B0D                     A 13879    L_5:
-040B0D 49018000            A 13880    	LD.LIS	BC,128
-040B11 DD27FE              A 13881    	LD	HL,(IX+%FFFFFFFE)
-040B14 B7                  A 13882    	OR	A,A
-040B15 40ED42              A 13883    	SBC.SIS	HL,BC
-040B18 30 21               A 13884    	JR	NC,L_6
-040B1A DD07FE              A 13885    	LD	BC,(IX+%FFFFFFFE)
-040B1D CD C0 43 04         A 13886    	CALL	__stoiu
-040B21 29                  A 13887    	ADD	HL,HL
-040B22 01 00 50 04         A 13888    	LD	BC,_uc437
-040B26 09                  A 13889    	ADD	HL,BC
-040B27 ED07                A 13890    	LD	BC,(HL)
-040B29 CD C0 43 04         A 13891    	CALL	__stoiu
-040B2D 1E00                A 13892    	LD	E,%0
-040B2F DD0706              A 13893    	LD	BC,(IX+%6)
-040B32 DD7E09              A 13894    	LD	A,(IX+%9)
-040B35 CD D5 45 04         A 13895    	CALL	__lcmpu
-040B39 20 C8               A 13896    	JR	NZ,L_3
-040B3B                     A 13897    L_6:
+040B1B DD36FE00            A 13871    	LD	(IX+%FFFFFFFE),%0
+040B1F DD36FF00            A 13872    	LD	(IX+%FFFFFFFF),%0
+040B23 18 0A               A 13873    	JR	L_5
+040B25                     A 13874    L_3:
+040B25 DD27FE              A 13875    	LD	HL,(IX+%FFFFFFFE)
+040B28 23                  A 13876    	INC	HL
+040B29 DD75FE              A 13877    	LD	(IX+%FFFFFFFE),L
+040B2C DD74FF              A 13878    	LD	(IX+%FFFFFFFF),H
+040B2F                     A 13879    L_5:
+040B2F 49018000            A 13880    	LD.LIS	BC,128
+040B33 DD27FE              A 13881    	LD	HL,(IX+%FFFFFFFE)
+040B36 B7                  A 13882    	OR	A,A
+040B37 40ED42              A 13883    	SBC.SIS	HL,BC
+040B3A 30 21               A 13884    	JR	NC,L_6
+040B3C DD07FE              A 13885    	LD	BC,(IX+%FFFFFFFE)
+040B3F CD E2 43 04         A 13886    	CALL	__stoiu
+040B43 29                  A 13887    	ADD	HL,HL
+040B44 01 00 50 04         A 13888    	LD	BC,_uc437
+040B48 09                  A 13889    	ADD	HL,BC
+040B49 ED07                A 13890    	LD	BC,(HL)
+040B4B CD E2 43 04         A 13891    	CALL	__stoiu
+040B4F 1E00                A 13892    	LD	E,%0
+040B51 DD0706              A 13893    	LD	BC,(IX+%6)
+040B54 DD7E09              A 13894    	LD	A,(IX+%9)
+040B57 CD F7 45 04         A 13895    	CALL	__lcmpu
+040B5B 20 C8               A 13896    	JR	NZ,L_3
+040B5D                     A 13897    L_6:
                            A 13898    ;13381				c = (c + 0x80) & 0xFF;
                            A 13899    .LINE 13381
                            A 13900    
-040B3B DD27FE              A 13901    	LD	HL,(IX+%FFFFFFFE)
-040B3E 49118000            A 13902    	LD.LIS	DE,128
-040B42 4019                A 13903    	ADD.SIS	HL,DE
-040B44 4D                  A 13904    	LD	C,L
-040B45 0600                A 13905    	LD	B,%0
-040B47 C5E1                A 13906    	LD	HL,BC
-040B49 DD75FE              A 13907    	LD	(IX+%FFFFFFFE),L
-040B4C DD74FF              A 13908    	LD	(IX+%FFFFFFFF),H
+040B5D DD27FE              A 13901    	LD	HL,(IX+%FFFFFFFE)
+040B60 49118000            A 13902    	LD.LIS	DE,128
+040B64 4019                A 13903    	ADD.SIS	HL,DE
+040B66 4D                  A 13904    	LD	C,L
+040B67 0600                A 13905    	LD	B,%0
+040B69 C5E1                A 13906    	LD	HL,BC
+040B6B DD75FE              A 13907    	LD	(IX+%FFFFFFFE),L
+040B6E DD74FF              A 13908    	LD	(IX+%FFFFFFFF),H
                            A 13909    ;13382			}
                            A 13910    ;13383		}
-040B4F                     A 13911    L_10:
+040B71                     A 13911    L_10:
                            A 13912    .LINE 13383
                            A 13913    
                            A 13914    ;13384	
                            A 13915    ;13385		return c;
                            A 13916    .LINE 13385
                            A 13917    
-040B4F DD27FE              A 13918    	LD	HL,(IX+%FFFFFFFE)
+040B71 DD27FE              A 13918    	LD	HL,(IX+%FFFFFFFE)
                            A 13919    ;13386	}
                            A 13920    .LINE 13386
                            A 13921    
-040B52 DDF9                A 13922    	LD	SP,IX
-040B54 DDE1                A 13923    	POP	IX
-040B56 C9                  A 13924    	RET	
+040B74 DDF9                A 13922    	LD	SP,IX
+040B76 DDE1                A 13923    	POP	IX
+040B78 C9                  A 13924    	RET	
                            A 13925    
                            A 13926    
                            A 13927    ;**************************** _ff_uni2oem *****
@@ -13947,7 +13947,7 @@ PC     Object              I  Line    Source
                            A 13943    ;13390		WORD	cp		/* Code page for th
                            A 13944    ;13391	)
                            A 13945    ;13392	{
-040B57                     A 13946    _ff_oem2uni:
+040B79                     A 13946    _ff_oem2uni:
                            A 13947    .DEFINE "_ff_oem2uni"
                            A 13948    
                            A 13949    .VALUE _ff_oem2uni
@@ -13992,81 +13992,81 @@ PC     Object              I  Line    Source
                            A 13988    
                            A 13989    .ENDEF
                            A 13990    
-040B57 DDE5                A 13991    	PUSH	IX
-040B59 DD210000 00         A 13992    	LD	IX,0
-040B5E DD39                A 13993    	ADD	IX,SP
-040B60 3B                  A 13994    	DEC	SP
-040B61 3B                  A 13995    	DEC	SP
+040B79 DDE5                A 13991    	PUSH	IX
+040B7B DD210000 00         A 13992    	LD	IX,0
+040B80 DD39                A 13993    	ADD	IX,SP
+040B82 3B                  A 13994    	DEC	SP
+040B83 3B                  A 13995    	DEC	SP
                            A 13996    ;13393		WCHAR c = 0;
                            A 13997    .LINE 13393
                            A 13998    
-040B62 DD36FE00            A 13999    	LD	(IX+%FFFFFFFE),%0
-040B66 DD36FF00            A 14000    	LD	(IX+%FFFFFFFF),%0
+040B84 DD36FE00            A 13999    	LD	(IX+%FFFFFFFE),%0
+040B88 DD36FF00            A 14000    	LD	(IX+%FFFFFFFF),%0
                            A 14001    ;13394		const WCHAR *p = CVTBL(uc, FF_CODE_
                            A 14002    ;13395	
                            A 14003    ;13396	
                            A 14004    ;13397		if (oem < 0x80) {	/* ASCII? */
                            A 14005    .LINE 13397
                            A 14006    
-040B6A 49018000            A 14007    	LD.LIS	BC,128
-040B6E DD2706              A 14008    	LD	HL,(IX+%6)
-040B71 B7                  A 14009    	OR	A,A
-040B72 40ED42              A 14010    	SBC.SIS	HL,BC
-040B75 30 0B               A 14011    	JR	NC,L_15
+040B8C 49018000            A 14007    	LD.LIS	BC,128
+040B90 DD2706              A 14008    	LD	HL,(IX+%6)
+040B93 B7                  A 14009    	OR	A,A
+040B94 40ED42              A 14010    	SBC.SIS	HL,BC
+040B97 30 0B               A 14011    	JR	NC,L_15
                            A 14012    ;13398			c = oem;
                            A 14013    .LINE 13398
                            A 14014    
-040B77 DD0706              A 14015    	LD	BC,(IX+%6)
-040B7A DD71FE              A 14016    	LD	(IX+%FFFFFFFE),C
-040B7D DD70FF              A 14017    	LD	(IX+%FFFFFFFF),B
+040B99 DD0706              A 14015    	LD	BC,(IX+%6)
+040B9C DD71FE              A 14016    	LD	(IX+%FFFFFFFE),C
+040B9F DD70FF              A 14017    	LD	(IX+%FFFFFFFF),B
                            A 14018    ;13399	
                            A 14019    ;13400		} else {			/* Extended cha
                            A 14020    .LINE 13400
                            A 14021    
-040B80 18 35               A 14022    	JR	L_16
-040B82                     A 14023    L_15:
+040BA2 18 35               A 14022    	JR	L_16
+040BA4                     A 14023    L_15:
                            A 14024    ;13401			if (cp == FF_CODE_PAGE) {	/* 
                            A 14025    .LINE 13401
                            A 14026    
-040B82 4901B501            A 14027    	LD.LIS	BC,437
-040B86 DD2709              A 14028    	LD	HL,(IX+%9)
-040B89 B7                  A 14029    	OR	A,A
-040B8A 40ED42              A 14030    	SBC.SIS	HL,BC
-040B8D 20 28               A 14031    	JR	NZ,L_16
+040BA4 4901B501            A 14027    	LD.LIS	BC,437
+040BA8 DD2709              A 14028    	LD	HL,(IX+%9)
+040BAB B7                  A 14029    	OR	A,A
+040BAC 40ED42              A 14030    	SBC.SIS	HL,BC
+040BAF 20 28               A 14031    	JR	NZ,L_16
                            A 14032    ;13402				if (oem < 0x100) c = p[oem 
                            A 14033    .LINE 13402
                            A 14034    
-040B8F 49010001            A 14035    	LD.LIS	BC,256
-040B93 DD2706              A 14036    	LD	HL,(IX+%6)
-040B96 B7                  A 14037    	OR	A,A
-040B97 40ED42              A 14038    	SBC.SIS	HL,BC
-040B9A 30 1B               A 14039    	JR	NC,L_16
-040B9C DD0706              A 14040    	LD	BC,(IX+%6)
-040B9F CD C0 43 04         A 14041    	CALL	__stoiu
-040BA3 E5FDE1              A 14042    	LD	IY,HL
-040BA6 ED2380              A 14043    	LEA	HL,IY+%FFFFFF80
-040BA9 29                  A 14044    	ADD	HL,HL
-040BAA 01 00 50 04         A 14045    	LD	BC,_uc437
-040BAE 09                  A 14046    	ADD	HL,BC
-040BAF ED07                A 14047    	LD	BC,(HL)
-040BB1 DD71FE              A 14048    	LD	(IX+%FFFFFFFE),C
-040BB4 DD70FF              A 14049    	LD	(IX+%FFFFFFFF),B
+040BB1 49010001            A 14035    	LD.LIS	BC,256
+040BB5 DD2706              A 14036    	LD	HL,(IX+%6)
+040BB8 B7                  A 14037    	OR	A,A
+040BB9 40ED42              A 14038    	SBC.SIS	HL,BC
+040BBC 30 1B               A 14039    	JR	NC,L_16
+040BBE DD0706              A 14040    	LD	BC,(IX+%6)
+040BC1 CD E2 43 04         A 14041    	CALL	__stoiu
+040BC5 E5FDE1              A 14042    	LD	IY,HL
+040BC8 ED2380              A 14043    	LEA	HL,IY+%FFFFFF80
+040BCB 29                  A 14044    	ADD	HL,HL
+040BCC 01 00 50 04         A 14045    	LD	BC,_uc437
+040BD0 09                  A 14046    	ADD	HL,BC
+040BD1 ED07                A 14047    	LD	BC,(HL)
+040BD3 DD71FE              A 14048    	LD	(IX+%FFFFFFFE),C
+040BD6 DD70FF              A 14049    	LD	(IX+%FFFFFFFF),B
                            A 14050    ;13403			}
                            A 14051    ;13404		}
-040BB7                     A 14052    L_16:
+040BD9                     A 14052    L_16:
                            A 14053    .LINE 13404
                            A 14054    
                            A 14055    ;13405	
                            A 14056    ;13406		return c;
                            A 14057    .LINE 13406
                            A 14058    
-040BB7 DD27FE              A 14059    	LD	HL,(IX+%FFFFFFFE)
+040BD9 DD27FE              A 14059    	LD	HL,(IX+%FFFFFFFE)
                            A 14060    ;13407	}
                            A 14061    .LINE 13407
                            A 14062    
-040BBA DDF9                A 14063    	LD	SP,IX
-040BBC DDE1                A 14064    	POP	IX
-040BBE C9                  A 14065    	RET	
+040BDC DDF9                A 14063    	LD	SP,IX
+040BDE DDE1                A 14064    	POP	IX
+040BE0 C9                  A 14065    	RET	
                            A 14066    
                            A 14067    
                            A 14068    ;**************************** _ff_oem2uni *****
@@ -14286,7 +14286,7 @@ PC     Object              I  Line    Source
                            A 14282    ;13609		DWORD uni		/* Unicode code poi
                            A 14283    ;13610	)
                            A 14284    ;13611	{
-040BBF                     A 14285    _ff_wtoupper:
+040BE1                     A 14285    _ff_wtoupper:
                            A 14286    .DEFINE "_ff_wtoupper"
                            A 14287    
                            A 14288    .VALUE _ff_wtoupper
@@ -14443,11 +14443,11 @@ PC     Object              I  Line    Source
                            A 14439    
                            A 14440    .ENDEF
                            A 14441    
-040BBF DDE5                A 14442    	PUSH	IX
-040BC1 DD210000 00         A 14443    	LD	IX,0
-040BC6 DD39                A 14444    	ADD	IX,SP
-040BC8 ED22EF              A 14445    	LEA	HL,IX+%FFFFFFEF
-040BCB F9                  A 14446    	LD	SP,HL
+040BE1 DDE5                A 14442    	PUSH	IX
+040BE3 DD210000 00         A 14443    	LD	IX,0
+040BE8 DD39                A 14444    	ADD	IX,SP
+040BEA ED22EF              A 14445    	LEA	HL,IX+%FFFFFFEF
+040BED F9                  A 14446    	LD	SP,HL
                            A 14447    ;13662			/* Phonetic Extensions */
                            A 14448    ;13663			0x1D7D,0x0001,0x2C63,
                            A 14449    ;13664			/* Latin Extended Additional */
@@ -14496,280 +14496,280 @@ PC     Object              I  Line    Source
                            A 14492    ;13707		if (uni < 0x10000) {	/* Is it in
                            A 14493    .LINE 13707
                            A 14494    
-040BCC DD2706              A 14495    	LD	HL,(IX+%6)
-040BCF DD5E09              A 14496    	LD	E,(IX+%9)
-040BD2 01000001            A 14497    	LD	BC,65536
-040BD6 AF                  A 14498    	XOR	A,A
-040BD7 CD D5 45 04         A 14499    	CALL	__lcmpu
-040BDB D2 A1 0D 04         A 14500    	JR	NC,L_44
+040BEE DD2706              A 14495    	LD	HL,(IX+%6)
+040BF1 DD5E09              A 14496    	LD	E,(IX+%9)
+040BF4 01000001            A 14497    	LD	BC,65536
+040BF8 AF                  A 14498    	XOR	A,A
+040BF9 CD F7 45 04         A 14499    	CALL	__lcmpu
+040BFD D2 C3 0D 04         A 14500    	JR	NC,L_44
                            A 14501    ;13708			uc = (WORD)uni;
                            A 14502    .LINE 13708
                            A 14503    
-040BDF DD2706              A 14504    	LD	HL,(IX+%6)
-040BE2 DD75FE              A 14505    	LD	(IX+%FFFFFFFE),L
-040BE5 DD74FF              A 14506    	LD	(IX+%FFFFFFFF),H
+040C01 DD2706              A 14504    	LD	HL,(IX+%6)
+040C04 DD75FE              A 14505    	LD	(IX+%FFFFFFFE),L
+040C07 DD74FF              A 14506    	LD	(IX+%FFFFFFFF),H
                            A 14507    ;13709			p = uc < 0x1000 ? cvt1 : cvt2;
                            A 14508    .LINE 13709
                            A 14509    
-040BE8 49010010            A 14510    	LD.LIS	BC,4096
-040BEC DD2706              A 14511    	LD	HL,(IX+%6)
-040BEF B7                  A 14512    	OR	A,A
-040BF0 40ED42              A 14513    	SBC.SIS	HL,BC
-040BF3 30 09               A 14514    	JR	NC,L_20
-040BF5 01 00 51 04         A 14515    	LD	BC,_0cvt1
-040BF9 DD0FF2              A 14516    	LD	(IX+%FFFFFFF2),BC
-040BFC 18 07               A 14517    	JR	L_21
-040BFE                     A 14518    L_20:
-040BFE 01 F2 52 04         A 14519    	LD	BC,_1cvt2
-040C02 DD0FF2              A 14520    	LD	(IX+%FFFFFFF2),BC
-040C05                     A 14521    L_21:
-040C05 DD07F2              A 14522    	LD	BC,(IX+%FFFFFFF2)
-040C08 DD0FFB              A 14523    	LD	(IX+%FFFFFFFB),BC
+040C0A 49010010            A 14510    	LD.LIS	BC,4096
+040C0E DD2706              A 14511    	LD	HL,(IX+%6)
+040C11 B7                  A 14512    	OR	A,A
+040C12 40ED42              A 14513    	SBC.SIS	HL,BC
+040C15 30 09               A 14514    	JR	NC,L_20
+040C17 01 00 51 04         A 14515    	LD	BC,_0cvt1
+040C1B DD0FF2              A 14516    	LD	(IX+%FFFFFFF2),BC
+040C1E 18 07               A 14517    	JR	L_21
+040C20                     A 14518    L_20:
+040C20 01 F2 52 04         A 14519    	LD	BC,_1cvt2
+040C24 DD0FF2              A 14520    	LD	(IX+%FFFFFFF2),BC
+040C27                     A 14521    L_21:
+040C27 DD07F2              A 14522    	LD	BC,(IX+%FFFFFFF2)
+040C2A DD0FFB              A 14523    	LD	(IX+%FFFFFFFB),BC
                            A 14524    ;13710			for (;;) {
-040C0B                     A 14525    L_40:
+040C2D                     A 14525    L_40:
                            A 14526    .LINE 13710
                            A 14527    
                            A 14528    ;13711				bc = *p++;					
                            A 14529    .LINE 13711
                            A 14530    
-040C0B DD07FB              A 14531    	LD	BC,(IX+%FFFFFFFB)
-040C0E DD0FEF              A 14532    	LD	(IX+%FFFFFFEF),BC
-040C11 C5E1                A 14533    	LD	HL,BC
-040C13 ED07                A 14534    	LD	BC,(HL)
-040C15 DD71F9              A 14535    	LD	(IX+%FFFFFFF9),C
-040C18 DD70FA              A 14536    	LD	(IX+%FFFFFFFA),B
-040C1B DD31FB              A 14537    	LD	IY,(IX+%FFFFFFFB)
-040C1E ED3302              A 14538    	LEA	IY,IY+%2
-040C21 DD3EFB              A 14539    	LD	(IX+%FFFFFFFB),IY
+040C2D DD07FB              A 14531    	LD	BC,(IX+%FFFFFFFB)
+040C30 DD0FEF              A 14532    	LD	(IX+%FFFFFFEF),BC
+040C33 C5E1                A 14533    	LD	HL,BC
+040C35 ED07                A 14534    	LD	BC,(HL)
+040C37 DD71F9              A 14535    	LD	(IX+%FFFFFFF9),C
+040C3A DD70FA              A 14536    	LD	(IX+%FFFFFFFA),B
+040C3D DD31FB              A 14537    	LD	IY,(IX+%FFFFFFFB)
+040C40 ED3302              A 14538    	LEA	IY,IY+%2
+040C43 DD3EFB              A 14539    	LD	(IX+%FFFFFFFB),IY
                            A 14540    ;13712				if (bc == 0 || uc < bc) bre
                            A 14541    .LINE 13712
                            A 14542    
-040C24 DD27F9              A 14543    	LD	HL,(IX+%FFFFFFF9)
-040C27 CD 25 46 04         A 14544    	CALL	__scmpzero
-040C2B CA 93 0D 04         A 14545    	JR	Z,L_42
-040C2F DD07F9              A 14546    	LD	BC,(IX+%FFFFFFF9)
-040C32 DD2706              A 14547    	LD	HL,(IX+%6)
-040C35 B7                  A 14548    	OR	A,A
-040C36 40ED42              A 14549    	SBC.SIS	HL,BC
-040C39 DA 93 0D 04         A 14550    	JR	C,L_42
+040C46 DD27F9              A 14543    	LD	HL,(IX+%FFFFFFF9)
+040C49 CD 47 46 04         A 14544    	CALL	__scmpzero
+040C4D CA B5 0D 04         A 14545    	JR	Z,L_42
+040C51 DD07F9              A 14546    	LD	BC,(IX+%FFFFFFF9)
+040C54 DD2706              A 14547    	LD	HL,(IX+%6)
+040C57 B7                  A 14548    	OR	A,A
+040C58 40ED42              A 14549    	SBC.SIS	HL,BC
+040C5B DA B5 0D 04         A 14550    	JR	C,L_42
                            A 14551    ;13713				nc = *p++; cmd = nc >> 8; n
                            A 14552    .LINE 13713
                            A 14553    
-040C3D DD27FB              A 14554    	LD	HL,(IX+%FFFFFFFB)
-040C40 ED07                A 14555    	LD	BC,(HL)
-040C42 DD71F7              A 14556    	LD	(IX+%FFFFFFF7),C
-040C45 DD70F8              A 14557    	LD	(IX+%FFFFFFF8),B
-040C48 DD31FB              A 14558    	LD	IY,(IX+%FFFFFFFB)
-040C4B ED3302              A 14559    	LEA	IY,IY+%2
-040C4E DD3EFB              A 14560    	LD	(IX+%FFFFFFFB),IY
-040C51 DD07F7              A 14561    	LD	BC,(IX+%FFFFFFF7)
-040C54 CD C0 43 04         A 14562    	CALL	__stoiu
-040C58 3E08                A 14563    	LD	A,%8
-040C5A CD 30 43 04         A 14564    	CALL	__ishrs_b
-040C5E DD75F5              A 14565    	LD	(IX+%FFFFFFF5),L
-040C61 DD74F6              A 14566    	LD	(IX+%FFFFFFF6),H
-040C64 DD4EF7              A 14567    	LD	C,(IX+%FFFFFFF7)
-040C67 0600                A 14568    	LD	B,%0
-040C69 C5E1                A 14569    	LD	HL,BC
-040C6B DD75F7              A 14570    	LD	(IX+%FFFFFFF7),L
-040C6E DD74F8              A 14571    	LD	(IX+%FFFFFFF8),H
+040C5F DD27FB              A 14554    	LD	HL,(IX+%FFFFFFFB)
+040C62 ED07                A 14555    	LD	BC,(HL)
+040C64 DD71F7              A 14556    	LD	(IX+%FFFFFFF7),C
+040C67 DD70F8              A 14557    	LD	(IX+%FFFFFFF8),B
+040C6A DD31FB              A 14558    	LD	IY,(IX+%FFFFFFFB)
+040C6D ED3302              A 14559    	LEA	IY,IY+%2
+040C70 DD3EFB              A 14560    	LD	(IX+%FFFFFFFB),IY
+040C73 DD07F7              A 14561    	LD	BC,(IX+%FFFFFFF7)
+040C76 CD E2 43 04         A 14562    	CALL	__stoiu
+040C7A 3E08                A 14563    	LD	A,%8
+040C7C CD 52 43 04         A 14564    	CALL	__ishrs_b
+040C80 DD75F5              A 14565    	LD	(IX+%FFFFFFF5),L
+040C83 DD74F6              A 14566    	LD	(IX+%FFFFFFF6),H
+040C86 DD4EF7              A 14567    	LD	C,(IX+%FFFFFFF7)
+040C89 0600                A 14568    	LD	B,%0
+040C8B C5E1                A 14569    	LD	HL,BC
+040C8D DD75F7              A 14570    	LD	(IX+%FFFFFFF7),L
+040C90 DD74F8              A 14571    	LD	(IX+%FFFFFFF8),H
                            A 14572    ;13714				if (uc < bc + nc) {	/* In t
                            A 14573    .LINE 13714
                            A 14574    
-040C71 DD07F9              A 14575    	LD	BC,(IX+%FFFFFFF9)
-040C74 CD C0 43 04         A 14576    	CALL	__stoiu
-040C78 E5D1                A 14577    	LD	DE,HL
-040C7A DD07F7              A 14578    	LD	BC,(IX+%FFFFFFF7)
-040C7D CD C0 43 04         A 14579    	CALL	__stoiu
-040C81 19                  A 14580    	ADD	HL,DE
-040C82 E5D1                A 14581    	LD	DE,HL
-040C84 DD0706              A 14582    	LD	BC,(IX+%6)
-040C87 CD C0 43 04         A 14583    	CALL	__stoiu
-040C8B B7                  A 14584    	OR	A,A
-040C8C ED52                A 14585    	SBC	HL,DE
-040C8E CD E9 42 04         A 14586    	CALL	__setflag
-040C92 F2 75 0D 04         A 14587    	JP	P,L_39
+040C93 DD07F9              A 14575    	LD	BC,(IX+%FFFFFFF9)
+040C96 CD E2 43 04         A 14576    	CALL	__stoiu
+040C9A E5D1                A 14577    	LD	DE,HL
+040C9C DD07F7              A 14578    	LD	BC,(IX+%FFFFFFF7)
+040C9F CD E2 43 04         A 14579    	CALL	__stoiu
+040CA3 19                  A 14580    	ADD	HL,DE
+040CA4 E5D1                A 14581    	LD	DE,HL
+040CA6 DD0706              A 14582    	LD	BC,(IX+%6)
+040CA9 CD E2 43 04         A 14583    	CALL	__stoiu
+040CAD B7                  A 14584    	OR	A,A
+040CAE ED52                A 14585    	SBC	HL,DE
+040CB0 CD 0B 43 04         A 14586    	CALL	__setflag
+040CB4 F2 97 0D 04         A 14587    	JP	P,L_39
                            A 14588    ;13715					switch (cmd) {
                            A 14589    .LINE 13715
                            A 14590    
-040C96 DD07F5              A 14591    	LD	BC,(IX+%FFFFFFF5)
-040C99 CD C0 43 04         A 14592    	CALL	__stoiu
-040C9D CD 55 43 04         A 14593    	CALL	__seqcaseD
-040CA1 E9                  A 14594    	JP	(HL)
-040CA2                     A 14595    L__15:
-040CA2 0900                A 14596    	DW	9
-040CA4 0000                A 14597    	DW	0
-040CA6 00                  A 14598    	DB	0
-040CA7 C50C04              A 14599    	DW24	L_27	
+040CB8 DD07F5              A 14591    	LD	BC,(IX+%FFFFFFF5)
+040CBB CD E2 43 04         A 14592    	CALL	__stoiu
+040CBF CD 77 43 04         A 14593    	CALL	__seqcaseD
+040CC3 E9                  A 14594    	JP	(HL)
+040CC4                     A 14595    L__15:
+040CC4 0900                A 14596    	DW	9
+040CC6 0000                A 14597    	DW	0
+040CC8 00                  A 14598    	DB	0
+040CC9 E70C04              A 14599    	DW24	L_27	
                            A 14600    
-040CAA ED0C04              A 14601    	DW24	L_28	
+040CCC 0F0D04              A 14601    	DW24	L_28	
                            A 14602    
-040CAD 0E0D04              A 14603    	DW24	L_29	
+040CCF 300D04              A 14603    	DW24	L_29	
                            A 14604    
-040CB0 1C0D04              A 14605    	DW24	L_30	
+040CD2 3E0D04              A 14605    	DW24	L_30	
                            A 14606    
-040CB3 2A0D04              A 14607    	DW24	L_31	
+040CD5 4C0D04              A 14607    	DW24	L_31	
                            A 14608    
-040CB6 380D04              A 14609    	DW24	L_32	
+040CD8 5A0D04              A 14609    	DW24	L_32	
                            A 14610    
-040CB9 460D04              A 14611    	DW24	L_33	
+040CDB 680D04              A 14611    	DW24	L_33	
                            A 14612    
-040CBC 540D04              A 14613    	DW24	L_34	
+040CDE 760D04              A 14613    	DW24	L_34	
                            A 14614    
-040CBF 620D04              A 14615    	DW24	L_35	
+040CE1 840D04              A 14615    	DW24	L_35	
                            A 14616    
-040CC2 930D04              A 14617    	DW24	L_42	
+040CE4 B50D04              A 14617    	DW24	L_42	
                            A 14618    
                            A 14619    ;13716					case 0:	uc = p[uc - bc]
-040CC5                     A 14620    L_27:
+040CE7                     A 14620    L_27:
                            A 14621    .LINE 13716
                            A 14622    
-040CC5 DD0706              A 14623    	LD	BC,(IX+%6)
-040CC8 CD C0 43 04         A 14624    	CALL	__stoiu
-040CCC E5D1                A 14625    	LD	DE,HL
-040CCE DD07F9              A 14626    	LD	BC,(IX+%FFFFFFF9)
-040CD1 CD C0 43 04         A 14627    	CALL	__stoiu
-040CD5 E5C1                A 14628    	LD	BC,HL
-040CD7 D5E1                A 14629    	LD	HL,DE
-040CD9 B7                  A 14630    	OR	A,A
-040CDA ED42                A 14631    	SBC	HL,BC
-040CDC 29                  A 14632    	ADD	HL,HL
-040CDD DD07FB              A 14633    	LD	BC,(IX+%FFFFFFFB)
-040CE0 09                  A 14634    	ADD	HL,BC
-040CE1 ED07                A 14635    	LD	BC,(HL)
-040CE3 DD71FE              A 14636    	LD	(IX+%FFFFFFFE),C
-040CE6 DD70FF              A 14637    	LD	(IX+%FFFFFFFF),B
-040CE9 C3 93 0D 04         A 14638    	JR	L_42
+040CE7 DD0706              A 14623    	LD	BC,(IX+%6)
+040CEA CD E2 43 04         A 14624    	CALL	__stoiu
+040CEE E5D1                A 14625    	LD	DE,HL
+040CF0 DD07F9              A 14626    	LD	BC,(IX+%FFFFFFF9)
+040CF3 CD E2 43 04         A 14627    	CALL	__stoiu
+040CF7 E5C1                A 14628    	LD	BC,HL
+040CF9 D5E1                A 14629    	LD	HL,DE
+040CFB B7                  A 14630    	OR	A,A
+040CFC ED42                A 14631    	SBC	HL,BC
+040CFE 29                  A 14632    	ADD	HL,HL
+040CFF DD07FB              A 14633    	LD	BC,(IX+%FFFFFFFB)
+040D02 09                  A 14634    	ADD	HL,BC
+040D03 ED07                A 14635    	LD	BC,(HL)
+040D05 DD71FE              A 14636    	LD	(IX+%FFFFFFFE),C
+040D08 DD70FF              A 14637    	LD	(IX+%FFFFFFFF),B
+040D0B C3 B5 0D 04         A 14638    	JR	L_42
                            A 14639    ;13717					case 1:	uc -= (uc - bc)
-040CED                     A 14640    L_28:
+040D0F                     A 14640    L_28:
                            A 14641    .LINE 13717
                            A 14642    
-040CED DD2706              A 14643    	LD	HL,(IX+%6)
-040CF0 DD07F9              A 14644    	LD	BC,(IX+%FFFFFFF9)
-040CF3 B7                  A 14645    	OR	A,A
-040CF4 40ED42              A 14646    	SBC.SIS	HL,BC
-040CF7 7D                  A 14647    	LD	A,L
-040CF8 E601                A 14648    	AND	A,%1
-040CFA 4F                  A 14649    	LD	C,A
-040CFB 0600                A 14650    	LD	B,%0
-040CFD DD2706              A 14651    	LD	HL,(IX+%6)
-040D00 B7                  A 14652    	OR	A,A
-040D01 40ED42              A 14653    	SBC.SIS	HL,BC
-040D04 DD75FE              A 14654    	LD	(IX+%FFFFFFFE),L
-040D07 DD74FF              A 14655    	LD	(IX+%FFFFFFFF),H
-040D0A C3 93 0D 04         A 14656    	JR	L_42
+040D0F DD2706              A 14643    	LD	HL,(IX+%6)
+040D12 DD07F9              A 14644    	LD	BC,(IX+%FFFFFFF9)
+040D15 B7                  A 14645    	OR	A,A
+040D16 40ED42              A 14646    	SBC.SIS	HL,BC
+040D19 7D                  A 14647    	LD	A,L
+040D1A E601                A 14648    	AND	A,%1
+040D1C 4F                  A 14649    	LD	C,A
+040D1D 0600                A 14650    	LD	B,%0
+040D1F DD2706              A 14651    	LD	HL,(IX+%6)
+040D22 B7                  A 14652    	OR	A,A
+040D23 40ED42              A 14653    	SBC.SIS	HL,BC
+040D26 DD75FE              A 14654    	LD	(IX+%FFFFFFFE),L
+040D29 DD74FF              A 14655    	LD	(IX+%FFFFFFFF),H
+040D2C C3 B5 0D 04         A 14656    	JR	L_42
                            A 14657    ;13718					case 2: uc -= 16; break
-040D0E                     A 14658    L_29:
+040D30                     A 14658    L_29:
                            A 14659    .LINE 13718
                            A 14660    
-040D0E DD3106              A 14661    	LD	IY,(IX+%6)
-040D11 ED23F0              A 14662    	LEA	HL,IY+%FFFFFFF0
-040D14 DD75FE              A 14663    	LD	(IX+%FFFFFFFE),L
-040D17 DD74FF              A 14664    	LD	(IX+%FFFFFFFF),H
-040D1A 18 77               A 14665    	JR	L_42
+040D30 DD3106              A 14661    	LD	IY,(IX+%6)
+040D33 ED23F0              A 14662    	LEA	HL,IY+%FFFFFFF0
+040D36 DD75FE              A 14663    	LD	(IX+%FFFFFFFE),L
+040D39 DD74FF              A 14664    	LD	(IX+%FFFFFFFF),H
+040D3C 18 77               A 14665    	JR	L_42
                            A 14666    ;13719					case 3:	uc -= 32; break
-040D1C                     A 14667    L_30:
+040D3E                     A 14667    L_30:
                            A 14668    .LINE 13719
                            A 14669    
-040D1C DD3106              A 14670    	LD	IY,(IX+%6)
-040D1F ED23E0              A 14671    	LEA	HL,IY+%FFFFFFE0
-040D22 DD75FE              A 14672    	LD	(IX+%FFFFFFFE),L
-040D25 DD74FF              A 14673    	LD	(IX+%FFFFFFFF),H
-040D28 18 69               A 14674    	JR	L_42
+040D3E DD3106              A 14670    	LD	IY,(IX+%6)
+040D41 ED23E0              A 14671    	LEA	HL,IY+%FFFFFFE0
+040D44 DD75FE              A 14672    	LD	(IX+%FFFFFFFE),L
+040D47 DD74FF              A 14673    	LD	(IX+%FFFFFFFF),H
+040D4A 18 69               A 14674    	JR	L_42
                            A 14675    ;13720					case 4:	uc -= 48; break
-040D2A                     A 14676    L_31:
+040D4C                     A 14676    L_31:
                            A 14677    .LINE 13720
                            A 14678    
-040D2A DD3106              A 14679    	LD	IY,(IX+%6)
-040D2D ED23D0              A 14680    	LEA	HL,IY+%FFFFFFD0
-040D30 DD75FE              A 14681    	LD	(IX+%FFFFFFFE),L
-040D33 DD74FF              A 14682    	LD	(IX+%FFFFFFFF),H
-040D36 18 5B               A 14683    	JR	L_42
+040D4C DD3106              A 14679    	LD	IY,(IX+%6)
+040D4F ED23D0              A 14680    	LEA	HL,IY+%FFFFFFD0
+040D52 DD75FE              A 14681    	LD	(IX+%FFFFFFFE),L
+040D55 DD74FF              A 14682    	LD	(IX+%FFFFFFFF),H
+040D58 18 5B               A 14683    	JR	L_42
                            A 14684    ;13721					case 5:	uc -= 26; break
-040D38                     A 14685    L_32:
+040D5A                     A 14685    L_32:
                            A 14686    .LINE 13721
                            A 14687    
-040D38 DD3106              A 14688    	LD	IY,(IX+%6)
-040D3B ED23E6              A 14689    	LEA	HL,IY+%FFFFFFE6
-040D3E DD75FE              A 14690    	LD	(IX+%FFFFFFFE),L
-040D41 DD74FF              A 14691    	LD	(IX+%FFFFFFFF),H
-040D44 18 4D               A 14692    	JR	L_42
+040D5A DD3106              A 14688    	LD	IY,(IX+%6)
+040D5D ED23E6              A 14689    	LEA	HL,IY+%FFFFFFE6
+040D60 DD75FE              A 14690    	LD	(IX+%FFFFFFFE),L
+040D63 DD74FF              A 14691    	LD	(IX+%FFFFFFFF),H
+040D66 18 4D               A 14692    	JR	L_42
                            A 14693    ;13722					case 6:	uc += 8; break;
-040D46                     A 14694    L_33:
+040D68                     A 14694    L_33:
                            A 14695    .LINE 13722
                            A 14696    
-040D46 DD3106              A 14697    	LD	IY,(IX+%6)
-040D49 ED2308              A 14698    	LEA	HL,IY+%8
-040D4C DD75FE              A 14699    	LD	(IX+%FFFFFFFE),L
-040D4F DD74FF              A 14700    	LD	(IX+%FFFFFFFF),H
-040D52 18 3F               A 14701    	JR	L_42
+040D68 DD3106              A 14697    	LD	IY,(IX+%6)
+040D6B ED2308              A 14698    	LEA	HL,IY+%8
+040D6E DD75FE              A 14699    	LD	(IX+%FFFFFFFE),L
+040D71 DD74FF              A 14700    	LD	(IX+%FFFFFFFF),H
+040D74 18 3F               A 14701    	JR	L_42
                            A 14702    ;13723					case 7: uc -= 80; break
-040D54                     A 14703    L_34:
+040D76                     A 14703    L_34:
                            A 14704    .LINE 13723
                            A 14705    
-040D54 DD3106              A 14706    	LD	IY,(IX+%6)
-040D57 ED23B0              A 14707    	LEA	HL,IY+%FFFFFFB0
-040D5A DD75FE              A 14708    	LD	(IX+%FFFFFFFE),L
-040D5D DD74FF              A 14709    	LD	(IX+%FFFFFFFF),H
-040D60 18 31               A 14710    	JR	L_42
+040D76 DD3106              A 14706    	LD	IY,(IX+%6)
+040D79 ED23B0              A 14707    	LEA	HL,IY+%FFFFFFB0
+040D7C DD75FE              A 14708    	LD	(IX+%FFFFFFFE),L
+040D7F DD74FF              A 14709    	LD	(IX+%FFFFFFFF),H
+040D82 18 31               A 14710    	JR	L_42
                            A 14711    ;13724					case 8:	uc -= 0x1C60; b
-040D62                     A 14712    L_35:
+040D84                     A 14712    L_35:
                            A 14713    .LINE 13724
                            A 14714    
-040D62 DD2706              A 14715    	LD	HL,(IX+%6)
-040D65 4911601C            A 14716    	LD.LIS	DE,7264
-040D69 B7                  A 14717    	OR	A,A
-040D6A 40ED52              A 14718    	SBC.SIS	HL,DE
-040D6D DD75FE              A 14719    	LD	(IX+%FFFFFFFE),L
-040D70 DD74FF              A 14720    	LD	(IX+%FFFFFFFF),H
-040D73 18 1E               A 14721    	JR	L_42
+040D84 DD2706              A 14715    	LD	HL,(IX+%6)
+040D87 4911601C            A 14716    	LD.LIS	DE,7264
+040D8B B7                  A 14717    	OR	A,A
+040D8C 40ED52              A 14718    	SBC.SIS	HL,DE
+040D8F DD75FE              A 14719    	LD	(IX+%FFFFFFFE),L
+040D92 DD74FF              A 14720    	LD	(IX+%FFFFFFFF),H
+040D95 18 1E               A 14721    	JR	L_42
                            A 14722    ;13725					}
                            A 14723    ;13726					break;
                            A 14724    ;13727				}
-040D75                     A 14725    L_39:
+040D97                     A 14725    L_39:
                            A 14726    .LINE 13727
                            A 14727    
                            A 14728    ;13728				if (cmd == 0) p += nc;	/* 
                            A 14729    .LINE 13728
                            A 14730    
-040D75 DD27F5              A 14731    	LD	HL,(IX+%FFFFFFF5)
-040D78 CD 25 46 04         A 14732    	CALL	__scmpzero
-040D7C C2 0B 0C 04         A 14733    	JR	NZ,L_40
-040D80 DD07F7              A 14734    	LD	BC,(IX+%FFFFFFF7)
-040D83 CD C0 43 04         A 14735    	CALL	__stoiu
-040D87 29                  A 14736    	ADD	HL,HL
-040D88 DD07FB              A 14737    	LD	BC,(IX+%FFFFFFFB)
-040D8B 09                  A 14738    	ADD	HL,BC
-040D8C DD2FFB              A 14739    	LD	(IX+%FFFFFFFB),HL
+040D97 DD27F5              A 14731    	LD	HL,(IX+%FFFFFFF5)
+040D9A CD 47 46 04         A 14732    	CALL	__scmpzero
+040D9E C2 2D 0C 04         A 14733    	JR	NZ,L_40
+040DA2 DD07F7              A 14734    	LD	BC,(IX+%FFFFFFF7)
+040DA5 CD E2 43 04         A 14735    	CALL	__stoiu
+040DA9 29                  A 14736    	ADD	HL,HL
+040DAA DD07FB              A 14737    	LD	BC,(IX+%FFFFFFFB)
+040DAD 09                  A 14738    	ADD	HL,BC
+040DAE DD2FFB              A 14739    	LD	(IX+%FFFFFFFB),HL
                            A 14740    ;13729			}
                            A 14741    .LINE 13729
                            A 14742    
-040D8F C3 0B 0C 04         A 14743    	JR	L_40
-040D93                     A 14744    L_42:
+040DB1 C3 2D 0C 04         A 14743    	JR	L_40
+040DB5                     A 14744    L_42:
                            A 14745    ;13730			uni = uc;
                            A 14746    .LINE 13730
                            A 14747    
-040D93 DD07FE              A 14748    	LD	BC,(IX+%FFFFFFFE)
-040D96 CD C0 43 04         A 14749    	CALL	__stoiu
-040D9A AF                  A 14750    	XOR	A,A
-040D9B DD2F06              A 14751    	LD	(IX+%6),HL
-040D9E DD7709              A 14752    	LD	(IX+%9),A
+040DB5 DD07FE              A 14748    	LD	BC,(IX+%FFFFFFFE)
+040DB8 CD E2 43 04         A 14749    	CALL	__stoiu
+040DBC AF                  A 14750    	XOR	A,A
+040DBD DD2F06              A 14751    	LD	(IX+%6),HL
+040DC0 DD7709              A 14752    	LD	(IX+%9),A
                            A 14753    ;13731		}
-040DA1                     A 14754    L_44:
+040DC3                     A 14754    L_44:
                            A 14755    .LINE 13731
                            A 14756    
                            A 14757    ;13732	
                            A 14758    ;13733		return uni;
                            A 14759    .LINE 13733
                            A 14760    
-040DA1 DD2706              A 14761    	LD	HL,(IX+%6)
-040DA4 DD5E09              A 14762    	LD	E,(IX+%9)
+040DC3 DD2706              A 14761    	LD	HL,(IX+%6)
+040DC6 DD5E09              A 14762    	LD	E,(IX+%9)
                            A 14763    ;13734	}
                            A 14764    .LINE 13734
                            A 14765    
-040DA7 DDF9                A 14766    	LD	SP,IX
-040DA9 DDE1                A 14767    	POP	IX
-040DAB C9                  A 14768    	RET	
+040DC9 DDF9                A 14766    	LD	SP,IX
+040DCB DDE1                A 14767    	POP	IX
+040DCD C9                  A 14768    	RET	
                            A 14769    
                            A 14770    
                            A 14771    ;**************************** _ff_wtoupper ****

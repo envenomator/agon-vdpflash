@@ -4,6 +4,7 @@
 #include "flashloader.h"
 #include "eZ80F92.h"
 #include <esp_task_wdt.h>
+#include "serial.h"
 
 #define PAGESIZE       1024
 #define USERLOAD    0x40000
@@ -19,6 +20,7 @@ fabgl::Terminal         terminal;
 CPU*                    cpu;
 ZDI*                    zdi;
 
+/*
 void term_printf (const char* format, ...) {
 	va_list list;
    	int size = vsnprintf(nullptr, 0, format, list) + 1;
@@ -33,6 +35,7 @@ void term_printf (const char* format, ...) {
    	}
    	va_end(list);
 }
+*/
 
 void fg_white(void) {
     terminal.write("\e[44;37m"); // background: blue, foreground: white
@@ -45,7 +48,7 @@ void boot_screen() {
     fg_white();
     terminal.write("\e[2J");     // clear screen
     terminal.write("\e[1;1H");   // move cursor to 1,1
-    terminal.write("Agon MOS ZDI flash utility - version 0.6\r\n\r\n");
+    terminal.write("Agon MOS ZDI flash utility - version 0.7\r\n\r\n");
 }
 
 void waitforKey(uint8_t key) {
@@ -76,7 +79,7 @@ void ask_initial() {
     terminal.write("\r\n\r\n");
 }
 
-void ask_proceed() {
+void ask_proceed(void) {
     terminal.write("\r\nPress [y] to start programming MOS:");
     waitforKey('y');
     terminal.write("\r\n\r\n");
@@ -95,6 +98,9 @@ void setup() {
     DisplayController.begin();
     DisplayController.setResolution(VGA_640x480_60Hz);
     
+    // setup serial
+    setupSerial2();
+
     // setup terminal
     terminal.begin(&DisplayController);
     terminal.enableCursor(true);
@@ -186,6 +192,7 @@ void ZDI_upload(void) {
 void loop() {
     uint32_t page,pages,filesize,readsize;
     uint16_t productid;
+    uint8_t  revision;
     uint8_t memval;
     char buffer[128];
 
@@ -197,30 +204,45 @@ void loop() {
     terminal.write("--------------------------------------\r\n");
     terminal.write("Checking ZDI interface        - ");
     productid = zdi->get_productid();
+    revision = zdi->get_revision();
     if((productid != 7)) {
         fg_red();
         terminal.write("DOWN - check cabling and reset");
         while(1);
     }
-    //terminal.write("UP (ID %X.%02X)\r\n",productid, zdi->get_revision());
-    terminal.write("UP (");
-    terminal.write(")\r\n");
+    sprintf(buffer,"UP (ID %X.%02X)\r\n",productid, revision);
+    terminal.write(buffer);
     terminal.write("Uploading flashloader to ez80 - ");
 
     init_ez80();
     ZDI_upload();
 
-    terminal.write(" Done\r\n");
+    terminal.write("Done\r\n");
 
-    loaderinitial();
     cpu->pc(USERLOAD);
     cpu->setBreakpoint(0, BREAKPOINT);
     cpu->enableBreakpoint(0);
     cpu->setContinue(); // start uploaded program
     
-    //terminal.write("Starting flashloader          - ");
+    terminal.write("Starting flashloader          - ");
     //waitcontinueLoader();
-    //terminal.write("Done\r\n");
+    terminal.write("Done\r\n");
+
+
+    // DEBUG
+    while(1) {
+        if(Serial2.available()) {
+            sprintf(buffer, "%c", Serial2.read());
+            terminal.write(buffer);
+        }
+    }
+
+    // DEBUG
+
+
+
+
+
 
     terminal.write("Waiting for payload\r\n");
 
@@ -229,17 +251,17 @@ void loop() {
     terminal.write("Opening file from SD card     - ");
     
     //waitcontinueLoader();
-    if(get_flashloader_result() == 0) {
-        fg_red();
-        terminal.write("Error opening \"MOS.bin\"");
-        while(1);
-    }
-    filesize = get_flashloader_value();
-    if(filesize == 0xFFFFFF) {
-        fg_red();
-        terminal.write("Invalid file size for \"MOS.bin\"");
-        while(1);
-    }
+    //if(get_flashloader_result() == 0) {
+    //    fg_red();
+    //    terminal.write("Error opening \"MOS.bin\"");
+    //    while(1);
+    //}
+    //filesize = get_flashloader_value();
+    //if(filesize == 0xFFFFFF) {
+    //    fg_red();
+    //    terminal.write("Invalid file size for \"MOS.bin\"");
+    //    while(1);
+    //}
     terminal.write("Done");
     //terminal.write(" (%d bytes)\r\n", filesize);
     terminal.write("(");
@@ -249,17 +271,17 @@ void loop() {
     
     terminal.write("Reading file to ez80 memory   - ");
     //waitcontinueLoader();
-    readsize = get_flashloader_value();
+    //readsize = get_flashloader_value();
     //readsize = waitcontinueLoader();
-    if(filesize == readsize) terminal.write("Done\r\n");
-    else {
-        fg_red();
-        terminal.write("Error (");
-        sprintf(buffer,"%ld", readsize);
-        terminal.write(buffer);
-        terminal.write(") bytes read\r\n");
-        while(1);
-    }
+    //if(filesize == readsize) terminal.write("Done\r\n");
+    //else {
+    //    fg_red();
+    //    terminal.write("Error (");
+    //    sprintf(buffer,"%ld", readsize);
+    //    terminal.write(buffer);
+    //    terminal.write(") bytes read\r\n");
+    //    while(1);
+    //}
     ask_proceed();
     //waitcontinueLoader();
 
@@ -267,7 +289,7 @@ void loop() {
     //delay(6000);
     //pages = waitcontinueLoader();
     //waitcontinueLoader();
-    pages = get_flashloader_value();
+    //pages = get_flashloader_value();
     //waitcontinueLoader();
     // determine number of pages to write
     //pages = filesize/1024;
@@ -285,8 +307,8 @@ void loop() {
     terminal.write(" - ");
 
     //pages = waitcontinueLoader();
-    waitcontinueLoader();
-    pages = get_flashloader_value();
+    //waitcontinueLoader();
+    //pages = get_flashloader_value();
     sprintf(buffer, "%d pages written - ", pages);
     terminal.write(buffer);
 

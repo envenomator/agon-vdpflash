@@ -27,8 +27,6 @@ __FLASH_ADDR_U_INIT_PARAM:	EQU 00h
 			INCLUDE	"equs.inc"
 			INCLUDE "ez80f92.inc"
 
-			XDEF _waitZDI
-			XDEF waitBreakpoint
 			XDEF _wait_timer0
 			XDEF _enableFlashKeyRegister
 			XDEF _lockFlashKeyRegister
@@ -52,12 +50,6 @@ _exec_name:		DB	"FLASHLOADER.BIN", 0		; The executable name, only used in argv
 ; Place the waitBreakpoint routine at a fixed address (0x40020) so that it
 ; won't be affected by code changes in the future.
 ;
-			ALIGN	32
-waitBreakpoint:
-			cp	a, b
-			jr	nz, waitBreakpoint
-			ret
-
 			ALIGN	64			; The executable header is from byte 64 onwards
 			DB	"MOS"			; Flag for MOS - to confirm this is a valid MOS command
 			DB	00h			; MOS header version 0
@@ -214,21 +206,6 @@ _fastmemcpy:
 	pop de
 	pop bc
 
-	ld		sp,ix
-	pop		ix
-	ret
-	
-_waitZDI:
-	push	ix
-	ld 		ix,0
-	add 	ix, sp
-
-	ld 		c,	(ix+6)
-	ld		hl, (ix+9)
-
-	ld		b, 0
-	ld		a, 1
-	call		waitBreakpoint
 	ld		sp,ix
 	pop		ix
 	ret

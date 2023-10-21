@@ -1,4 +1,4 @@
-Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED20-Oct-23     22:41:23     page:   1
+Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     16:06:26     page:   1
 
 
 PC     Object              I  Line    Source 
@@ -311,214 +311,191 @@ PC     Object              I  Line    Source
                            B   178    
                            B   179    ;* End eZ80F92 inc file 
                            A    29    
-                           A    30    			XDEF _waitZDI
-                           A    31    			XDEF waitBreakpoint
-                           A    32    			XDEF _wait_timer0
-                           A    33    			XDEF _enableFlashKeyRegister
-                           A    34    			XDEF _lockFlashKeyRegister
-                           A    35    			XDEF _fastmemcpy
-                           A    36    			XDEF _reset
-                           A    37    
-                           A    38    			XREF __low_bss
-                           A    39    			XREF __len_bss			
-                           A    40    			XREF _main
-                           A    41    
-                           A    42    			SEGMENT CODE
-                           A    43    			.ASSUME	ADL = 1	
-                           A    44    
-                           A    45    ; Start in ADL mode
-040000 C3 45 00 04         A    46    			JP	_start			; Jump to start
+                           A    30    			XDEF _wait_timer0
+                           A    31    			XDEF _enableFlashKeyRegister
+                           A    32    			XDEF _lockFlashKeyRegister
+                           A    33    			XDEF _fastmemcpy
+                           A    34    			XDEF _reset
+                           A    35    
+                           A    36    			XREF __low_bss
+                           A    37    			XREF __len_bss			
+                           A    38    			XREF _main
+                           A    39    
+                           A    40    			SEGMENT CODE
+                           A    41    			.ASSUME	ADL = 1	
+                           A    42    
+                           A    43    ; Start in ADL mode
+040000 C3 45 00 04         A    44    			JP	_start			; Jump to start
+                           A    45    ;
+                           A    46    ; The header stuff
                            A    47    ;
-                           A    48    ; The header stuff
-                           A    49    ;
-040004 464C4153 484C4F41   A    50    _exec_name:		DB	"FLASHLOADER.BIN", 0		
+040004 464C4153 484C4F41   A    48    _exec_name:		DB	"FLASHLOADER.BIN", 0		
 04000C 4445522E 42494E00 
-                           A    51    ;
-                           A    52    ; Place the waitBreakpoint routine at a fixed a
-                           A    53    ; won't be affected by code changes in the futu
-                           A    54    ;
-                           A    55    			ALIGN	32
-040020                     A    56    waitBreakpoint:
-040020 B8                  A    57    			cp	a, b
-040021 20 FD               A    58    			jr	nz, waitBreakpoint
-040023 C9                  A    59    			ret
-                           A    60    
-                           A    61    			ALIGN	64			; The executabl
-040040 4D4F53              A    62    			DB	"MOS"			; Flag for MOS 
-040043 00                  A    63    			DB	00h			; MOS header versio
-040044 01                  A    64    			DB	01h			; Flag for run mode
+                           A    49    ;
+                           A    50    ; Place the waitBreakpoint routine at a fixed a
+                           A    51    ; won't be affected by code changes in the futu
+                           A    52    ;
+                           A    53    			ALIGN	64			; The executabl
+040040 4D4F53              A    54    			DB	"MOS"			; Flag for MOS 
+040043 00                  A    55    			DB	00h			; MOS header versio
+040044 01                  A    56    			DB	01h			; Flag for run mode
+                           A    57    
+                           A    58    ;
+                           A    59    ; And the code follows on immediately after the
+                           A    60    ;
+040045 F3                  A    61    _start:		DI
+                           A    62    ; Config SPI
+040046 3E04                A    63    			LD A, %04
+040048 ED39BA              A    64    			OUT0 (SPI_CTL), A        ; SPI
                            A    65    
-                           A    66    ;
-                           A    67    ; And the code follows on immediately after the
-                           A    68    ;
-040045 F3                  A    69    _start:		DI
-                           A    70    ; Config SPI
-040046 3E04                A    71    			LD A, %04
-040048 ED39BA              A    72    			OUT0 (SPI_CTL), A        ; SPI
-                           A    73    
-                           A    74    ; Configure external memory
-04004B 3E04                A    75    			LD A, __CS0_LBR_INIT_PARAM
-04004D ED39A8              A    76    			OUT0 (CS0_LBR), A
-040050 3E0B                A    77    			LD A, __CS0_UBR_INIT_PARAM
-040052 ED39A9              A    78    			OUT0 (CS0_UBR), A
-040055 3E01                A    79    			LD A, __CS0_BMC_INIT_PARAM
-040057 ED39F0              A    80    			OUT0 (CS0_BMC), A
-04005A 3E08                A    81    			LD A, __CS0_CTL_INIT_PARAM
-04005C ED39AA              A    82    			OUT0 (CS0_CTL), A
-                           A    83    
-04005F 3EC0                A    84    			LD A, __CS1_LBR_INIT_PARAM
-040061 ED39AB              A    85    			OUT0 (CS1_LBR), A
-040064 3EC7                A    86    			LD A, __CS1_UBR_INIT_PARAM
-040066 ED39AC              A    87    			OUT0 (CS1_UBR), A
-040069 3E00                A    88    			LD A, __CS1_BMC_INIT_PARAM
-04006B ED39F1              A    89    			OUT0 (CS1_BMC), A
-04006E 3E08                A    90    			LD A, __CS1_CTL_INIT_PARAM
-040070 ED39AD              A    91    			OUT0 (CS1_CTL), A
-                           A    92    
-040073 3E80                A    93    			LD A, __CS2_LBR_INIT_PARAM
-040075 ED39AE              A    94    			OUT0 (CS2_LBR), A
-040078 3EBF                A    95    			LD A, __CS2_UBR_INIT_PARAM
-04007A ED39AF              A    96    			OUT0 (CS2_UBR), A
-04007D 3E00                A    97    			LD A, __CS2_BMC_INIT_PARAM
-04007F ED39F2              A    98    			OUT0 (CS2_BMC), A
-040082 3E08                A    99    			LD A, __CS2_CTL_INIT_PARAM
-040084 ED39B0              A   100    			OUT0 (CS2_CTL), A
-                           A   101    
-040087 3E03                A   102    			LD A, __CS3_LBR_INIT_PARAM
-040089 ED39B1              A   103    			OUT0 (CS3_LBR), A
-04008C 3E03                A   104    			LD A, __CS3_UBR_INIT_PARAM
-04008E ED39B2              A   105    			OUT0 (CS3_UBR), A
-040091 3E82                A   106    			LD A, __CS3_BMC_INIT_PARAM
-040093 ED39F3              A   107    			OUT0 (CS3_BMC), A
-040096 3E18                A   108    			LD A, __CS3_CTL_INIT_PARAM
-040098 ED39B3              A   109    			OUT0 (CS3_CTL), A
-                           A   110    
-                           A   111    ; Enable internal memory
-04009B 3E00                A   112    			LD A, __FLASH_ADDR_U_INIT_PARAM
-04009D ED39F7              A   113    			OUT0 (FLASH_ADDR_U), A
-0400A0 3E28                A   114    			LD A, __FLASH_CTL_INIT_PARAM
-0400A2 ED39F8              A   115    			OUT0 (FLASH_CTRL), A
+                           A    66    ; Configure external memory
+04004B 3E04                A    67    			LD A, __CS0_LBR_INIT_PARAM
+04004D ED39A8              A    68    			OUT0 (CS0_LBR), A
+040050 3E0B                A    69    			LD A, __CS0_UBR_INIT_PARAM
+040052 ED39A9              A    70    			OUT0 (CS0_UBR), A
+040055 3E01                A    71    			LD A, __CS0_BMC_INIT_PARAM
+040057 ED39F0              A    72    			OUT0 (CS0_BMC), A
+04005A 3E08                A    73    			LD A, __CS0_CTL_INIT_PARAM
+04005C ED39AA              A    74    			OUT0 (CS0_CTL), A
+                           A    75    
+04005F 3EC0                A    76    			LD A, __CS1_LBR_INIT_PARAM
+040061 ED39AB              A    77    			OUT0 (CS1_LBR), A
+040064 3EC7                A    78    			LD A, __CS1_UBR_INIT_PARAM
+040066 ED39AC              A    79    			OUT0 (CS1_UBR), A
+040069 3E00                A    80    			LD A, __CS1_BMC_INIT_PARAM
+04006B ED39F1              A    81    			OUT0 (CS1_BMC), A
+04006E 3E08                A    82    			LD A, __CS1_CTL_INIT_PARAM
+040070 ED39AD              A    83    			OUT0 (CS1_CTL), A
+                           A    84    
+040073 3E80                A    85    			LD A, __CS2_LBR_INIT_PARAM
+040075 ED39AE              A    86    			OUT0 (CS2_LBR), A
+040078 3EBF                A    87    			LD A, __CS2_UBR_INIT_PARAM
+04007A ED39AF              A    88    			OUT0 (CS2_UBR), A
+04007D 3E00                A    89    			LD A, __CS2_BMC_INIT_PARAM
+04007F ED39F2              A    90    			OUT0 (CS2_BMC), A
+040082 3E08                A    91    			LD A, __CS2_CTL_INIT_PARAM
+040084 ED39B0              A    92    			OUT0 (CS2_CTL), A
+                           A    93    
+040087 3E03                A    94    			LD A, __CS3_LBR_INIT_PARAM
+040089 ED39B1              A    95    			OUT0 (CS3_LBR), A
+04008C 3E03                A    96    			LD A, __CS3_UBR_INIT_PARAM
+04008E ED39B2              A    97    			OUT0 (CS3_UBR), A
+040091 3E82                A    98    			LD A, __CS3_BMC_INIT_PARAM
+040093 ED39F3              A    99    			OUT0 (CS3_BMC), A
+040096 3E18                A   100    			LD A, __CS3_CTL_INIT_PARAM
+040098 ED39B3              A   101    			OUT0 (CS3_CTL), A
+                           A   102    
+                           A   103    ; Enable internal memory
+04009B 3E00                A   104    			LD A, __FLASH_ADDR_U_INIT_PARAM
+04009D ED39F7              A   105    			OUT0 (FLASH_ADDR_U), A
+0400A0 3E28                A   106    			LD A, __FLASH_CTL_INIT_PARAM
+0400A2 ED39F8              A   107    			OUT0 (FLASH_CTRL), A
+                           A   108    
+0400A5 3EB7                A   109    			LD A, __RAM_ADDR_U_INIT_PARAM
+0400A7 ED39B5              A   110    			OUT0 (RAM_ADDR_U), A
+0400AA 3E80                A   111    			LD A, __RAM_CTL_INIT_PARAM
+0400AC ED39B4              A   112    			OUT0 (RAM_CTL), A
+                           A   113    
+                           A   114    ; Setup the stack
+0400AF 3100000A            A   115    			LD SP, __STACKINIT
                            A   116    
-0400A5 3EB7                A   117    			LD A, __RAM_ADDR_U_INIT_PARAM
-0400A7 ED39B5              A   118    			OUT0 (RAM_ADDR_U), A
-0400AA 3E80                A   119    			LD A, __RAM_CTL_INIT_PARAM
-0400AC ED39B4              A   120    			OUT0 (RAM_CTL), A
-                           A   121    
-                           A   122    ; Setup the stack
-0400AF 3100000A            A   123    			LD SP, __STACKINIT
+                           A   117    ; Clear BSS
+0400B3 CD C4 00 04         A   118    			CALL	_clear_bss
+                           A   119    
+                           A   120    ; Push 0 parameters and call main
+0400B7 01000000            A   121    			LD  BC, 0
+0400BB C5                  A   122    			PUSH	BC			; Parameter 1: 
+0400BC CD 6B 01 04         A   123    			CALL	_main			; int main(
                            A   124    
-                           A   125    ; Clear BSS
-0400B3 CD C4 00 04         A   126    			CALL	_clear_bss
-                           A   127    
-                           A   128    ; Push 0 parameters and call main
-0400B7 01000000            A   129    			LD  BC, 0
-0400BB C5                  A   130    			PUSH	BC			; Parameter 1: 
-0400BC CD 61 01 04         A   131    			CALL	_main			; int main(
-                           A   132    
-0400C0                     A   133    infinite:
-0400C0 C3 C0 00 04         A   134    			JP infinite
-                           A   135    			
-                           A   136    ; Clear the memory
-                           A   137    ;
-0400C4 01 35 02 00         A   138    _clear_bss:	LD	BC, __len_bss		; Check for
-0400C8 3E 00               A   139    			LD	a, __len_bss >> 16
-0400CA B1                  A   140    			OR	A, C
-0400CB B0                  A   141    			OR	A, B
-0400CC C8                  A   142    			RET	Z			; BSS is zero-lengt
-0400CD AF                  A   143    			XOR	A, A
-0400CE 32 44 45 04         A   144    			LD 	(__low_bss), A
-0400D2 ED62                A   145    			SBC	HL, HL			; HL = 0
-0400D4 0B                  A   146    			DEC	BC			; 1st byte's taken 
-0400D5 ED42                A   147    			SBC	HL, BC
-0400D7 C8                  A   148    			RET	Z		  	; Just 1 byte ...
-0400D8 21 44 45 04         A   149    			LD	HL, __low_bss		; Reset HL
-0400DC 11 45 45 04         A   150    			LD	DE, __low_bss + 1	; [DE] = bs
-0400E0 EDB0                A   151    			LDIR				; Clear this se
-0400E2 C9                  A   152    			RET
-                           A   153    
-                           A   154    ; Wait for timer0 to hit 0
-0400E3                     A   155    _wait_timer0:
-0400E3 F5                  A   156    			PUSH	AF 
-0400E4 C5                  A   157    			PUSH	BC 
-0400E5 ED3880              A   158    			IN0	A, (TMR0_CTL)	; Enable the ti
-0400E8 F603                A   159    			OR	3
-0400EA ED3980              A   160    			OUT0	(TMR0_CTL), A
-0400ED ED0081              A   161    $$:			IN0	B, (TMR0_DR_L)	; Fetch the cou
-0400F0 ED3882              A   162    			IN0 	A, (TMR0_DR_H)	; And the c
-0400F3 B0                  A   163    			OR	B 
-0400F4 20 F7               A   164    			JR	NZ, $B
-0400F6 C1                  A   165    			POP	BC 
-0400F7 F1                  A   166    			POP	AF 
-0400F8 C9                  A   167    			RET
-                           A   168    
-0400F9                     A   169    _enableFlashKeyRegister:
-0400F9 DDE5                A   170    	push	ix
-0400FB DD210000 00         A   171    	ld		ix,0
-040100 DD39                A   172    	add		ix,sp
-                           A   173    	
-040102 3EB6                A   174    	ld		a, b6h			; unlock
-040104 ED39F5              A   175    	out0	(F5h), a
-040107 3E49                A   176    	ld		a, 49h
-040109 ED39F5              A   177    	out0	(F5h), a
-                           A   178    	
-04010C DDF9                A   179    	ld		sp,ix
-04010E DDE1                A   180    	pop		ix
-040110 C9                  A   181    	ret
-                           A   182    
-040111                     A   183    _lockFlashKeyRegister:
-040111 DDE5                A   184    	push	ix
-040113 DD210000 00         A   185    	ld		ix,0
-040118 DD39                A   186    	add		ix,sp
-                           A   187    	
-04011A 3EFF                A   188    	ld		a, ffh			; lock
-04011C ED39F5              A   189    	out0	(F5h), a
+0400C0                     A   125    infinite:
+0400C0 C3 C0 00 04         A   126    			JP infinite
+                           A   127    			
+                           A   128    ; Clear the memory
+                           A   129    ;
+0400C4 01 35 02 00         A   130    _clear_bss:	LD	BC, __len_bss		; Check for
+0400C8 3E 00               A   131    			LD	a, __len_bss >> 16
+0400CA B1                  A   132    			OR	A, C
+0400CB B0                  A   133    			OR	A, B
+0400CC C8                  A   134    			RET	Z			; BSS is zero-lengt
+0400CD AF                  A   135    			XOR	A, A
+0400CE 32 2B 45 04         A   136    			LD 	(__low_bss), A
+0400D2 ED62                A   137    			SBC	HL, HL			; HL = 0
+0400D4 0B                  A   138    			DEC	BC			; 1st byte's taken 
+0400D5 ED42                A   139    			SBC	HL, BC
+0400D7 C8                  A   140    			RET	Z		  	; Just 1 byte ...
+0400D8 21 2B 45 04         A   141    			LD	HL, __low_bss		; Reset HL
+0400DC 11 2C 45 04         A   142    			LD	DE, __low_bss + 1	; [DE] = bs
+0400E0 EDB0                A   143    			LDIR				; Clear this se
+0400E2 C9                  A   144    			RET
+                           A   145    
+                           A   146    ; Wait for timer0 to hit 0
+0400E3                     A   147    _wait_timer0:
+0400E3 F5                  A   148    			PUSH	AF 
+0400E4 C5                  A   149    			PUSH	BC 
+0400E5 ED3880              A   150    			IN0	A, (TMR0_CTL)	; Enable the ti
+0400E8 F603                A   151    			OR	3
+0400EA ED3980              A   152    			OUT0	(TMR0_CTL), A
+0400ED ED0081              A   153    $$:			IN0	B, (TMR0_DR_L)	; Fetch the cou
+0400F0 ED3882              A   154    			IN0 	A, (TMR0_DR_H)	; And the c
+0400F3 B0                  A   155    			OR	B 
+0400F4 20 F7               A   156    			JR	NZ, $B
+0400F6 C1                  A   157    			POP	BC 
+0400F7 F1                  A   158    			POP	AF 
+0400F8 C9                  A   159    			RET
+                           A   160    
+0400F9                     A   161    _enableFlashKeyRegister:
+0400F9 DDE5                A   162    	push	ix
+0400FB DD210000 00         A   163    	ld		ix,0
+040100 DD39                A   164    	add		ix,sp
+                           A   165    	
+040102 3EB6                A   166    	ld		a, b6h			; unlock
+040104 ED39F5              A   167    	out0	(F5h), a
+040107 3E49                A   168    	ld		a, 49h
+040109 ED39F5              A   169    	out0	(F5h), a
+                           A   170    	
+04010C DDF9                A   171    	ld		sp,ix
+04010E DDE1                A   172    	pop		ix
+040110 C9                  A   173    	ret
+                           A   174    
+040111                     A   175    _lockFlashKeyRegister:
+040111 DDE5                A   176    	push	ix
+040113 DD210000 00         A   177    	ld		ix,0
+040118 DD39                A   178    	add		ix,sp
+                           A   179    	
+04011A 3EFF                A   180    	ld		a, ffh			; lock
+04011C ED39F5              A   181    	out0	(F5h), a
+                           A   182    	
+04011F DDF9                A   183    	ld		sp,ix
+040121 DDE1                A   184    	pop		ix
+040123 C9                  A   185    	ret
+                           A   186    	
+040124                     A   187    _reset:
+040124 C7                  A   188    	rst 0h
+040125 C9                  A   189    	ret	;will never get here
                            A   190    	
-04011F DDF9                A   191    	ld		sp,ix
-040121 DDE1                A   192    	pop		ix
-040123 C9                  A   193    	ret
-                           A   194    	
-040124                     A   195    _reset:
-040124 C7                  A   196    	rst 0h
-040125 C9                  A   197    	ret	;will never get here
-                           A   198    	
-040126                     A   199    _fastmemcpy:
-040126 DDE5                A   200    	push	ix
-040128 DD210000 00         A   201    	ld		ix,0
-04012D DD39                A   202    	add		ix,sp
-                           A   203    		
-04012F C5                  A   204    	push bc
-040130 D5                  A   205    	push de
-040131 E5                  A   206    	push hl
-                           A   207    	
-040132 DD1706              A   208    	ld		de, (ix+6)	; destination address
-040135 DD2709              A   209    	ld		hl, (ix+9)	; source
-040138 DD070C              A   210    	ld		bc, (ix+12)	; number of bytes to wr
-04013B EDB0                A   211    	ldir
-                           A   212    
-04013D E1                  A   213    	pop hl
-04013E D1                  A   214    	pop de
-04013F C1                  A   215    	pop bc
-                           A   216    
-040140 DDF9                A   217    	ld		sp,ix
-040142 DDE1                A   218    	pop		ix
-040144 C9                  A   219    	ret
-                           A   220    	
-040145                     A   221    _waitZDI:
-040145 DDE5                A   222    	push	ix
-040147 DD210000 00         A   223    	ld 		ix,0
-04014C DD39                A   224    	add 	ix, sp
-                           A   225    
-04014E DD4E06              A   226    	ld 		c,	(ix+6)
-040151 DD2709              A   227    	ld		hl, (ix+9)
-                           A   228    
-040154 0600                A   229    	ld		b, 0
-040156 3E01                A   230    	ld		a, 1
-040158 CD 20 00 04         A   231    	call		waitBreakpoint
-04015C DDF9                A   232    	ld		sp,ix
-04015E DDE1                A   233    	pop		ix
-040160 C9                  A   234    	ret
+040126                     A   191    _fastmemcpy:
+040126 DDE5                A   192    	push	ix
+040128 DD210000 00         A   193    	ld		ix,0
+04012D DD39                A   194    	add		ix,sp
+                           A   195    		
+04012F C5                  A   196    	push bc
+040130 D5                  A   197    	push de
+040131 E5                  A   198    	push hl
+                           A   199    	
+040132 DD1706              A   200    	ld		de, (ix+6)	; destination address
+040135 DD2709              A   201    	ld		hl, (ix+9)	; source
+040138 DD070C              A   202    	ld		bc, (ix+12)	; number of bytes to wr
+04013B EDB0                A   203    	ldir
+                           A   204    
+04013D E1                  A   205    	pop hl
+04013E D1                  A   206    	pop de
+04013F C1                  A   207    	pop bc
+                           A   208    
+040140 DDF9                A   209    	ld		sp,ix
+040142 DDE1                A   210    	pop		ix
+040144 C9                  A   211    	ret
 
 
 Errors: 0
 Warnings: 0
-Lines Assembled: 515
+Lines Assembled: 492

@@ -146,6 +146,20 @@ clean:
             $(RM) "$(WORKDIR)\timer.lst"
 	@if exist "$(WORKDIR)\timer.src"  \
             $(RM) "$(WORKDIR)\timer.src"
+	@if exist "$(WORKDIR)\serial.obj"  \
+            $(RM) "$(WORKDIR)\serial.obj"
+	@if exist "$(WORKDIR)\serial.lis"  \
+            $(RM) "$(WORKDIR)\serial.lis"
+	@if exist "$(WORKDIR)\serial.lst"  \
+            $(RM) "$(WORKDIR)\serial.lst"
+	@if exist "$(WORKDIR)\agontimer.obj"  \
+            $(RM) "$(WORKDIR)\agontimer.obj"
+	@if exist "$(WORKDIR)\agontimer.lis"  \
+            $(RM) "$(WORKDIR)\agontimer.lis"
+	@if exist "$(WORKDIR)\agontimer.lst"  \
+            $(RM) "$(WORKDIR)\agontimer.lst"
+	@if exist "$(WORKDIR)\agontimer.src"  \
+            $(RM) "$(WORKDIR)\agontimer.src"
 
 relist: 
 	$(AS) $(ASFLAGS) -relist:"C:\source\agon-vdpflash\flashloader\Debug\flashloader.map" \
@@ -164,6 +178,10 @@ relist:
             C:\source\agon-vdpflash\flashloader\Debug\spi.src
 	$(AS) $(ASFLAGS) -relist:"C:\source\agon-vdpflash\flashloader\Debug\flashloader.map" \
             C:\source\agon-vdpflash\flashloader\Debug\timer.src
+	$(AS) $(ASFLAGS) -relist:"C:\source\agon-vdpflash\flashloader\Debug\flashloader.map" \
+            C:\source\agon-vdpflash\flashloader\serial.asm
+	$(AS) $(ASFLAGS) -relist:"C:\source\agon-vdpflash\flashloader\Debug\flashloader.map" \
+            C:\source\agon-vdpflash\flashloader\Debug\agontimer.src
 
 # pre-4.11.0 compatibility
 rebuildall: buildall 
@@ -178,7 +196,9 @@ OBJS =  \
             $(WORKDIR_ESCSPACE)\ffunicode.obj  \
             $(WORKDIR_ESCSPACE)\sd.obj  \
             $(WORKDIR_ESCSPACE)\spi.obj  \
-            $(WORKDIR_ESCSPACE)\timer.obj
+            $(WORKDIR_ESCSPACE)\timer.obj  \
+            $(WORKDIR_ESCSPACE)\serial.obj  \
+            $(WORKDIR_ESCSPACE)\agontimer.obj
 
 flashloader: $(OBJS)
 	 $(LD) $(LDFLAGS)
@@ -205,7 +225,8 @@ $(WORKDIR_ESCSPACE)\main.obj :  \
             $(INCLUDE_ESCSPACE)\zilog\uartdefs.h  \
             $(PRJDIR_ESCSPACE)\spi.h  \
             $(PRJDIR_ESCSPACE)\src_fatfs\ff.h  \
-            $(PRJDIR_ESCSPACE)\src_fatfs\ffconf.h
+            $(PRJDIR_ESCSPACE)\src_fatfs\ffconf.h  \
+            $(PRJDIR_ESCSPACE)\stdint.h
 	 $(CC) $(CFLAGS) "$(PRJDIR)\main.c"
 
 $(WORKDIR_ESCSPACE)\diskio.obj :  \
@@ -288,4 +309,12 @@ $(WORKDIR_ESCSPACE)\timer.obj :  \
             $(INCLUDE_ESCSPACE)\zilog\uartdefs.h  \
             $(PRJDIR_ESCSPACE)\timer.h
 	 $(CC) $(CFLAGS) "$(PRJDIR)\timer.c"
+
+$(WORKDIR_ESCSPACE)\serial.obj :  \
+            $(PRJDIR_ESCSPACE)\serial.asm
+	 $(AS) $(ASFLAGS) "$(PRJDIR)\serial.asm"
+
+$(WORKDIR_ESCSPACE)\agontimer.obj :  \
+            $(PRJDIR_ESCSPACE)\agontimer.c
+	 $(CC) $(CFLAGS) "$(PRJDIR)\agontimer.c"
 

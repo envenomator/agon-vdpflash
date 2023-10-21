@@ -12,6 +12,8 @@
 <file filter-key="">.\sd.c</file>
 <file filter-key="">.\spi.c</file>
 <file filter-key="">.\timer.c</file>
+<file filter-key="">.\serial.asm</file>
+<file filter-key="">.\agontimer.c</file>
 </files>
 
 <!-- configuration information -->

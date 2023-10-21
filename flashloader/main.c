@@ -2,10 +2,13 @@
 #include "src_fatfs\ff.h"
 #include "spi.h"
 #include "defines.h"
+#include <stdint.h>
+#include "agontimer.h"
 
 #define PAGESIZE	1024
 #define FLASHPAGES	128
 #define FLASHSTART	0x0
+#define BAUDRATE	500000
 
 #define MOSFILENAME	"MOS.bin"
 #define LOADADDRESS	0x50000
@@ -18,7 +21,19 @@ enum {
 	FEEDBACK_PAGEWRITTEN,
 };
 
-extern void waitZDI(UINT8 status, UINT24 value);
+
+// Blocking non-interrupt putch to UART0
+int putch(int c)
+{
+	//UINT8 lsr,temt;
+	
+	while((UART0_LSR & 0x40) == 0);
+	UART0_THR = c;
+	return c;
+}
+
+extern void init_UART0(void);
+
 extern void enableFlashKeyRegister(void);
 extern void lockFlashKeyRegister(void);
 extern void fastmemcpy(UINT24 destination, UINT24 source, UINT24 size);
@@ -37,10 +52,21 @@ int main(int argc, char * argv[]) {
 	UINT24 addressto,addressfrom;
 	UINT8	value;
 	UINT24 timer;
-	
-	waitZDI(1,0);
-	
 	init_spi();
+	init_UART0();
+
+
+	while(1) {
+		putch('A');
+		delayms(500);
+		putch('X');
+		delayms(500);
+	}
+
+
+
+
+
 	f_mount(&fs, "", 1);
 
 	addressto = FLASHSTART;
@@ -51,15 +77,15 @@ int main(int argc, char * argv[]) {
 
 		di();
 		size = f_size(&fil);
-		waitZDI(FEEDBACK_OPEN, size);
+		//waitZDI(FEEDBACK_OPEN, size);
 
 		fr = f_read(&fil, (void *)LOADADDRESS, size, &br);
 
 		f_close(&fil);
-		waitZDI(FEEDBACK_FILEDONE, br);
+		//waitZDI(FEEDBACK_FILEDONE, br);
 		
 		// Wait for user to acknowledge proceed (remote ZDI)
-		waitZDI(FEEDBACK_PROCEED, 0);
+		//waitZDI(FEEDBACK_PROCEED, 0);
 		
 		// Unprotect and erase flash
 		enableFlashKeyRegister();	// unlock Flash Key Register, so we can write to the Flash Write/Erase protection registers
@@ -89,7 +115,7 @@ int main(int argc, char * argv[]) {
 		}
 		else lastpagebytes = PAGESIZE; // normal last page
 
-		waitZDI(FEEDBACK_ERASEDONE, pagemax);
+		//waitZDI(FEEDBACK_ERASEDONE, pagemax);
 
 		// write out each page to flash
 		for(counter = 0; counter < pagemax; counter++)
@@ -103,12 +129,12 @@ int main(int argc, char * argv[]) {
 			addressfrom += PAGESIZE;
 			//timer = 0;
 			//while(timer++ < 32768);
-			//waitZDI(FEEDBACK_PAGEWRITTEN, counter);
+			////waitZDI(FEEDBACK_PAGEWRITTEN, counter);
 		}
 		lockFlashKeyRegister();	// lock the flash before WARM reset
-		waitZDI(FEEDBACK_PAGEWRITTEN, counter);
+		//waitZDI(FEEDBACK_PAGEWRITTEN, counter);
 	}
-	else waitZDI(FEEDBACK_OPEN, 0);
+	else //waitZDI(FEEDBACK_OPEN, 0);
 	while(1);
 	return 0;
 }

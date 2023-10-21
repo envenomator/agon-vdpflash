@@ -28,6 +28,8 @@ DEFINE __len_bss = length of BSS
  ".\diskio.obj", \
  ".\spi.obj", \
  ".\timer.obj", \
+ ".\serial.obj", \
+ ".\agontimer.obj", \
  "C:\ZiLOG\ZDSII_eZ80Acclaim!_5.3.5\lib\std\chelpD.lib", \
  "C:\ZiLOG\ZDSII_eZ80Acclaim!_5.3.5\lib\std\crtD.lib", \
  "C:\ZiLOG\ZDSII_eZ80Acclaim!_5.3.5\lib\std\crtSD.lib", \

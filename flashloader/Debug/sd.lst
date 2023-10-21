@@ -1,4 +1,4 @@
-Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     17:27:23     page:   1
+Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     18:18:30     page:   1
 
 
 PC     Object              I  Line    Source 
@@ -120,7 +120,7 @@ PC     Object              I  Line    Source
                            A   116    ;   24	#include "timer.h"
                            A   117    ;   25	
                            A   118    ;   26	void SD_command(BYTE cmd, DWORD arg, BY
-040246                     A   119    _SD_command:
+04034F                     A   119    _SD_command:
                            A   120    .DEFINE "_SD_command"
                            A   121    
                            A   122    .VALUE _SD_command
@@ -165,76 +165,76 @@ PC     Object              I  Line    Source
                            A   161    
                            A   162    .ENDEF
                            A   163    
-040246 DDE5                A   164    	PUSH	IX
-040248 DD210000 00         A   165    	LD	IX,0
-04024D DD39                A   166    	ADD	IX,SP
+04034F DDE5                A   164    	PUSH	IX
+040351 DD210000 00         A   165    	LD	IX,0
+040356 DD39                A   166    	ADD	IX,SP
                            A   167    ;   27	    spi_transfer(cmd|0x40);
                            A   168    .LINE 27
                            A   169    
-04024F DD7E06              A   170    	LD	A,(IX+%6)
-040252 CBF7                A   171    	SET	%6,A
-040254 4F                  A   172    	LD	C,A
-040255 0600                A   173    	LD	B,%0
-040257 C5                  A   174    	PUSH	BC
-040258 CD 96 3D 04         A   175    	CALL	_spi_transfer
-04025C C1                  A   176    	POP	BC
+040358 DD7E06              A   170    	LD	A,(IX+%6)
+04035B CBF7                A   171    	SET	%6,A
+04035D 4F                  A   172    	LD	C,A
+04035E 0600                A   173    	LD	B,%0
+040360 C5                  A   174    	PUSH	BC
+040361 CD 9F 3E 04         A   175    	CALL	_spi_transfer
+040365 C1                  A   176    	POP	BC
                            A   177    ;   28	    spi_transfer((BYTE)(arg >> 24));
                            A   178    .LINE 28
                            A   179    
-04025D DD7E0C              A   180    	LD	A,(IX+%C)
-040260 B7ED62              A   181    	UEXT	HL
-040263 6F                  A   182    	LD	L,A
-040264 E5C1                A   183    	LD	BC,HL
-040266 0600                A   184    	LD	B,%0
-040268 C5                  A   185    	PUSH	BC
-040269 CD 96 3D 04         A   186    	CALL	_spi_transfer
-04026D C1                  A   187    	POP	BC
+040366 DD7E0C              A   180    	LD	A,(IX+%C)
+040369 B7ED62              A   181    	UEXT	HL
+04036C 6F                  A   182    	LD	L,A
+04036D E5C1                A   183    	LD	BC,HL
+04036F 0600                A   184    	LD	B,%0
+040371 C5                  A   185    	PUSH	BC
+040372 CD 9F 3E 04         A   186    	CALL	_spi_transfer
+040376 C1                  A   187    	POP	BC
                            A   188    ;   29	    spi_transfer((BYTE)(arg >> 16));
                            A   189    .LINE 29
                            A   190    
-04026E DD0709              A   191    	LD	BC,(IX+%9)
-040271 DD7E0C              A   192    	LD	A,(IX+%C)
-040274 2E10                A   193    	LD	L,%10
-040276 CD CB 43 04         A   194    	CALL	__lshru
-04027A 0600                A   195    	LD	B,%0
-04027C C5                  A   196    	PUSH	BC
-04027D CD 96 3D 04         A   197    	CALL	_spi_transfer
-040281 C1                  A   198    	POP	BC
+040377 DD0709              A   191    	LD	BC,(IX+%9)
+04037A DD7E0C              A   192    	LD	A,(IX+%C)
+04037D 2E10                A   193    	LD	L,%10
+04037F CD D4 44 04         A   194    	CALL	__lshru
+040383 0600                A   195    	LD	B,%0
+040385 C5                  A   196    	PUSH	BC
+040386 CD 9F 3E 04         A   197    	CALL	_spi_transfer
+04038A C1                  A   198    	POP	BC
                            A   199    ;   30	    spi_transfer((BYTE)(arg >> 8));
                            A   200    .LINE 30
                            A   201    
-040282 DD0709              A   202    	LD	BC,(IX+%9)
-040285 DD7E0C              A   203    	LD	A,(IX+%C)
-040288 2E08                A   204    	LD	L,%8
-04028A CD CB 43 04         A   205    	CALL	__lshru
-04028E 0600                A   206    	LD	B,%0
-040290 C5                  A   207    	PUSH	BC
-040291 CD 96 3D 04         A   208    	CALL	_spi_transfer
-040295 C1                  A   209    	POP	BC
+04038B DD0709              A   202    	LD	BC,(IX+%9)
+04038E DD7E0C              A   203    	LD	A,(IX+%C)
+040391 2E08                A   204    	LD	L,%8
+040393 CD D4 44 04         A   205    	CALL	__lshru
+040397 0600                A   206    	LD	B,%0
+040399 C5                  A   207    	PUSH	BC
+04039A CD 9F 3E 04         A   208    	CALL	_spi_transfer
+04039E C1                  A   209    	POP	BC
                            A   210    ;   31	    spi_transfer((BYTE)(arg));
                            A   211    .LINE 31
                            A   212    
-040296 DD4E09              A   213    	LD	C,(IX+%9)
-040299 0600                A   214    	LD	B,%0
-04029B C5                  A   215    	PUSH	BC
-04029C CD 96 3D 04         A   216    	CALL	_spi_transfer
-0402A0 C1                  A   217    	POP	BC
+04039F DD4E09              A   213    	LD	C,(IX+%9)
+0403A2 0600                A   214    	LD	B,%0
+0403A4 C5                  A   215    	PUSH	BC
+0403A5 CD 9F 3E 04         A   216    	CALL	_spi_transfer
+0403A9 C1                  A   217    	POP	BC
                            A   218    ;   32	    spi_transfer(crc|0x01);
                            A   219    .LINE 32
                            A   220    
-0402A1 DD7E0F              A   221    	LD	A,(IX+%F)
-0402A4 CBC7                A   222    	SET	%0,A
-0402A6 4F                  A   223    	LD	C,A
-0402A7 0600                A   224    	LD	B,%0
-0402A9 C5                  A   225    	PUSH	BC
-0402AA CD 96 3D 04         A   226    	CALL	_spi_transfer
-0402AE C1                  A   227    	POP	BC
+0403AA DD7E0F              A   221    	LD	A,(IX+%F)
+0403AD CBC7                A   222    	SET	%0,A
+0403AF 4F                  A   223    	LD	C,A
+0403B0 0600                A   224    	LD	B,%0
+0403B2 C5                  A   225    	PUSH	BC
+0403B3 CD 9F 3E 04         A   226    	CALL	_spi_transfer
+0403B7 C1                  A   227    	POP	BC
                            A   228    ;   33	}
                            A   229    .LINE 33
                            A   230    
-0402AF DDF9                A   231    	LD	SP,IX
-0402B1 DDE1                A   232    	POP	IX
-0402B3 C9                  A   233    	RET	
+0403B8 DDF9                A   231    	LD	SP,IX
+0403BA DDE1                A   232    	POP	IX
+0403BC C9                  A   233    	RET	
                            A   234    
                            A   235    
                            A   236    ;**************************** _SD_command *****
@@ -252,7 +252,7 @@ PC     Object              I  Line    Source
                            A   248    .ENDFUNC "SD_command",33,"_SD_command"
                            A   249    ;   34	
                            A   250    ;   35	BYTE SD_readRes1() {
-0402B4                     A   251    _SD_readRes1:
+0403BD                     A   251    _SD_readRes1:
                            A   252    .DEFINE "_SD_readRes1"
                            A   253    
                            A   254    .VALUE _SD_readRes1
@@ -287,55 +287,55 @@ PC     Object              I  Line    Source
                            A   283    
                            A   284    .ENDEF
                            A   285    
-0402B4 DDE5                A   286    	PUSH	IX
-0402B6 DD210000 00         A   287    	LD	IX,0
-0402BB DD39                A   288    	ADD	IX,SP
-0402BD 3B                  A   289    	DEC	SP
-0402BE 3B                  A   290    	DEC	SP
+0403BD DDE5                A   286    	PUSH	IX
+0403BF DD210000 00         A   287    	LD	IX,0
+0403C4 DD39                A   288    	ADD	IX,SP
+0403C6 3B                  A   289    	DEC	SP
+0403C7 3B                  A   290    	DEC	SP
                            A   291    ;   36	    BYTE i = 0, res1;
                            A   292    .LINE 36
                            A   293    
-0402BF DD36FF00            A   294    	LD	(IX+%FFFFFFFF),%0
+0403C8 DD36FF00            A   294    	LD	(IX+%FFFFFFFF),%0
                            A   295    ;   37	
                            A   296    ;   38	    // keep polling until actual data r
                            A   297    ;   39	    while((res1 = spi_transfer(0xFF)) =
                            A   298    .LINE 39
                            A   299    
-0402C3 18 0A               A   300    	JR	L_3
-0402C5                     A   301    L_4:
+0403CC 18 0A               A   300    	JR	L_3
+0403CE                     A   301    L_4:
                            A   302    ;   40	        i++;
                            A   303    .LINE 40
                            A   304    
-0402C5 DD34FF              A   305    	INC	(IX+%FFFFFFFF)
+0403CE DD34FF              A   305    	INC	(IX+%FFFFFFFF)
                            A   306    ;   41	        // if no data received for 8 by
                            A   307    ;   42	        if(i > 8) break;
                            A   308    .LINE 42
                            A   309    
-0402C8 3E08                A   310    	LD	A,%8
-0402CA DDBEFF              A   311    	CP	A,(IX+%FFFFFFFF)
-0402CD 38 11               A   312    	JR	C,L_5
+0403D1 3E08                A   310    	LD	A,%8
+0403D3 DDBEFF              A   311    	CP	A,(IX+%FFFFFFFF)
+0403D6 38 11               A   312    	JR	C,L_5
                            A   313    ;   43	    }
-0402CF                     A   314    L_3:
+0403D8                     A   314    L_3:
                            A   315    .LINE 43
                            A   316    
-0402CF 01FF0000            A   317    	LD	BC,255
-0402D3 C5                  A   318    	PUSH	BC
-0402D4 CD 96 3D 04         A   319    	CALL	_spi_transfer
-0402D8 C1                  A   320    	POP	BC
-0402D9 DD77FE              A   321    	LD	(IX+%FFFFFFFE),A
-0402DC FEFF                A   322    	CP	A,%FF
-0402DE 28 E5               A   323    	JR	Z,L_4
-0402E0                     A   324    L_5:
+0403D8 01FF0000            A   317    	LD	BC,255
+0403DC C5                  A   318    	PUSH	BC
+0403DD CD 9F 3E 04         A   319    	CALL	_spi_transfer
+0403E1 C1                  A   320    	POP	BC
+0403E2 DD77FE              A   321    	LD	(IX+%FFFFFFFE),A
+0403E5 FEFF                A   322    	CP	A,%FF
+0403E7 28 E5               A   323    	JR	Z,L_4
+0403E9                     A   324    L_5:
                            A   325    ;   44	    return res1;
                            A   326    .LINE 44
                            A   327    
-0402E0 DD7EFE              A   328    	LD	A,(IX+%FFFFFFFE)
+0403E9 DD7EFE              A   328    	LD	A,(IX+%FFFFFFFE)
                            A   329    ;   45	}
                            A   330    .LINE 45
                            A   331    
-0402E3 DDF9                A   332    	LD	SP,IX
-0402E5 DDE1                A   333    	POP	IX
-0402E7 C9                  A   334    	RET	
+0403EC DDF9                A   332    	LD	SP,IX
+0403EE DDE1                A   333    	POP	IX
+0403F0 C9                  A   334    	RET	
                            A   335    
                            A   336    
                            A   337    ;**************************** _SD_readRes1 ****
@@ -352,7 +352,7 @@ PC     Object              I  Line    Source
                            A   348    .ENDFUNC "SD_readRes1",45,"_SD_readRes1"
                            A   349    ;   46	
                            A   350    ;   47	void SD_readRes7(BYTE *res) {
-0402E8                     A   351    _SD_readRes7:
+0403F1                     A   351    _SD_readRes7:
                            A   352    .DEFINE "_SD_readRes7"
                            A   353    
                            A   354    .VALUE _SD_readRes7
@@ -377,79 +377,79 @@ PC     Object              I  Line    Source
                            A   373    
                            A   374    .ENDEF
                            A   375    
-0402E8 DDE5                A   376    	PUSH	IX
-0402EA DD210000 00         A   377    	LD	IX,0
-0402EF DD39                A   378    	ADD	IX,SP
+0403F1 DDE5                A   376    	PUSH	IX
+0403F3 DD210000 00         A   377    	LD	IX,0
+0403F8 DD39                A   378    	ADD	IX,SP
                            A   379    ;   48	    res[0] = SD_readRes1();
                            A   380    .LINE 48
                            A   381    
-0402F1 CD B4 02 04         A   382    	CALL	_SD_readRes1
-0402F5 DD2706              A   383    	LD	HL,(IX+%6)
-0402F8 77                  A   384    	LD	(HL),A
+0403FA CD BD 03 04         A   382    	CALL	_SD_readRes1
+0403FE DD2706              A   383    	LD	HL,(IX+%6)
+040401 77                  A   384    	LD	(HL),A
                            A   385    ;   49	
                            A   386    ;   50	    // if error reading R1, return
                            A   387    ;   51	    if(res[0] > 1) return;
                            A   388    .LINE 51
                            A   389    
-0402F9 DD2706              A   390    	LD	HL,(IX+%6)
-0402FC 7E                  A   391    	LD	A,(HL)
-0402FD B7ED62              A   392    	UEXT	HL
-040300 6F                  A   393    	LD	L,A
-040301 E5C1                A   394    	LD	BC,HL
-040303 21010000            A   395    	LD	HL,1
-040307 B7                  A   396    	OR	A,A
-040308 ED42                A   397    	SBC	HL,BC
-04030A CD E0 41 04         A   398    	CALL	__setflag
-04030E FA 54 03 04         A   399    	JP	M,L_9
+040402 DD2706              A   390    	LD	HL,(IX+%6)
+040405 7E                  A   391    	LD	A,(HL)
+040406 B7ED62              A   392    	UEXT	HL
+040409 6F                  A   393    	LD	L,A
+04040A E5C1                A   394    	LD	BC,HL
+04040C 21010000            A   395    	LD	HL,1
+040410 B7                  A   396    	OR	A,A
+040411 ED42                A   397    	SBC	HL,BC
+040413 CD E9 42 04         A   398    	CALL	__setflag
+040417 FA 5D 04 04         A   399    	JP	M,L_9
                            A   400    ;   52	
                            A   401    ;   53	    // read remaining bytes
                            A   402    ;   54	    res[1] = spi_transfer(0xFF);
                            A   403    .LINE 54
                            A   404    
-040312 01FF0000            A   405    	LD	BC,255
-040316 C5                  A   406    	PUSH	BC
-040317 CD 96 3D 04         A   407    	CALL	_spi_transfer
-04031B C1                  A   408    	POP	BC
-04031C DD2706              A   409    	LD	HL,(IX+%6)
-04031F 23                  A   410    	INC	HL
-040320 77                  A   411    	LD	(HL),A
+04041B 01FF0000            A   405    	LD	BC,255
+04041F C5                  A   406    	PUSH	BC
+040420 CD 9F 3E 04         A   407    	CALL	_spi_transfer
+040424 C1                  A   408    	POP	BC
+040425 DD2706              A   409    	LD	HL,(IX+%6)
+040428 23                  A   410    	INC	HL
+040429 77                  A   411    	LD	(HL),A
                            A   412    ;   55	    res[2] = spi_transfer(0xFF);
                            A   413    .LINE 55
                            A   414    
-040321 01FF0000            A   415    	LD	BC,255
-040325 C5                  A   416    	PUSH	BC
-040326 CD 96 3D 04         A   417    	CALL	_spi_transfer
-04032A C1                  A   418    	POP	BC
-04032B DD3106              A   419    	LD	IY,(IX+%6)
-04032E ED2302              A   420    	LEA	HL,IY+%2
-040331 77                  A   421    	LD	(HL),A
+04042A 01FF0000            A   415    	LD	BC,255
+04042E C5                  A   416    	PUSH	BC
+04042F CD 9F 3E 04         A   417    	CALL	_spi_transfer
+040433 C1                  A   418    	POP	BC
+040434 DD3106              A   419    	LD	IY,(IX+%6)
+040437 ED2302              A   420    	LEA	HL,IY+%2
+04043A 77                  A   421    	LD	(HL),A
                            A   422    ;   56	    res[3] = spi_transfer(0xFF);
                            A   423    .LINE 56
                            A   424    
-040332 01FF0000            A   425    	LD	BC,255
-040336 C5                  A   426    	PUSH	BC
-040337 CD 96 3D 04         A   427    	CALL	_spi_transfer
-04033B C1                  A   428    	POP	BC
-04033C DD3106              A   429    	LD	IY,(IX+%6)
-04033F ED2303              A   430    	LEA	HL,IY+%3
-040342 77                  A   431    	LD	(HL),A
+04043B 01FF0000            A   425    	LD	BC,255
+04043F C5                  A   426    	PUSH	BC
+040440 CD 9F 3E 04         A   427    	CALL	_spi_transfer
+040444 C1                  A   428    	POP	BC
+040445 DD3106              A   429    	LD	IY,(IX+%6)
+040448 ED2303              A   430    	LEA	HL,IY+%3
+04044B 77                  A   431    	LD	(HL),A
                            A   432    ;   57	    res[4] = spi_transfer(0xFF);
                            A   433    .LINE 57
                            A   434    
-040343 01FF0000            A   435    	LD	BC,255
-040347 C5                  A   436    	PUSH	BC
-040348 CD 96 3D 04         A   437    	CALL	_spi_transfer
-04034C C1                  A   438    	POP	BC
-04034D DD3106              A   439    	LD	IY,(IX+%6)
-040350 ED2304              A   440    	LEA	HL,IY+%4
-040353 77                  A   441    	LD	(HL),A
+04044C 01FF0000            A   435    	LD	BC,255
+040450 C5                  A   436    	PUSH	BC
+040451 CD 9F 3E 04         A   437    	CALL	_spi_transfer
+040455 C1                  A   438    	POP	BC
+040456 DD3106              A   439    	LD	IY,(IX+%6)
+040459 ED2304              A   440    	LEA	HL,IY+%4
+04045C 77                  A   441    	LD	(HL),A
                            A   442    ;   58	}
-040354                     A   443    L_9:
+04045D                     A   443    L_9:
                            A   444    .LINE 58
                            A   445    
-040354 DDF9                A   446    	LD	SP,IX
-040356 DDE1                A   447    	POP	IX
-040358 C9                  A   448    	RET	
+04045D DDF9                A   446    	LD	SP,IX
+04045F DDE1                A   447    	POP	IX
+040461 C9                  A   448    	RET	
                            A   449    
                            A   450    
                            A   451    ;**************************** _SD_readRes7 ****
@@ -466,7 +466,7 @@ PC     Object              I  Line    Source
                            A   462    .ENDFUNC "SD_readRes7",58,"_SD_readRes7"
                            A   463    ;   59	
                            A   464    ;   60	BYTE SD_goIdleState() {
-040359                     A   465    _SD_goIdleState:
+040462                     A   465    _SD_goIdleState:
                            A   466    .DEFINE "_SD_goIdleState"
                            A   467    
                            A   468    .VALUE _SD_goIdleState
@@ -491,77 +491,77 @@ PC     Object              I  Line    Source
                            A   487    
                            A   488    .ENDEF
                            A   489    
-040359 DDE5                A   490    	PUSH	IX
-04035B DD210000 00         A   491    	LD	IX,0
-040360 DD39                A   492    	ADD	IX,SP
-040362 3B                  A   493    	DEC	SP
+040462 DDE5                A   490    	PUSH	IX
+040464 DD210000 00         A   491    	LD	IX,0
+040469 DD39                A   492    	ADD	IX,SP
+04046B 3B                  A   493    	DEC	SP
                            A   494    ;   61		BYTE res1;
                            A   495    ;   62	//  printf("SD_goIdleState()\n");
                            A   496    ;   63	    spi_transfer(0xFF);
                            A   497    .LINE 63
                            A   498    
-040363 01FF0000            A   499    	LD	BC,255
-040367 C5                  A   500    	PUSH	BC
-040368 CD 96 3D 04         A   501    	CALL	_spi_transfer
-04036C C1                  A   502    	POP	BC
+04046C 01FF0000            A   499    	LD	BC,255
+040470 C5                  A   500    	PUSH	BC
+040471 CD 9F 3E 04         A   501    	CALL	_spi_transfer
+040475 C1                  A   502    	POP	BC
                            A   503    ;   64	    SD_CS_enable();
                            A   504    .LINE 64
                            A   505    
-04036D CD 6A 3D 04         A   506    	CALL	_SD_CS_enable
+040476 CD 73 3E 04         A   506    	CALL	_SD_CS_enable
                            A   507    ;   65	    spi_transfer(0xFF);
                            A   508    .LINE 65
                            A   509    
-040371 01FF0000            A   510    	LD	BC,255
-040375 C5                  A   511    	PUSH	BC
-040376 CD 96 3D 04         A   512    	CALL	_spi_transfer
-04037A C1                  A   513    	POP	BC
+04047A 01FF0000            A   510    	LD	BC,255
+04047E C5                  A   511    	PUSH	BC
+04047F CD 9F 3E 04         A   512    	CALL	_spi_transfer
+040483 C1                  A   513    	POP	BC
                            A   514    ;   66	    SD_command(CMD0, CMD0_ARG, CMD0_CRC
                            A   515    .LINE 66
                            A   516    
-04037B 01940000            A   517    	LD	BC,148
-04037F C5                  A   518    	PUSH	BC
-040380 01000000            A   519    	LD	BC,0
-040384 C5                  A   520    	PUSH	BC
-040385 C5                  A   521    	PUSH	BC
-040386 C5                  A   522    	PUSH	BC
-040387 CD 46 02 04         A   523    	CALL	_SD_command
-04038B C1                  A   524    	POP	BC
-04038C C1                  A   525    	POP	BC
-04038D C1                  A   526    	POP	BC
-04038E C1                  A   527    	POP	BC
+040484 01940000            A   517    	LD	BC,148
+040488 C5                  A   518    	PUSH	BC
+040489 01000000            A   519    	LD	BC,0
+04048D C5                  A   520    	PUSH	BC
+04048E C5                  A   521    	PUSH	BC
+04048F C5                  A   522    	PUSH	BC
+040490 CD 4F 03 04         A   523    	CALL	_SD_command
+040494 C1                  A   524    	POP	BC
+040495 C1                  A   525    	POP	BC
+040496 C1                  A   526    	POP	BC
+040497 C1                  A   527    	POP	BC
                            A   528    ;   67	    res1 = SD_readRes1();
                            A   529    .LINE 67
                            A   530    
-04038F CD B4 02 04         A   531    	CALL	_SD_readRes1
-040393 DD77FF              A   532    	LD	(IX+%FFFFFFFF),A
+040498 CD BD 03 04         A   531    	CALL	_SD_readRes1
+04049C DD77FF              A   532    	LD	(IX+%FFFFFFFF),A
                            A   533    ;   68	    spi_transfer(0xFF);
                            A   534    .LINE 68
                            A   535    
-040396 01FF0000            A   536    	LD	BC,255
-04039A C5                  A   537    	PUSH	BC
-04039B CD 96 3D 04         A   538    	CALL	_spi_transfer
-04039F C1                  A   539    	POP	BC
+04049F 01FF0000            A   536    	LD	BC,255
+0404A3 C5                  A   537    	PUSH	BC
+0404A4 CD 9F 3E 04         A   538    	CALL	_spi_transfer
+0404A8 C1                  A   539    	POP	BC
                            A   540    ;   69	    SD_CS_disable();
                            A   541    .LINE 69
                            A   542    
-0403A0 CD 80 3D 04         A   543    	CALL	_SD_CS_disable
+0404A9 CD 89 3E 04         A   543    	CALL	_SD_CS_disable
                            A   544    ;   70	    spi_transfer(0xFF);
                            A   545    .LINE 70
                            A   546    
-0403A4 01FF0000            A   547    	LD	BC,255
-0403A8 C5                  A   548    	PUSH	BC
-0403A9 CD 96 3D 04         A   549    	CALL	_spi_transfer
-0403AD C1                  A   550    	POP	BC
+0404AD 01FF0000            A   547    	LD	BC,255
+0404B1 C5                  A   548    	PUSH	BC
+0404B2 CD 9F 3E 04         A   549    	CALL	_spi_transfer
+0404B6 C1                  A   550    	POP	BC
                            A   551    ;   71	    return res1;
                            A   552    .LINE 71
                            A   553    
-0403AE DD7EFF              A   554    	LD	A,(IX+%FFFFFFFF)
+0404B7 DD7EFF              A   554    	LD	A,(IX+%FFFFFFFF)
                            A   555    ;   72	}
                            A   556    .LINE 72
                            A   557    
-0403B1 DDF9                A   558    	LD	SP,IX
-0403B3 DDE1                A   559    	POP	IX
-0403B5 C9                  A   560    	RET	
+0404BA DDF9                A   558    	LD	SP,IX
+0404BC DDE1                A   559    	POP	IX
+0404BE C9                  A   560    	RET	
                            A   561    
                            A   562    
                            A   563    ;**************************** _SD_goIdleState *
@@ -581,7 +581,7 @@ PC     Object              I  Line    Source
                            A   577    .ENDFUNC "SD_goIdleState",72,"_SD_goIdleState"
                            A   578    ;   73	
                            A   579    ;   74	void SD_sendIfCond(BYTE *res) {
-0403B6                     A   580    _SD_sendIfCond:
+0404BF                     A   580    _SD_sendIfCond:
                            A   581    .DEFINE "_SD_sendIfCond"
                            A   582    
                            A   583    .VALUE _SD_sendIfCond
@@ -606,75 +606,75 @@ PC     Object              I  Line    Source
                            A   602    
                            A   603    .ENDEF
                            A   604    
-0403B6 DDE5                A   605    	PUSH	IX
-0403B8 DD210000 00         A   606    	LD	IX,0
-0403BD DD39                A   607    	ADD	IX,SP
+0404BF DDE5                A   605    	PUSH	IX
+0404C1 DD210000 00         A   606    	LD	IX,0
+0404C6 DD39                A   607    	ADD	IX,SP
                            A   608    ;   75	//  printf("SD_sendIfCond()\n");
                            A   609    ;   76	    spi_transfer(0xFF);
                            A   610    .LINE 76
                            A   611    
-0403BF 01FF0000            A   612    	LD	BC,255
-0403C3 C5                  A   613    	PUSH	BC
-0403C4 CD 96 3D 04         A   614    	CALL	_spi_transfer
-0403C8 C1                  A   615    	POP	BC
+0404C8 01FF0000            A   612    	LD	BC,255
+0404CC C5                  A   613    	PUSH	BC
+0404CD CD 9F 3E 04         A   614    	CALL	_spi_transfer
+0404D1 C1                  A   615    	POP	BC
                            A   616    ;   77	    SD_CS_enable();
                            A   617    .LINE 77
                            A   618    
-0403C9 CD 6A 3D 04         A   619    	CALL	_SD_CS_enable
+0404D2 CD 73 3E 04         A   619    	CALL	_SD_CS_enable
                            A   620    ;   78	    spi_transfer(0xFF);
                            A   621    .LINE 78
                            A   622    
-0403CD 01FF0000            A   623    	LD	BC,255
-0403D1 C5                  A   624    	PUSH	BC
-0403D2 CD 96 3D 04         A   625    	CALL	_spi_transfer
-0403D6 C1                  A   626    	POP	BC
+0404D6 01FF0000            A   623    	LD	BC,255
+0404DA C5                  A   624    	PUSH	BC
+0404DB CD 9F 3E 04         A   625    	CALL	_spi_transfer
+0404DF C1                  A   626    	POP	BC
                            A   627    ;   79	    SD_command(CMD8, CMD8_ARG, CMD8_CRC
                            A   628    .LINE 79
                            A   629    
-0403D7 01860000            A   630    	LD	BC,134
-0403DB C5                  A   631    	PUSH	BC
-0403DC 01000000            A   632    	LD	BC,0
-0403E0 C5                  A   633    	PUSH	BC
-0403E1 01AA0100            A   634    	LD	BC,426
-0403E5 C5                  A   635    	PUSH	BC
-0403E6 01080000            A   636    	LD	BC,8
-0403EA C5                  A   637    	PUSH	BC
-0403EB CD 46 02 04         A   638    	CALL	_SD_command
-0403EF C1                  A   639    	POP	BC
-0403F0 C1                  A   640    	POP	BC
-0403F1 C1                  A   641    	POP	BC
-0403F2 C1                  A   642    	POP	BC
+0404E0 01860000            A   630    	LD	BC,134
+0404E4 C5                  A   631    	PUSH	BC
+0404E5 01000000            A   632    	LD	BC,0
+0404E9 C5                  A   633    	PUSH	BC
+0404EA 01AA0100            A   634    	LD	BC,426
+0404EE C5                  A   635    	PUSH	BC
+0404EF 01080000            A   636    	LD	BC,8
+0404F3 C5                  A   637    	PUSH	BC
+0404F4 CD 4F 03 04         A   638    	CALL	_SD_command
+0404F8 C1                  A   639    	POP	BC
+0404F9 C1                  A   640    	POP	BC
+0404FA C1                  A   641    	POP	BC
+0404FB C1                  A   642    	POP	BC
                            A   643    ;   80	    SD_readRes7(res);
                            A   644    .LINE 80
                            A   645    
-0403F3 DD0706              A   646    	LD	BC,(IX+%6)
-0403F6 C5                  A   647    	PUSH	BC
-0403F7 CD E8 02 04         A   648    	CALL	_SD_readRes7
-0403FB C1                  A   649    	POP	BC
+0404FC DD0706              A   646    	LD	BC,(IX+%6)
+0404FF C5                  A   647    	PUSH	BC
+040500 CD F1 03 04         A   648    	CALL	_SD_readRes7
+040504 C1                  A   649    	POP	BC
                            A   650    ;   81	    spi_transfer(0xFF);
                            A   651    .LINE 81
                            A   652    
-0403FC 01FF0000            A   653    	LD	BC,255
-040400 C5                  A   654    	PUSH	BC
-040401 CD 96 3D 04         A   655    	CALL	_spi_transfer
-040405 C1                  A   656    	POP	BC
+040505 01FF0000            A   653    	LD	BC,255
+040509 C5                  A   654    	PUSH	BC
+04050A CD 9F 3E 04         A   655    	CALL	_spi_transfer
+04050E C1                  A   656    	POP	BC
                            A   657    ;   82	    SD_CS_disable();
                            A   658    .LINE 82
                            A   659    
-040406 CD 80 3D 04         A   660    	CALL	_SD_CS_disable
+04050F CD 89 3E 04         A   660    	CALL	_SD_CS_disable
                            A   661    ;   83	    spi_transfer(0xFF);
                            A   662    .LINE 83
                            A   663    
-04040A 01FF0000            A   664    	LD	BC,255
-04040E C5                  A   665    	PUSH	BC
-04040F CD 96 3D 04         A   666    	CALL	_spi_transfer
-040413 C1                  A   667    	POP	BC
+040513 01FF0000            A   664    	LD	BC,255
+040517 C5                  A   665    	PUSH	BC
+040518 CD 9F 3E 04         A   666    	CALL	_spi_transfer
+04051C C1                  A   667    	POP	BC
                            A   668    ;   84	}
                            A   669    .LINE 84
                            A   670    
-040414 DDF9                A   671    	LD	SP,IX
-040416 DDE1                A   672    	POP	IX
-040418 C9                  A   673    	RET	
+04051D DDF9                A   671    	LD	SP,IX
+04051F DDE1                A   672    	POP	IX
+040521 C9                  A   673    	RET	
                            A   674    
                            A   675    
                            A   676    ;**************************** _SD_sendIfCond **
@@ -694,7 +694,7 @@ PC     Object              I  Line    Source
                            A   690    .ENDFUNC "SD_sendIfCond",84,"_SD_sendIfCond"
                            A   691    ;   85	
                            A   692    ;   86	UINT8 SD_sendApp() {
-040419                     A   693    _SD_sendApp:
+040522                     A   693    _SD_sendApp:
                            A   694    .DEFINE "_SD_sendApp"
                            A   695    
                            A   696    .VALUE _SD_sendApp
@@ -719,77 +719,77 @@ PC     Object              I  Line    Source
                            A   715    
                            A   716    .ENDEF
                            A   717    
-040419 DDE5                A   718    	PUSH	IX
-04041B DD210000 00         A   719    	LD	IX,0
-040420 DD39                A   720    	ADD	IX,SP
-040422 3B                  A   721    	DEC	SP
+040522 DDE5                A   718    	PUSH	IX
+040524 DD210000 00         A   719    	LD	IX,0
+040529 DD39                A   720    	ADD	IX,SP
+04052B 3B                  A   721    	DEC	SP
                            A   722    ;   87		BYTE res1;
                            A   723    ;   88	//	printf("SD_sendApp()\n");
                            A   724    ;   89	    spi_transfer(0xFF);
                            A   725    .LINE 89
                            A   726    
-040423 01FF0000            A   727    	LD	BC,255
-040427 C5                  A   728    	PUSH	BC
-040428 CD 96 3D 04         A   729    	CALL	_spi_transfer
-04042C C1                  A   730    	POP	BC
+04052C 01FF0000            A   727    	LD	BC,255
+040530 C5                  A   728    	PUSH	BC
+040531 CD 9F 3E 04         A   729    	CALL	_spi_transfer
+040535 C1                  A   730    	POP	BC
                            A   731    ;   90	    SD_CS_enable();
                            A   732    .LINE 90
                            A   733    
-04042D CD 6A 3D 04         A   734    	CALL	_SD_CS_enable
+040536 CD 73 3E 04         A   734    	CALL	_SD_CS_enable
                            A   735    ;   91	    spi_transfer(0xFF);
                            A   736    .LINE 91
                            A   737    
-040431 01FF0000            A   738    	LD	BC,255
-040435 C5                  A   739    	PUSH	BC
-040436 CD 96 3D 04         A   740    	CALL	_spi_transfer
-04043A C1                  A   741    	POP	BC
+04053A 01FF0000            A   738    	LD	BC,255
+04053E C5                  A   739    	PUSH	BC
+04053F CD 9F 3E 04         A   740    	CALL	_spi_transfer
+040543 C1                  A   741    	POP	BC
                            A   742    ;   92	    SD_command(CMD55, CMD55_ARG, CMD55_
                            A   743    .LINE 92
                            A   744    
-04043B 01000000            A   745    	LD	BC,0
-04043F C5                  A   746    	PUSH	BC
-040440 C5                  A   747    	PUSH	BC
-040441 C5                  A   748    	PUSH	BC
-040442 01370000            A   749    	LD	BC,55
-040446 C5                  A   750    	PUSH	BC
-040447 CD 46 02 04         A   751    	CALL	_SD_command
-04044B C1                  A   752    	POP	BC
-04044C C1                  A   753    	POP	BC
-04044D C1                  A   754    	POP	BC
-04044E C1                  A   755    	POP	BC
+040544 01000000            A   745    	LD	BC,0
+040548 C5                  A   746    	PUSH	BC
+040549 C5                  A   747    	PUSH	BC
+04054A C5                  A   748    	PUSH	BC
+04054B 01370000            A   749    	LD	BC,55
+04054F C5                  A   750    	PUSH	BC
+040550 CD 4F 03 04         A   751    	CALL	_SD_command
+040554 C1                  A   752    	POP	BC
+040555 C1                  A   753    	POP	BC
+040556 C1                  A   754    	POP	BC
+040557 C1                  A   755    	POP	BC
                            A   756    ;   93	    res1 = SD_readRes1();
                            A   757    .LINE 93
                            A   758    
-04044F CD B4 02 04         A   759    	CALL	_SD_readRes1
-040453 DD77FF              A   760    	LD	(IX+%FFFFFFFF),A
+040558 CD BD 03 04         A   759    	CALL	_SD_readRes1
+04055C DD77FF              A   760    	LD	(IX+%FFFFFFFF),A
                            A   761    ;   94	    spi_transfer(0xFF);
                            A   762    .LINE 94
                            A   763    
-040456 01FF0000            A   764    	LD	BC,255
-04045A C5                  A   765    	PUSH	BC
-04045B CD 96 3D 04         A   766    	CALL	_spi_transfer
-04045F C1                  A   767    	POP	BC
+04055F 01FF0000            A   764    	LD	BC,255
+040563 C5                  A   765    	PUSH	BC
+040564 CD 9F 3E 04         A   766    	CALL	_spi_transfer
+040568 C1                  A   767    	POP	BC
                            A   768    ;   95	    SD_CS_disable();
                            A   769    .LINE 95
                            A   770    
-040460 CD 80 3D 04         A   771    	CALL	_SD_CS_disable
+040569 CD 89 3E 04         A   771    	CALL	_SD_CS_disable
                            A   772    ;   96	    spi_transfer(0xFF);
                            A   773    .LINE 96
                            A   774    
-040464 01FF0000            A   775    	LD	BC,255
-040468 C5                  A   776    	PUSH	BC
-040469 CD 96 3D 04         A   777    	CALL	_spi_transfer
-04046D C1                  A   778    	POP	BC
+04056D 01FF0000            A   775    	LD	BC,255
+040571 C5                  A   776    	PUSH	BC
+040572 CD 9F 3E 04         A   777    	CALL	_spi_transfer
+040576 C1                  A   778    	POP	BC
                            A   779    ;   97	    return res1;
                            A   780    .LINE 97
                            A   781    
-04046E DD7EFF              A   782    	LD	A,(IX+%FFFFFFFF)
+040577 DD7EFF              A   782    	LD	A,(IX+%FFFFFFFF)
                            A   783    ;   98	}
                            A   784    .LINE 98
                            A   785    
-040471 DDF9                A   786    	LD	SP,IX
-040473 DDE1                A   787    	POP	IX
-040475 C9                  A   788    	RET	
+04057A DDF9                A   786    	LD	SP,IX
+04057C DDE1                A   787    	POP	IX
+04057E C9                  A   788    	RET	
                            A   789    
                            A   790    
                            A   791    ;**************************** _SD_sendApp *****
@@ -809,7 +809,7 @@ PC     Object              I  Line    Source
                            A   805    .ENDFUNC "SD_sendApp",98,"_SD_sendApp"
                            A   806    ;   99	
                            A   807    ;  100	UINT8 SD_sendOpCond() {
-040476                     A   808    _SD_sendOpCond:
+04057F                     A   808    _SD_sendOpCond:
                            A   809    .DEFINE "_SD_sendOpCond"
                            A   810    
                            A   811    .VALUE _SD_sendOpCond
@@ -834,79 +834,79 @@ PC     Object              I  Line    Source
                            A   830    
                            A   831    .ENDEF
                            A   832    
-040476 DDE5                A   833    	PUSH	IX
-040478 DD210000 00         A   834    	LD	IX,0
-04047D DD39                A   835    	ADD	IX,SP
-04047F 3B                  A   836    	DEC	SP
+04057F DDE5                A   833    	PUSH	IX
+040581 DD210000 00         A   834    	LD	IX,0
+040586 DD39                A   835    	ADD	IX,SP
+040588 3B                  A   836    	DEC	SP
                            A   837    ;  101		BYTE res1;
                            A   838    ;  102	//  printf("SD_sendOpCond()\n");
                            A   839    ;  103	    spi_transfer(0xFF);
                            A   840    .LINE 103
                            A   841    
-040480 01FF0000            A   842    	LD	BC,255
-040484 C5                  A   843    	PUSH	BC
-040485 CD 96 3D 04         A   844    	CALL	_spi_transfer
-040489 C1                  A   845    	POP	BC
+040589 01FF0000            A   842    	LD	BC,255
+04058D C5                  A   843    	PUSH	BC
+04058E CD 9F 3E 04         A   844    	CALL	_spi_transfer
+040592 C1                  A   845    	POP	BC
                            A   846    ;  104	    SD_CS_enable();
                            A   847    .LINE 104
                            A   848    
-04048A CD 6A 3D 04         A   849    	CALL	_SD_CS_enable
+040593 CD 73 3E 04         A   849    	CALL	_SD_CS_enable
                            A   850    ;  105	    spi_transfer(0xFF);
                            A   851    .LINE 105
                            A   852    
-04048E 01FF0000            A   853    	LD	BC,255
-040492 C5                  A   854    	PUSH	BC
-040493 CD 96 3D 04         A   855    	CALL	_spi_transfer
-040497 C1                  A   856    	POP	BC
+040597 01FF0000            A   853    	LD	BC,255
+04059B C5                  A   854    	PUSH	BC
+04059C CD 9F 3E 04         A   855    	CALL	_spi_transfer
+0405A0 C1                  A   856    	POP	BC
                            A   857    ;  106	    SD_command(ACMD41, ACMD41_ARG, ACMD
                            A   858    .LINE 106
                            A   859    
-040498 01000000            A   860    	LD	BC,0
-04049C C5                  A   861    	PUSH	BC
-04049D 01400000            A   862    	LD	BC,64
-0404A1 C5                  A   863    	PUSH	BC
-0404A2 01000000            A   864    	LD	BC,0
-0404A6 C5                  A   865    	PUSH	BC
-0404A7 01290000            A   866    	LD	BC,41
-0404AB C5                  A   867    	PUSH	BC
-0404AC CD 46 02 04         A   868    	CALL	_SD_command
-0404B0 C1                  A   869    	POP	BC
-0404B1 C1                  A   870    	POP	BC
-0404B2 C1                  A   871    	POP	BC
-0404B3 C1                  A   872    	POP	BC
+0405A1 01000000            A   860    	LD	BC,0
+0405A5 C5                  A   861    	PUSH	BC
+0405A6 01400000            A   862    	LD	BC,64
+0405AA C5                  A   863    	PUSH	BC
+0405AB 01000000            A   864    	LD	BC,0
+0405AF C5                  A   865    	PUSH	BC
+0405B0 01290000            A   866    	LD	BC,41
+0405B4 C5                  A   867    	PUSH	BC
+0405B5 CD 4F 03 04         A   868    	CALL	_SD_command
+0405B9 C1                  A   869    	POP	BC
+0405BA C1                  A   870    	POP	BC
+0405BB C1                  A   871    	POP	BC
+0405BC C1                  A   872    	POP	BC
                            A   873    ;  107	    res1 = SD_readRes1();
                            A   874    .LINE 107
                            A   875    
-0404B4 CD B4 02 04         A   876    	CALL	_SD_readRes1
-0404B8 DD77FF              A   877    	LD	(IX+%FFFFFFFF),A
+0405BD CD BD 03 04         A   876    	CALL	_SD_readRes1
+0405C1 DD77FF              A   877    	LD	(IX+%FFFFFFFF),A
                            A   878    ;  108	    spi_transfer(0xFF);
                            A   879    .LINE 108
                            A   880    
-0404BB 01FF0000            A   881    	LD	BC,255
-0404BF C5                  A   882    	PUSH	BC
-0404C0 CD 96 3D 04         A   883    	CALL	_spi_transfer
-0404C4 C1                  A   884    	POP	BC
+0405C4 01FF0000            A   881    	LD	BC,255
+0405C8 C5                  A   882    	PUSH	BC
+0405C9 CD 9F 3E 04         A   883    	CALL	_spi_transfer
+0405CD C1                  A   884    	POP	BC
                            A   885    ;  109	    SD_CS_disable();
                            A   886    .LINE 109
                            A   887    
-0404C5 CD 80 3D 04         A   888    	CALL	_SD_CS_disable
+0405CE CD 89 3E 04         A   888    	CALL	_SD_CS_disable
                            A   889    ;  110	    spi_transfer(0xFF);
                            A   890    .LINE 110
                            A   891    
-0404C9 01FF0000            A   892    	LD	BC,255
-0404CD C5                  A   893    	PUSH	BC
-0404CE CD 96 3D 04         A   894    	CALL	_spi_transfer
-0404D2 C1                  A   895    	POP	BC
+0405D2 01FF0000            A   892    	LD	BC,255
+0405D6 C5                  A   893    	PUSH	BC
+0405D7 CD 9F 3E 04         A   894    	CALL	_spi_transfer
+0405DB C1                  A   895    	POP	BC
                            A   896    ;  111	    return res1;
                            A   897    .LINE 111
                            A   898    
-0404D3 DD7EFF              A   899    	LD	A,(IX+%FFFFFFFF)
+0405DC DD7EFF              A   899    	LD	A,(IX+%FFFFFFFF)
                            A   900    ;  112	}
                            A   901    .LINE 112
                            A   902    
-0404D6 DDF9                A   903    	LD	SP,IX
-0404D8 DDE1                A   904    	POP	IX
-0404DA C9                  A   905    	RET	
+0405DF DDF9                A   903    	LD	SP,IX
+0405E1 DDE1                A   904    	POP	IX
+0405E3 C9                  A   905    	RET	
                            A   906    
                            A   907    
                            A   908    ;**************************** _SD_sendOpCond **
@@ -926,7 +926,7 @@ PC     Object              I  Line    Source
                            A   922    .ENDFUNC "SD_sendOpCond",112,"_SD_sendOpCond"
                            A   923    ;  113	
                            A   924    ;  114	void SD_readOCR(BYTE *res) {
-0404DB                     A   925    _SD_readOCR:
+0405E4                     A   925    _SD_readOCR:
                            A   926    .DEFINE "_SD_readOCR"
                            A   927    
                            A   928    .VALUE _SD_readOCR
@@ -951,73 +951,73 @@ PC     Object              I  Line    Source
                            A   947    
                            A   948    .ENDEF
                            A   949    
-0404DB DDE5                A   950    	PUSH	IX
-0404DD DD210000 00         A   951    	LD	IX,0
-0404E2 DD39                A   952    	ADD	IX,SP
+0405E4 DDE5                A   950    	PUSH	IX
+0405E6 DD210000 00         A   951    	LD	IX,0
+0405EB DD39                A   952    	ADD	IX,SP
                            A   953    ;  115	//  printf("SD_readOCR()\n");
                            A   954    ;  116	    spi_transfer(0xFF);
                            A   955    .LINE 116
                            A   956    
-0404E4 01FF0000            A   957    	LD	BC,255
-0404E8 C5                  A   958    	PUSH	BC
-0404E9 CD 96 3D 04         A   959    	CALL	_spi_transfer
-0404ED C1                  A   960    	POP	BC
+0405ED 01FF0000            A   957    	LD	BC,255
+0405F1 C5                  A   958    	PUSH	BC
+0405F2 CD 9F 3E 04         A   959    	CALL	_spi_transfer
+0405F6 C1                  A   960    	POP	BC
                            A   961    ;  117	    SD_CS_enable();
                            A   962    .LINE 117
                            A   963    
-0404EE CD 6A 3D 04         A   964    	CALL	_SD_CS_enable
+0405F7 CD 73 3E 04         A   964    	CALL	_SD_CS_enable
                            A   965    ;  118	    spi_transfer(0xFF);
                            A   966    .LINE 118
                            A   967    
-0404F2 01FF0000            A   968    	LD	BC,255
-0404F6 C5                  A   969    	PUSH	BC
-0404F7 CD 96 3D 04         A   970    	CALL	_spi_transfer
-0404FB C1                  A   971    	POP	BC
+0405FB 01FF0000            A   968    	LD	BC,255
+0405FF C5                  A   969    	PUSH	BC
+040600 CD 9F 3E 04         A   970    	CALL	_spi_transfer
+040604 C1                  A   971    	POP	BC
                            A   972    ;  119	    SD_command(CMD58, CMD58_ARG, CMD58_
                            A   973    .LINE 119
                            A   974    
-0404FC 01000000            A   975    	LD	BC,0
-040500 C5                  A   976    	PUSH	BC
-040501 C5                  A   977    	PUSH	BC
-040502 C5                  A   978    	PUSH	BC
-040503 013A0000            A   979    	LD	BC,58
-040507 C5                  A   980    	PUSH	BC
-040508 CD 46 02 04         A   981    	CALL	_SD_command
-04050C C1                  A   982    	POP	BC
-04050D C1                  A   983    	POP	BC
-04050E C1                  A   984    	POP	BC
-04050F C1                  A   985    	POP	BC
+040605 01000000            A   975    	LD	BC,0
+040609 C5                  A   976    	PUSH	BC
+04060A C5                  A   977    	PUSH	BC
+04060B C5                  A   978    	PUSH	BC
+04060C 013A0000            A   979    	LD	BC,58
+040610 C5                  A   980    	PUSH	BC
+040611 CD 4F 03 04         A   981    	CALL	_SD_command
+040615 C1                  A   982    	POP	BC
+040616 C1                  A   983    	POP	BC
+040617 C1                  A   984    	POP	BC
+040618 C1                  A   985    	POP	BC
                            A   986    ;  120	    SD_readRes7(res);
                            A   987    .LINE 120
                            A   988    
-040510 DD0706              A   989    	LD	BC,(IX+%6)
-040513 C5                  A   990    	PUSH	BC
-040514 CD E8 02 04         A   991    	CALL	_SD_readRes7
-040518 C1                  A   992    	POP	BC
+040619 DD0706              A   989    	LD	BC,(IX+%6)
+04061C C5                  A   990    	PUSH	BC
+04061D CD F1 03 04         A   991    	CALL	_SD_readRes7
+040621 C1                  A   992    	POP	BC
                            A   993    ;  121	    spi_transfer(0xFF);
                            A   994    .LINE 121
                            A   995    
-040519 01FF0000            A   996    	LD	BC,255
-04051D C5                  A   997    	PUSH	BC
-04051E CD 96 3D 04         A   998    	CALL	_spi_transfer
-040522 C1                  A   999    	POP	BC
+040622 01FF0000            A   996    	LD	BC,255
+040626 C5                  A   997    	PUSH	BC
+040627 CD 9F 3E 04         A   998    	CALL	_spi_transfer
+04062B C1                  A   999    	POP	BC
                            A  1000    ;  122	    SD_CS_disable();
                            A  1001    .LINE 122
                            A  1002    
-040523 CD 80 3D 04         A  1003    	CALL	_SD_CS_disable
+04062C CD 89 3E 04         A  1003    	CALL	_SD_CS_disable
                            A  1004    ;  123	    spi_transfer(0xFF);
                            A  1005    .LINE 123
                            A  1006    
-040527 01FF0000            A  1007    	LD	BC,255
-04052B C5                  A  1008    	PUSH	BC
-04052C CD 96 3D 04         A  1009    	CALL	_spi_transfer
-040530 C1                  A  1010    	POP	BC
+040630 01FF0000            A  1007    	LD	BC,255
+040634 C5                  A  1008    	PUSH	BC
+040635 CD 9F 3E 04         A  1009    	CALL	_spi_transfer
+040639 C1                  A  1010    	POP	BC
                            A  1011    ;  124	}
                            A  1012    .LINE 124
                            A  1013    
-040531 DDF9                A  1014    	LD	SP,IX
-040533 DDE1                A  1015    	POP	IX
-040535 C9                  A  1016    	RET	
+04063A DDF9                A  1014    	LD	SP,IX
+04063C DDE1                A  1015    	POP	IX
+04063E C9                  A  1016    	RET	
                            A  1017    
                            A  1018    
                            A  1019    ;**************************** _SD_readOCR *****
@@ -1037,7 +1037,7 @@ PC     Object              I  Line    Source
                            A  1033    .ENDFUNC "SD_readOCR",124,"_SD_readOCR"
                            A  1034    ;  125	
                            A  1035    ;  126	void SD_powerUpSeq() {
-040536                     A  1036    _SD_powerUpSeq:
+04063F                     A  1036    _SD_powerUpSeq:
                            A  1037    .DEFINE "_SD_powerUpSeq"
                            A  1038    
                            A  1039    .VALUE _SD_powerUpSeq
@@ -1062,64 +1062,64 @@ PC     Object              I  Line    Source
                            A  1058    
                            A  1059    .ENDEF
                            A  1060    
-040536 DDE5                A  1061    	PUSH	IX
-040538 DD210000 00         A  1062    	LD	IX,0
-04053D DD39                A  1063    	ADD	IX,SP
-04053F C5                  A  1064    	PUSH	BC
+04063F DDE5                A  1061    	PUSH	IX
+040641 DD210000 00         A  1062    	LD	IX,0
+040646 DD39                A  1063    	ADD	IX,SP
+040648 C5                  A  1064    	PUSH	BC
                            A  1065    ;  127		int i;
                            A  1066    ;  128	//  printf("SD_powerUpSeq()\n");
                            A  1067    ;  129	    SD_CS_disable();
                            A  1068    .LINE 129
                            A  1069    
-040540 CD 80 3D 04         A  1070    	CALL	_SD_CS_disable
+040649 CD 89 3E 04         A  1070    	CALL	_SD_CS_disable
                            A  1071    ;  130		wait_timer0();
                            A  1072    .LINE 130
                            A  1073    
-040544 CD E3 00 04         A  1074    	CALL	_wait_timer0
+04064D CD E3 00 04         A  1074    	CALL	_wait_timer0
                            A  1075    ;  131		spi_transfer(0xFF);
                            A  1076    .LINE 131
                            A  1077    
-040548 01FF0000            A  1078    	LD	BC,255
-04054C C5                  A  1079    	PUSH	BC
-04054D CD 96 3D 04         A  1080    	CALL	_spi_transfer
-040551 C1                  A  1081    	POP	BC
+040651 01FF0000            A  1078    	LD	BC,255
+040655 C5                  A  1079    	PUSH	BC
+040656 CD 9F 3E 04         A  1080    	CALL	_spi_transfer
+04065A C1                  A  1081    	POP	BC
                            A  1082    ;  132	    SD_CS_disable();
                            A  1083    .LINE 132
                            A  1084    
-040552 CD 80 3D 04         A  1085    	CALL	_SD_CS_disable
+04065B CD 89 3E 04         A  1085    	CALL	_SD_CS_disable
                            A  1086    ;  133		for(i = 0; i < SD_INIT_CYCLES; i++)
                            A  1087    .LINE 133
                            A  1088    
-040556 01000000            A  1089    	LD	BC,0
-04055A DD0FFD              A  1090    	LD	(IX+%FFFFFFFD),BC
-04055D 18 11               A  1091    	JR	L_18
-04055F                     A  1092    L_16:
+04065F 01000000            A  1089    	LD	BC,0
+040663 DD0FFD              A  1090    	LD	(IX+%FFFFFFFD),BC
+040666 18 11               A  1091    	JR	L_18
+040668                     A  1092    L_16:
                            A  1093    ;  134	        spi_transfer(0xFF);
                            A  1094    .LINE 134
                            A  1095    
-04055F 01FF0000            A  1096    	LD	BC,255
-040563 C5                  A  1097    	PUSH	BC
-040564 CD 96 3D 04         A  1098    	CALL	_spi_transfer
-040568 C1                  A  1099    	POP	BC
-040569 DD07FD              A  1100    	LD	BC,(IX+%FFFFFFFD)
-04056C 03                  A  1101    	INC	BC
-04056D DD0FFD              A  1102    	LD	(IX+%FFFFFFFD),BC
+040668 01FF0000            A  1096    	LD	BC,255
+04066C C5                  A  1097    	PUSH	BC
+04066D CD 9F 3E 04         A  1098    	CALL	_spi_transfer
+040671 C1                  A  1099    	POP	BC
+040672 DD07FD              A  1100    	LD	BC,(IX+%FFFFFFFD)
+040675 03                  A  1101    	INC	BC
+040676 DD0FFD              A  1102    	LD	(IX+%FFFFFFFD),BC
                            A  1103    ;  135		}
-040570                     A  1104    L_18:
+040679                     A  1104    L_18:
                            A  1105    .LINE 135
                            A  1106    
-040570 010A0000            A  1107    	LD	BC,10
-040574 DD27FD              A  1108    	LD	HL,(IX+%FFFFFFFD)
-040577 B7                  A  1109    	OR	A,A
-040578 ED42                A  1110    	SBC	HL,BC
-04057A CD E0 41 04         A  1111    	CALL	__setflag
-04057E FA 5F 05 04         A  1112    	JP	M,L_16
+040679 010A0000            A  1107    	LD	BC,10
+04067D DD27FD              A  1108    	LD	HL,(IX+%FFFFFFFD)
+040680 B7                  A  1109    	OR	A,A
+040681 ED42                A  1110    	SBC	HL,BC
+040683 CD E9 42 04         A  1111    	CALL	__setflag
+040687 FA 68 06 04         A  1112    	JP	M,L_16
                            A  1113    ;  136	}
                            A  1114    .LINE 136
                            A  1115    
-040582 DDF9                A  1116    	LD	SP,IX
-040584 DDE1                A  1117    	POP	IX
-040586 C9                  A  1118    	RET	
+04068B DDF9                A  1116    	LD	SP,IX
+04068D DDE1                A  1117    	POP	IX
+04068F C9                  A  1118    	RET	
                            A  1119    
                            A  1120    
                            A  1121    ;**************************** _SD_powerUpSeq **
@@ -1137,7 +1137,7 @@ PC     Object              I  Line    Source
                            A  1133    .ENDFUNC "SD_powerUpSeq",136,"_SD_powerUpSeq"
                            A  1134    ;  137	
                            A  1135    ;  138	BYTE SD_readBlocks(DWORD addr, BYTE *bu
-040587                     A  1136    _SD_readBlocks:
+040690                     A  1136    _SD_readBlocks:
                            A  1137    .DEFINE "_SD_readBlocks"
                            A  1138    
                            A  1139    .VALUE _SD_readBlocks
@@ -1232,113 +1232,113 @@ PC     Object              I  Line    Source
                            A  1228    
                            A  1229    .ENDEF
                            A  1230    
-040587 DDE5                A  1231    	PUSH	IX
-040589 DD210000 00         A  1232    	LD	IX,0
-04058E DD39                A  1233    	ADD	IX,SP
-040590 ED22F4              A  1234    	LEA	HL,IX+%FFFFFFF4
-040593 F9                  A  1235    	LD	SP,HL
+040690 DDE5                A  1231    	PUSH	IX
+040692 DD210000 00         A  1232    	LD	IX,0
+040697 DD39                A  1233    	ADD	IX,SP
+040699 ED22F4              A  1234    	LEA	HL,IX+%FFFFFFF4
+04069C F9                  A  1235    	LD	SP,HL
                            A  1236    ;  139		DWORD	sector = addr;
                            A  1237    .LINE 139
                            A  1238    
-040594 DD0706              A  1239    	LD	BC,(IX+%6)
-040597 DD7E09              A  1240    	LD	A,(IX+%9)
-04059A DD0FF4              A  1241    	LD	(IX+%FFFFFFF4),BC
-04059D DD77F7              A  1242    	LD	(IX+%FFFFFFF7),A
+04069D DD0706              A  1239    	LD	BC,(IX+%6)
+0406A0 DD7E09              A  1240    	LD	A,(IX+%9)
+0406A3 DD0FF4              A  1241    	LD	(IX+%FFFFFFF4),BC
+0406A6 DD77F7              A  1242    	LD	(IX+%FFFFFFF7),A
                            A  1243    ;  140		BYTE	res;
                            A  1244    ;  141		BYTE	token;
                            A  1245    ;  142		BYTE *	ptr = buf;
                            A  1246    .LINE 142
                            A  1247    
-0405A0 DD070C              A  1248    	LD	BC,(IX+%C)
-0405A3 DD0FF8              A  1249    	LD	(IX+%FFFFFFF8),BC
+0406A9 DD070C              A  1248    	LD	BC,(IX+%C)
+0406AC DD0FF8              A  1249    	LD	(IX+%FFFFFFF8),BC
                            A  1250    ;  143		UINT	i;
                            A  1251    ;  144	
                            A  1252    ;  145		for(i = 0; i < count; i++) {
                            A  1253    .LINE 145
                            A  1254    
-0405A6 01000000            A  1255    	LD	BC,0
-0405AA DD0FFD              A  1256    	LD	(IX+%FFFFFFFD),BC
-0405AD 18 51               A  1257    	JR	L_27
-0405AF                     A  1258    L_25:
+0406AF 01000000            A  1255    	LD	BC,0
+0406B3 DD0FFD              A  1256    	LD	(IX+%FFFFFFFD),BC
+0406B6 18 51               A  1257    	JR	L_27
+0406B8                     A  1258    L_25:
                            A  1259    ;  146			res = SD_readSingleBlock(sector
                            A  1260    .LINE 146
                            A  1261    
-0405AF ED65FB              A  1262    	PEA	IX+%FFFFFFFB
-0405B2 DD07F8              A  1263    	LD	BC,(IX+%FFFFFFF8)
-0405B5 C5                  A  1264    	PUSH	BC
-0405B6 DD4EF7              A  1265    	LD	C,(IX+%FFFFFFF7)
-0405B9 0600                A  1266    	LD	B,%0
-0405BB C5                  A  1267    	PUSH	BC
-0405BC DD07F4              A  1268    	LD	BC,(IX+%FFFFFFF4)
-0405BF C5                  A  1269    	PUSH	BC
-0405C0 CD C6 07 04         A  1270    	CALL	_SD_readSingleBlock
-0405C4 C1                  A  1271    	POP	BC
-0405C5 C1                  A  1272    	POP	BC
-0405C6 C1                  A  1273    	POP	BC
-0405C7 C1                  A  1274    	POP	BC
-0405C8 DD77FC              A  1275    	LD	(IX+%FFFFFFFC),A
+0406B8 ED65FB              A  1262    	PEA	IX+%FFFFFFFB
+0406BB DD07F8              A  1263    	LD	BC,(IX+%FFFFFFF8)
+0406BE C5                  A  1264    	PUSH	BC
+0406BF DD4EF7              A  1265    	LD	C,(IX+%FFFFFFF7)
+0406C2 0600                A  1266    	LD	B,%0
+0406C4 C5                  A  1267    	PUSH	BC
+0406C5 DD07F4              A  1268    	LD	BC,(IX+%FFFFFFF4)
+0406C8 C5                  A  1269    	PUSH	BC
+0406C9 CD CF 08 04         A  1270    	CALL	_SD_readSingleBlock
+0406CD C1                  A  1271    	POP	BC
+0406CE C1                  A  1272    	POP	BC
+0406CF C1                  A  1273    	POP	BC
+0406D0 C1                  A  1274    	POP	BC
+0406D1 DD77FC              A  1275    	LD	(IX+%FFFFFFFC),A
                            A  1276    ;  147			if(SD_R1_NO_ERROR(res) && (toke
                            A  1277    .LINE 147
                            A  1278    
-0405CB FE02                A  1279    	CP	A,%2
-0405CD 30 26               A  1280    	JR	NC,L_24
-0405CF DD7EFB              A  1281    	LD	A,(IX+%FFFFFFFB)
-0405D2 FEFE                A  1282    	CP	A,%FE
-0405D4 20 1F               A  1283    	JR	NZ,L_24
+0406D4 FE02                A  1279    	CP	A,%2
+0406D6 30 26               A  1280    	JR	NC,L_24
+0406D8 DD7EFB              A  1281    	LD	A,(IX+%FFFFFFFB)
+0406DB FEFE                A  1282    	CP	A,%FE
+0406DD 20 1F               A  1283    	JR	NZ,L_24
                            A  1284    ;  148				sector++;
                            A  1285    .LINE 148
                            A  1286    
-0405D6 DD27F4              A  1287    	LD	HL,(IX+%FFFFFFF4)
-0405D9 DD5EF7              A  1288    	LD	E,(IX+%FFFFFFF7)
-0405DC 3E01                A  1289    	LD	A,%1
-0405DE CD CB 41 04         A  1290    	CALL	__ladd_b
-0405E2 DD2FF4              A  1291    	LD	(IX+%FFFFFFF4),HL
-0405E5 DD73F7              A  1292    	LD	(IX+%FFFFFFF7),E
+0406DF DD27F4              A  1287    	LD	HL,(IX+%FFFFFFF4)
+0406E2 DD5EF7              A  1288    	LD	E,(IX+%FFFFFFF7)
+0406E5 3E01                A  1289    	LD	A,%1
+0406E7 CD D4 42 04         A  1290    	CALL	__ladd_b
+0406EB DD2FF4              A  1291    	LD	(IX+%FFFFFFF4),HL
+0406EE DD73F7              A  1292    	LD	(IX+%FFFFFFF7),E
                            A  1293    ;  149				ptr += SD_BLOCK_LEN;
                            A  1294    .LINE 149
                            A  1295    
-0405E8 01000200            A  1296    	LD	BC,512
-0405EC DD27F8              A  1297    	LD	HL,(IX+%FFFFFFF8)
-0405EF 09                  A  1298    	ADD	HL,BC
-0405F0 DD2FF8              A  1299    	LD	(IX+%FFFFFFF8),HL
+0406F1 01000200            A  1296    	LD	BC,512
+0406F5 DD27F8              A  1297    	LD	HL,(IX+%FFFFFFF8)
+0406F8 09                  A  1298    	ADD	HL,BC
+0406F9 DD2FF8              A  1299    	LD	(IX+%FFFFFFF8),HL
                            A  1300    ;  150			}
                            A  1301    ;  151			else {
                            A  1302    .LINE 151
                            A  1303    
-0405F3 18 04               A  1304    	JR	L_26
-0405F5                     A  1305    L_24:
+0406FC 18 04               A  1304    	JR	L_26
+0406FE                     A  1305    L_24:
                            A  1306    ;  152				return SD_ERROR;
                            A  1307    .LINE 152
                            A  1308    
-0405F5 3E01                A  1309    	LD	A,%1
-0405F7 18 19               A  1310    	JR	L_29
+0406FE 3E01                A  1309    	LD	A,%1
+040700 18 19               A  1310    	JR	L_29
                            A  1311    ;  153			}
                            A  1312    ;  154		}	
-0405F9                     A  1313    L_26:
+040702                     A  1313    L_26:
                            A  1314    .LINE 154
                            A  1315    
-0405F9 DD07FD              A  1316    	LD	BC,(IX+%FFFFFFFD)
-0405FC 03                  A  1317    	INC	BC
-0405FD DD0FFD              A  1318    	LD	(IX+%FFFFFFFD),BC
-040600                     A  1319    L_27:
-040600 DD070F              A  1320    	LD	BC,(IX+%F)
-040603 CD B7 42 04         A  1321    	CALL	__stoiu
-040607 E5C1                A  1322    	LD	BC,HL
-040609 DD27FD              A  1323    	LD	HL,(IX+%FFFFFFFD)
-04060C B7                  A  1324    	OR	A,A
-04060D ED42                A  1325    	SBC	HL,BC
-04060F 38 9E               A  1326    	JR	C,L_25
+040702 DD07FD              A  1316    	LD	BC,(IX+%FFFFFFFD)
+040705 03                  A  1317    	INC	BC
+040706 DD0FFD              A  1318    	LD	(IX+%FFFFFFFD),BC
+040709                     A  1319    L_27:
+040709 DD070F              A  1320    	LD	BC,(IX+%F)
+04070C CD C0 43 04         A  1321    	CALL	__stoiu
+040710 E5C1                A  1322    	LD	BC,HL
+040712 DD27FD              A  1323    	LD	HL,(IX+%FFFFFFFD)
+040715 B7                  A  1324    	OR	A,A
+040716 ED42                A  1325    	SBC	HL,BC
+040718 38 9E               A  1326    	JR	C,L_25
                            A  1327    ;  155		return SD_SUCCESS;
                            A  1328    .LINE 155
                            A  1329    
-040611 AF                  A  1330    	XOR	A,A
+04071A AF                  A  1330    	XOR	A,A
                            A  1331    ;  156	}
-040612                     A  1332    L_29:
+04071B                     A  1332    L_29:
                            A  1333    .LINE 156
                            A  1334    
-040612 DDF9                A  1335    	LD	SP,IX
-040614 DDE1                A  1336    	POP	IX
-040616 C9                  A  1337    	RET	
+04071B DDF9                A  1335    	LD	SP,IX
+04071D DDE1                A  1336    	POP	IX
+04071F C9                  A  1337    	RET	
                            A  1338    
                            A  1339    
                            A  1340    ;**************************** _SD_readBlocks **
@@ -1361,7 +1361,7 @@ PC     Object              I  Line    Source
                            A  1357    .ENDFUNC "SD_readBlocks",156,"_SD_readBlocks"
                            A  1358    ;  157	
                            A  1359    ;  158	BYTE SD_writeBlocks(DWORD addr, BYTE *b
-040617                     A  1360    _SD_writeBlocks:
+040720                     A  1360    _SD_writeBlocks:
                            A  1361    .DEFINE "_SD_writeBlocks"
                            A  1362    
                            A  1363    .VALUE _SD_writeBlocks
@@ -1456,113 +1456,113 @@ PC     Object              I  Line    Source
                            A  1452    
                            A  1453    .ENDEF
                            A  1454    
-040617 DDE5                A  1455    	PUSH	IX
-040619 DD210000 00         A  1456    	LD	IX,0
-04061E DD39                A  1457    	ADD	IX,SP
-040620 ED22F4              A  1458    	LEA	HL,IX+%FFFFFFF4
-040623 F9                  A  1459    	LD	SP,HL
+040720 DDE5                A  1455    	PUSH	IX
+040722 DD210000 00         A  1456    	LD	IX,0
+040727 DD39                A  1457    	ADD	IX,SP
+040729 ED22F4              A  1458    	LEA	HL,IX+%FFFFFFF4
+04072C F9                  A  1459    	LD	SP,HL
                            A  1460    ;  159		DWORD	sector = addr;
                            A  1461    .LINE 159
                            A  1462    
-040624 DD0706              A  1463    	LD	BC,(IX+%6)
-040627 DD7E09              A  1464    	LD	A,(IX+%9)
-04062A DD0FF4              A  1465    	LD	(IX+%FFFFFFF4),BC
-04062D DD77F7              A  1466    	LD	(IX+%FFFFFFF7),A
+04072D DD0706              A  1463    	LD	BC,(IX+%6)
+040730 DD7E09              A  1464    	LD	A,(IX+%9)
+040733 DD0FF4              A  1465    	LD	(IX+%FFFFFFF4),BC
+040736 DD77F7              A  1466    	LD	(IX+%FFFFFFF7),A
                            A  1467    ;  160		BYTE	res;
                            A  1468    ;  161		BYTE	token;
                            A  1469    ;  162		BYTE *	ptr = buf;
                            A  1470    .LINE 162
                            A  1471    
-040630 DD070C              A  1472    	LD	BC,(IX+%C)
-040633 DD0FF8              A  1473    	LD	(IX+%FFFFFFF8),BC
+040739 DD070C              A  1472    	LD	BC,(IX+%C)
+04073C DD0FF8              A  1473    	LD	(IX+%FFFFFFF8),BC
                            A  1474    ;  163		UINT	i;
                            A  1475    ;  164	
                            A  1476    ;  165		for(i = 0; i < count; i++) {
                            A  1477    .LINE 165
                            A  1478    
-040636 01000000            A  1479    	LD	BC,0
-04063A DD0FFD              A  1480    	LD	(IX+%FFFFFFFD),BC
-04063D 18 50               A  1481    	JR	L_37
-04063F                     A  1482    L_35:
+04073F 01000000            A  1479    	LD	BC,0
+040743 DD0FFD              A  1480    	LD	(IX+%FFFFFFFD),BC
+040746 18 50               A  1481    	JR	L_37
+040748                     A  1482    L_35:
                            A  1483    ;  166			res = SD_writeSingleBlock(secto
                            A  1484    .LINE 166
                            A  1485    
-04063F ED65FB              A  1486    	PEA	IX+%FFFFFFFB
-040642 DD07F8              A  1487    	LD	BC,(IX+%FFFFFFF8)
-040645 C5                  A  1488    	PUSH	BC
-040646 DD4EF7              A  1489    	LD	C,(IX+%FFFFFFF7)
-040649 0600                A  1490    	LD	B,%0
-04064B C5                  A  1491    	PUSH	BC
-04064C DD07F4              A  1492    	LD	BC,(IX+%FFFFFFF4)
-04064F C5                  A  1493    	PUSH	BC
-040650 CD A6 06 04         A  1494    	CALL	_SD_writeSingleBlock
-040654 C1                  A  1495    	POP	BC
-040655 C1                  A  1496    	POP	BC
-040656 C1                  A  1497    	POP	BC
-040657 C1                  A  1498    	POP	BC
-040658 DD77FC              A  1499    	LD	(IX+%FFFFFFFC),A
+040748 ED65FB              A  1486    	PEA	IX+%FFFFFFFB
+04074B DD07F8              A  1487    	LD	BC,(IX+%FFFFFFF8)
+04074E C5                  A  1488    	PUSH	BC
+04074F DD4EF7              A  1489    	LD	C,(IX+%FFFFFFF7)
+040752 0600                A  1490    	LD	B,%0
+040754 C5                  A  1491    	PUSH	BC
+040755 DD07F4              A  1492    	LD	BC,(IX+%FFFFFFF4)
+040758 C5                  A  1493    	PUSH	BC
+040759 CD AF 07 04         A  1494    	CALL	_SD_writeSingleBlock
+04075D C1                  A  1495    	POP	BC
+04075E C1                  A  1496    	POP	BC
+04075F C1                  A  1497    	POP	BC
+040760 C1                  A  1498    	POP	BC
+040761 DD77FC              A  1499    	LD	(IX+%FFFFFFFC),A
                            A  1500    ;  167			if(res == 0x00 && token == SD_D
                            A  1501    .LINE 167
                            A  1502    
-04065B B7                  A  1503    	OR	A,A
-04065C 20 26               A  1504    	JR	NZ,L_34
-04065E DD7EFB              A  1505    	LD	A,(IX+%FFFFFFFB)
-040661 FE05                A  1506    	CP	A,%5
-040663 20 1F               A  1507    	JR	NZ,L_34
+040764 B7                  A  1503    	OR	A,A
+040765 20 26               A  1504    	JR	NZ,L_34
+040767 DD7EFB              A  1505    	LD	A,(IX+%FFFFFFFB)
+04076A FE05                A  1506    	CP	A,%5
+04076C 20 1F               A  1507    	JR	NZ,L_34
                            A  1508    ;  168				sector++;
                            A  1509    .LINE 168
                            A  1510    
-040665 DD27F4              A  1511    	LD	HL,(IX+%FFFFFFF4)
-040668 DD5EF7              A  1512    	LD	E,(IX+%FFFFFFF7)
-04066B 3E01                A  1513    	LD	A,%1
-04066D CD CB 41 04         A  1514    	CALL	__ladd_b
-040671 DD2FF4              A  1515    	LD	(IX+%FFFFFFF4),HL
-040674 DD73F7              A  1516    	LD	(IX+%FFFFFFF7),E
+04076E DD27F4              A  1511    	LD	HL,(IX+%FFFFFFF4)
+040771 DD5EF7              A  1512    	LD	E,(IX+%FFFFFFF7)
+040774 3E01                A  1513    	LD	A,%1
+040776 CD D4 42 04         A  1514    	CALL	__ladd_b
+04077A DD2FF4              A  1515    	LD	(IX+%FFFFFFF4),HL
+04077D DD73F7              A  1516    	LD	(IX+%FFFFFFF7),E
                            A  1517    ;  169				ptr += SD_BLOCK_LEN;
                            A  1518    .LINE 169
                            A  1519    
-040677 01000200            A  1520    	LD	BC,512
-04067B DD27F8              A  1521    	LD	HL,(IX+%FFFFFFF8)
-04067E 09                  A  1522    	ADD	HL,BC
-04067F DD2FF8              A  1523    	LD	(IX+%FFFFFFF8),HL
+040780 01000200            A  1520    	LD	BC,512
+040784 DD27F8              A  1521    	LD	HL,(IX+%FFFFFFF8)
+040787 09                  A  1522    	ADD	HL,BC
+040788 DD2FF8              A  1523    	LD	(IX+%FFFFFFF8),HL
                            A  1524    ;  170			}
                            A  1525    ;  171			else {
                            A  1526    .LINE 171
                            A  1527    
-040682 18 04               A  1528    	JR	L_36
-040684                     A  1529    L_34:
+04078B 18 04               A  1528    	JR	L_36
+04078D                     A  1529    L_34:
                            A  1530    ;  172				return SD_ERROR;
                            A  1531    .LINE 172
                            A  1532    
-040684 3E01                A  1533    	LD	A,%1
-040686 18 19               A  1534    	JR	L_39
+04078D 3E01                A  1533    	LD	A,%1
+04078F 18 19               A  1534    	JR	L_39
                            A  1535    ;  173			}
                            A  1536    ;  174		}	
-040688                     A  1537    L_36:
+040791                     A  1537    L_36:
                            A  1538    .LINE 174
                            A  1539    
-040688 DD07FD              A  1540    	LD	BC,(IX+%FFFFFFFD)
-04068B 03                  A  1541    	INC	BC
-04068C DD0FFD              A  1542    	LD	(IX+%FFFFFFFD),BC
-04068F                     A  1543    L_37:
-04068F DD070F              A  1544    	LD	BC,(IX+%F)
-040692 CD B7 42 04         A  1545    	CALL	__stoiu
-040696 E5C1                A  1546    	LD	BC,HL
-040698 DD27FD              A  1547    	LD	HL,(IX+%FFFFFFFD)
-04069B B7                  A  1548    	OR	A,A
-04069C ED42                A  1549    	SBC	HL,BC
-04069E 38 9F               A  1550    	JR	C,L_35
+040791 DD07FD              A  1540    	LD	BC,(IX+%FFFFFFFD)
+040794 03                  A  1541    	INC	BC
+040795 DD0FFD              A  1542    	LD	(IX+%FFFFFFFD),BC
+040798                     A  1543    L_37:
+040798 DD070F              A  1544    	LD	BC,(IX+%F)
+04079B CD C0 43 04         A  1545    	CALL	__stoiu
+04079F E5C1                A  1546    	LD	BC,HL
+0407A1 DD27FD              A  1547    	LD	HL,(IX+%FFFFFFFD)
+0407A4 B7                  A  1548    	OR	A,A
+0407A5 ED42                A  1549    	SBC	HL,BC
+0407A7 38 9F               A  1550    	JR	C,L_35
                            A  1551    ;  175		return SD_SUCCESS;	
                            A  1552    .LINE 175
                            A  1553    
-0406A0 AF                  A  1554    	XOR	A,A
+0407A9 AF                  A  1554    	XOR	A,A
                            A  1555    ;  176	}
-0406A1                     A  1556    L_39:
+0407AA                     A  1556    L_39:
                            A  1557    .LINE 176
                            A  1558    
-0406A1 DDF9                A  1559    	LD	SP,IX
-0406A3 DDE1                A  1560    	POP	IX
-0406A5 C9                  A  1561    	RET	
+0407AA DDF9                A  1559    	LD	SP,IX
+0407AC DDE1                A  1560    	POP	IX
+0407AE C9                  A  1561    	RET	
                            A  1562    
                            A  1563    
                            A  1564    ;**************************** _SD_writeBlocks *
@@ -1585,7 +1585,7 @@ PC     Object              I  Line    Source
                            A  1581    .ENDFUNC "SD_writeBlocks",176,"_SD_writeBlocks"
                            A  1582    ;  177	
                            A  1583    ;  178	BYTE SD_writeSingleBlock(DWORD addr, BY
-0406A6                     A  1584    _SD_writeSingleBlock:
+0407AF                     A  1584    _SD_writeSingleBlock:
                            A  1585    .DEFINE "_SD_writeSingleBlock"
                            A  1586    
                            A  1587    .VALUE _SD_writeSingleBlock
@@ -1670,18 +1670,18 @@ PC     Object              I  Line    Source
                            A  1666    
                            A  1667    .ENDEF
                            A  1668    
-0406A6 DDE5                A  1669    	PUSH	IX
-0406A8 DD210000 00         A  1670    	LD	IX,0
-0406AD DD39                A  1671    	ADD	IX,SP
-0406AF C5                  A  1672    	PUSH	BC
-0406B0 3B                  A  1673    	DEC	SP
-0406B1 3B                  A  1674    	DEC	SP
+0407AF DDE5                A  1669    	PUSH	IX
+0407B1 DD210000 00         A  1670    	LD	IX,0
+0407B6 DD39                A  1671    	ADD	IX,SP
+0407B8 C5                  A  1672    	PUSH	BC
+0407B9 3B                  A  1673    	DEC	SP
+0407BA 3B                  A  1674    	DEC	SP
                            A  1675    ;  179	    BYTE	res1;
                            A  1676    ;  180		BYTE 	readAttempts;
                            A  1677    ;  181		BYTE	read = 0x00;
                            A  1678    .LINE 181
                            A  1679    
-0406B2 DD36FC00            A  1680    	LD	(IX+%FFFFFFFC),%0
+0407BB DD36FC00            A  1680    	LD	(IX+%FFFFFFFC),%0
                            A  1681    ;  182		WORD	i;
                            A  1682    ;  183		//
                            A  1683    ;  184	    // Set token to none
@@ -1689,217 +1689,217 @@ PC     Object              I  Line    Source
                            A  1685    ;  186	    *token = 0xFF;
                            A  1686    .LINE 186
                            A  1687    
-0406B6 DD270F              A  1688    	LD	HL,(IX+%F)
-0406B9 36FF                A  1689    	LD	(HL),%FF
+0407BF DD270F              A  1688    	LD	HL,(IX+%F)
+0407C2 36FF                A  1689    	LD	(HL),%FF
                            A  1690    ;  187		//
                            A  1691    ;  188	    // Assert chip select
                            A  1692    ;  189		//
                            A  1693    ;  190	    spi_transfer(0xFF);
                            A  1694    .LINE 190
                            A  1695    
-0406BB 01FF0000            A  1696    	LD	BC,255
-0406BF C5                  A  1697    	PUSH	BC
-0406C0 CD 96 3D 04         A  1698    	CALL	_spi_transfer
-0406C4 C1                  A  1699    	POP	BC
+0407C4 01FF0000            A  1696    	LD	BC,255
+0407C8 C5                  A  1697    	PUSH	BC
+0407C9 CD 9F 3E 04         A  1698    	CALL	_spi_transfer
+0407CD C1                  A  1699    	POP	BC
                            A  1700    ;  191		SD_CS_enable();
                            A  1701    .LINE 191
                            A  1702    
-0406C5 CD 6A 3D 04         A  1703    	CALL	_SD_CS_enable
+0407CE CD 73 3E 04         A  1703    	CALL	_SD_CS_enable
                            A  1704    ;  192	    spi_transfer(0xFF);
                            A  1705    .LINE 192
                            A  1706    
-0406C9 01FF0000            A  1707    	LD	BC,255
-0406CD C5                  A  1708    	PUSH	BC
-0406CE CD 96 3D 04         A  1709    	CALL	_spi_transfer
-0406D2 C1                  A  1710    	POP	BC
+0407D2 01FF0000            A  1707    	LD	BC,255
+0407D6 C5                  A  1708    	PUSH	BC
+0407D7 CD 9F 3E 04         A  1709    	CALL	_spi_transfer
+0407DB C1                  A  1710    	POP	BC
                            A  1711    ;  193		//
                            A  1712    ;  194	    // Send CMD24
                            A  1713    ;  195		//
                            A  1714    ;  196	    SD_command(CMD24, addr, CMD24_CRC);
                            A  1715    .LINE 196
                            A  1716    
-0406D3 01000000            A  1717    	LD	BC,0
-0406D7 C5                  A  1718    	PUSH	BC
-0406D8 DD4E09              A  1719    	LD	C,(IX+%9)
-0406DB 0600                A  1720    	LD	B,%0
-0406DD C5                  A  1721    	PUSH	BC
-0406DE DD0706              A  1722    	LD	BC,(IX+%6)
-0406E1 C5                  A  1723    	PUSH	BC
-0406E2 01180000            A  1724    	LD	BC,24
-0406E6 C5                  A  1725    	PUSH	BC
-0406E7 CD 46 02 04         A  1726    	CALL	_SD_command
-0406EB C1                  A  1727    	POP	BC
-0406EC C1                  A  1728    	POP	BC
-0406ED C1                  A  1729    	POP	BC
-0406EE C1                  A  1730    	POP	BC
+0407DC 01000000            A  1717    	LD	BC,0
+0407E0 C5                  A  1718    	PUSH	BC
+0407E1 DD4E09              A  1719    	LD	C,(IX+%9)
+0407E4 0600                A  1720    	LD	B,%0
+0407E6 C5                  A  1721    	PUSH	BC
+0407E7 DD0706              A  1722    	LD	BC,(IX+%6)
+0407EA C5                  A  1723    	PUSH	BC
+0407EB 01180000            A  1724    	LD	BC,24
+0407EF C5                  A  1725    	PUSH	BC
+0407F0 CD 4F 03 04         A  1726    	CALL	_SD_command
+0407F4 C1                  A  1727    	POP	BC
+0407F5 C1                  A  1728    	POP	BC
+0407F6 C1                  A  1729    	POP	BC
+0407F7 C1                  A  1730    	POP	BC
                            A  1731    ;  197		//
                            A  1732    ;  198	    // Read response
                            A  1733    ;  199		//
                            A  1734    ;  200	    res1 = SD_readRes1();
                            A  1735    .LINE 200
                            A  1736    
-0406EF CD B4 02 04         A  1737    	CALL	_SD_readRes1
-0406F3 DD77FB              A  1738    	LD	(IX+%FFFFFFFB),A
+0407F8 CD BD 03 04         A  1737    	CALL	_SD_readRes1
+0407FC DD77FB              A  1738    	LD	(IX+%FFFFFFFB),A
                            A  1739    ;  201	
                            A  1740    ;  202	    // If no error
                            A  1741    ;  203	    if(res1 == SD_READY) {
                            A  1742    .LINE 203
                            A  1743    
-0406F6 B7                  A  1744    	OR	A,A
-0406F7 C2 A6 07 04         A  1745    	JR	NZ,L_54
+0407FF B7                  A  1744    	OR	A,A
+040800 C2 AF 08 04         A  1745    	JR	NZ,L_54
                            A  1746    ;  204			//
                            A  1747    ;  205	        // Send start token
                            A  1748    ;  206			//
                            A  1749    ;  207	        spi_transfer(SD_START_TOKEN);
                            A  1750    .LINE 207
                            A  1751    
-0406FB 01FE0000            A  1752    	LD	BC,254
-0406FF C5                  A  1753    	PUSH	BC
-040700 CD 96 3D 04         A  1754    	CALL	_spi_transfer
-040704 C1                  A  1755    	POP	BC
+040804 01FE0000            A  1752    	LD	BC,254
+040808 C5                  A  1753    	PUSH	BC
+040809 CD 9F 3E 04         A  1754    	CALL	_spi_transfer
+04080D C1                  A  1755    	POP	BC
                            A  1756    ;  208	
                            A  1757    ;  209	        // Write buffer to card
                            A  1758    ;  210			//
                            A  1759    ;  211	        for(i = 0; i < SD_BLOCK_LEN; i+
                            A  1760    .LINE 211
                            A  1761    
-040705 DD36FD00            A  1762    	LD	(IX+%FFFFFFFD),%0
-040709 DD36FE00            A  1763    	LD	(IX+%FFFFFFFE),%0
-04070D 18 1E               A  1764    	JR	L_43
-04070F                     A  1765    L_41:
+04080E DD36FD00            A  1762    	LD	(IX+%FFFFFFFD),%0
+040812 DD36FE00            A  1763    	LD	(IX+%FFFFFFFE),%0
+040816 18 1E               A  1764    	JR	L_43
+040818                     A  1765    L_41:
                            A  1766    ;  212				spi_transfer(buf[i]);
                            A  1767    .LINE 212
                            A  1768    
-04070F DD07FD              A  1769    	LD	BC,(IX+%FFFFFFFD)
-040712 CD B7 42 04         A  1770    	CALL	__stoiu
-040716 DD070C              A  1771    	LD	BC,(IX+%C)
-040719 09                  A  1772    	ADD	HL,BC
-04071A 4E                  A  1773    	LD	C,(HL)
-04071B 0600                A  1774    	LD	B,%0
-04071D C5                  A  1775    	PUSH	BC
-04071E CD 96 3D 04         A  1776    	CALL	_spi_transfer
-040722 C1                  A  1777    	POP	BC
-040723 DD27FD              A  1778    	LD	HL,(IX+%FFFFFFFD)
-040726 23                  A  1779    	INC	HL
-040727 DD75FD              A  1780    	LD	(IX+%FFFFFFFD),L
-04072A DD74FE              A  1781    	LD	(IX+%FFFFFFFE),H
+040818 DD07FD              A  1769    	LD	BC,(IX+%FFFFFFFD)
+04081B CD C0 43 04         A  1770    	CALL	__stoiu
+04081F DD070C              A  1771    	LD	BC,(IX+%C)
+040822 09                  A  1772    	ADD	HL,BC
+040823 4E                  A  1773    	LD	C,(HL)
+040824 0600                A  1774    	LD	B,%0
+040826 C5                  A  1775    	PUSH	BC
+040827 CD 9F 3E 04         A  1776    	CALL	_spi_transfer
+04082B C1                  A  1777    	POP	BC
+04082C DD27FD              A  1778    	LD	HL,(IX+%FFFFFFFD)
+04082F 23                  A  1779    	INC	HL
+040830 DD75FD              A  1780    	LD	(IX+%FFFFFFFD),L
+040833 DD74FE              A  1781    	LD	(IX+%FFFFFFFE),H
                            A  1782    ;  213			}
-04072D                     A  1783    L_43:
+040836                     A  1783    L_43:
                            A  1784    .LINE 213
                            A  1785    
-04072D 49010002            A  1786    	LD.LIS	BC,512
-040731 DD27FD              A  1787    	LD	HL,(IX+%FFFFFFFD)
-040734 B7                  A  1788    	OR	A,A
-040735 40ED42              A  1789    	SBC.SIS	HL,BC
-040738 38 D5               A  1790    	JR	C,L_41
+040836 49010002            A  1786    	LD.LIS	BC,512
+04083A DD27FD              A  1787    	LD	HL,(IX+%FFFFFFFD)
+04083D B7                  A  1788    	OR	A,A
+04083E 40ED42              A  1789    	SBC.SIS	HL,BC
+040841 38 D5               A  1790    	JR	C,L_41
                            A  1791    ;  214			//
                            A  1792    ;  215	        // Wait for a response (timeout
                            A  1793    ;  216			//
                            A  1794    ;  217	        readAttempts = 0;
                            A  1795    .LINE 217
                            A  1796    
-04073A DD36FF00            A  1797    	LD	(IX+%FFFFFFFF),%0
+040843 DD36FF00            A  1797    	LD	(IX+%FFFFFFFF),%0
                            A  1798    ;  218	        while(++readAttempts != SD_MAX_
                            A  1799    .LINE 218
                            A  1800    
-04073E 18 18               A  1801    	JR	L_46
-040740                     A  1802    L_47:
+040847 18 18               A  1801    	JR	L_46
+040849                     A  1802    L_47:
                            A  1803    ;  219	            if((read = spi_transfer(0xF
                            A  1804    .LINE 219
                            A  1805    
-040740 01FF0000            A  1806    	LD	BC,255
-040744 C5                  A  1807    	PUSH	BC
-040745 CD 96 3D 04         A  1808    	CALL	_spi_transfer
-040749 C1                  A  1809    	POP	BC
-04074A DD77FC              A  1810    	LD	(IX+%FFFFFFFC),A
-04074D FEFF                A  1811    	CP	A,%FF
-04074F 28 07               A  1812    	JR	Z,L_46
+040849 01FF0000            A  1806    	LD	BC,255
+04084D C5                  A  1807    	PUSH	BC
+04084E CD 9F 3E 04         A  1808    	CALL	_spi_transfer
+040852 C1                  A  1809    	POP	BC
+040853 DD77FC              A  1810    	LD	(IX+%FFFFFFFC),A
+040856 FEFF                A  1811    	CP	A,%FF
+040858 28 07               A  1812    	JR	Z,L_46
                            A  1813    ;  220					*token = 0xFF;
                            A  1814    .LINE 220
                            A  1815    
-040751 DD270F              A  1816    	LD	HL,(IX+%F)
-040754 36FF                A  1817    	LD	(HL),%FF
+04085A DD270F              A  1816    	LD	HL,(IX+%F)
+04085D 36FF                A  1817    	LD	(HL),%FF
                            A  1818    ;  221					break;
                            A  1819    .LINE 221
                            A  1820    
-040756 18 13               A  1821    	JR	L_52
+04085F 18 13               A  1821    	JR	L_52
                            A  1822    ;  222				}
-040758                     A  1823    L_46:
+040861                     A  1823    L_46:
                            A  1824    .LINE 222
                            A  1825    
-040758 DD34FF              A  1826    	INC	(IX+%FFFFFFFF)
-04075B DD7EFF              A  1827    	LD	A,(IX+%FFFFFFFF)
-04075E B7ED62              A  1828    	UEXT	HL
-040761 6F                  A  1829    	LD	L,A
-040762 01430F00            A  1830    	LD	BC,3907
-040766 B7                  A  1831    	OR	A,A
-040767 ED42                A  1832    	SBC	HL,BC
-040769 20 D5               A  1833    	JR	NZ,L_47
-04076B                     A  1834    L_52:
+040861 DD34FF              A  1826    	INC	(IX+%FFFFFFFF)
+040864 DD7EFF              A  1827    	LD	A,(IX+%FFFFFFFF)
+040867 B7ED62              A  1828    	UEXT	HL
+04086A 6F                  A  1829    	LD	L,A
+04086B 01430F00            A  1830    	LD	BC,3907
+04086F B7                  A  1831    	OR	A,A
+040870 ED42                A  1832    	SBC	HL,BC
+040872 20 D5               A  1833    	JR	NZ,L_47
+040874                     A  1834    L_52:
                            A  1835    ;  223			//
                            A  1836    ;  224	        // If data accepted
                            A  1837    ;  225			//
                            A  1838    ;  226	        if((read & 0x1F) == 0x05) {
                            A  1839    .LINE 226
                            A  1840    
-04076B DD7EFC              A  1841    	LD	A,(IX+%FFFFFFFC)
-04076E E61F                A  1842    	AND	A,%1F
-040770 FE05                A  1843    	CP	A,%5
-040772 20 32               A  1844    	JR	NZ,L_54
+040874 DD7EFC              A  1841    	LD	A,(IX+%FFFFFFFC)
+040877 E61F                A  1842    	AND	A,%1F
+040879 FE05                A  1843    	CP	A,%5
+04087B 20 32               A  1844    	JR	NZ,L_54
                            A  1845    ;  227				//
                            A  1846    ;  228	            // Set token to data accept
                            A  1847    ;  229				//
                            A  1848    ;  230	            *token = 0x05;
                            A  1849    .LINE 230
                            A  1850    
-040774 DD270F              A  1851    	LD	HL,(IX+%F)
-040777 3605                A  1852    	LD	(HL),%5
+04087D DD270F              A  1851    	LD	HL,(IX+%F)
+040880 3605                A  1852    	LD	(HL),%5
                            A  1853    ;  231				//
                            A  1854    ;  232	            // Wait for write to finish
                            A  1855    ;  233				//
                            A  1856    ;  234	            readAttempts = 0;
                            A  1857    .LINE 234
                            A  1858    
-040779 DD36FF00            A  1859    	LD	(IX+%FFFFFFFF),%0
+040882 DD36FF00            A  1859    	LD	(IX+%FFFFFFFF),%0
                            A  1860    ;  235	            while(spi_transfer(0xFF) ==
                            A  1861    .LINE 235
                            A  1862    
-04077D 18 1A               A  1863    	JR	L_49
-04077F                     A  1864    L_50:
+040886 18 1A               A  1863    	JR	L_49
+040888                     A  1864    L_50:
                            A  1865    ;  236	                if(++readAttempts == SD
                            A  1866    .LINE 236
                            A  1867    
-04077F DD34FF              A  1868    	INC	(IX+%FFFFFFFF)
-040782 DD7EFF              A  1869    	LD	A,(IX+%FFFFFFFF)
-040785 B7ED62              A  1870    	UEXT	HL
-040788 6F                  A  1871    	LD	L,A
-040789 01430F00            A  1872    	LD	BC,3907
-04078D B7                  A  1873    	OR	A,A
-04078E ED42                A  1874    	SBC	HL,BC
-040790 20 07               A  1875    	JR	NZ,L_49
+040888 DD34FF              A  1868    	INC	(IX+%FFFFFFFF)
+04088B DD7EFF              A  1869    	LD	A,(IX+%FFFFFFFF)
+04088E B7ED62              A  1870    	UEXT	HL
+040891 6F                  A  1871    	LD	L,A
+040892 01430F00            A  1872    	LD	BC,3907
+040896 B7                  A  1873    	OR	A,A
+040897 ED42                A  1874    	SBC	HL,BC
+040899 20 07               A  1875    	JR	NZ,L_49
                            A  1876    ;  237						*token = 0x00;
                            A  1877    .LINE 237
                            A  1878    
-040792 DD270F              A  1879    	LD	HL,(IX+%F)
-040795 3600                A  1880    	LD	(HL),%0
+04089B DD270F              A  1879    	LD	HL,(IX+%F)
+04089E 3600                A  1880    	LD	(HL),%0
                            A  1881    ;  238						break;
                            A  1882    .LINE 238
                            A  1883    
-040797 18 0D               A  1884    	JR	L_54
+0408A0 18 0D               A  1884    	JR	L_54
                            A  1885    ;  239					}
                            A  1886    ;  240				}
-040799                     A  1887    L_49:
+0408A2                     A  1887    L_49:
                            A  1888    .LINE 240
                            A  1889    
-040799 01FF0000            A  1890    	LD	BC,255
-04079D C5                  A  1891    	PUSH	BC
-04079E CD 96 3D 04         A  1892    	CALL	_spi_transfer
-0407A2 C1                  A  1893    	POP	BC
-0407A3 B7                  A  1894    	OR	A,A
-0407A4 28 D9               A  1895    	JR	Z,L_50
+0408A2 01FF0000            A  1890    	LD	BC,255
+0408A6 C5                  A  1891    	PUSH	BC
+0408A7 CD 9F 3E 04         A  1892    	CALL	_spi_transfer
+0408AB C1                  A  1893    	POP	BC
+0408AC B7                  A  1894    	OR	A,A
+0408AD 28 D9               A  1895    	JR	Z,L_50
                            A  1896    ;  241	        }
                            A  1897    ;  242	    }
-0407A6                     A  1898    L_54:
+0408AF                     A  1898    L_54:
                            A  1899    .LINE 242
                            A  1900    
                            A  1901    ;  243		//
@@ -1908,32 +1908,32 @@ PC     Object              I  Line    Source
                            A  1904    ;  246	    spi_transfer(0xFF);
                            A  1905    .LINE 246
                            A  1906    
-0407A6 01FF0000            A  1907    	LD	BC,255
-0407AA C5                  A  1908    	PUSH	BC
-0407AB CD 96 3D 04         A  1909    	CALL	_spi_transfer
-0407AF C1                  A  1910    	POP	BC
+0408AF 01FF0000            A  1907    	LD	BC,255
+0408B3 C5                  A  1908    	PUSH	BC
+0408B4 CD 9F 3E 04         A  1909    	CALL	_spi_transfer
+0408B8 C1                  A  1910    	POP	BC
                            A  1911    ;  247	    SD_CS_disable();
                            A  1912    .LINE 247
                            A  1913    
-0407B0 CD 80 3D 04         A  1914    	CALL	_SD_CS_disable
+0408B9 CD 89 3E 04         A  1914    	CALL	_SD_CS_disable
                            A  1915    ;  248	    spi_transfer(0xFF);
                            A  1916    .LINE 248
                            A  1917    
-0407B4 01FF0000            A  1918    	LD	BC,255
-0407B8 C5                  A  1919    	PUSH	BC
-0407B9 CD 96 3D 04         A  1920    	CALL	_spi_transfer
-0407BD C1                  A  1921    	POP	BC
+0408BD 01FF0000            A  1918    	LD	BC,255
+0408C1 C5                  A  1919    	PUSH	BC
+0408C2 CD 9F 3E 04         A  1920    	CALL	_spi_transfer
+0408C6 C1                  A  1921    	POP	BC
                            A  1922    ;  249	
                            A  1923    ;  250	    return res1;	
                            A  1924    .LINE 250
                            A  1925    
-0407BE DD7EFB              A  1926    	LD	A,(IX+%FFFFFFFB)
+0408C7 DD7EFB              A  1926    	LD	A,(IX+%FFFFFFFB)
                            A  1927    ;  251	}
                            A  1928    .LINE 251
                            A  1929    
-0407C1 DDF9                A  1930    	LD	SP,IX
-0407C3 DDE1                A  1931    	POP	IX
-0407C5 C9                  A  1932    	RET	
+0408CA DDF9                A  1930    	LD	SP,IX
+0408CC DDE1                A  1931    	POP	IX
+0408CE C9                  A  1932    	RET	
                            A  1933    
                            A  1934    
                            A  1935    ;**************************** _SD_writeSingleBl
@@ -1960,7 +1960,7 @@ PC     Object              I  Line    Source
                            A  1956    ;  252	
                            A  1957    ;  253	BYTE SD_readSingleBlock(DWORD addr, BYT
                            A  1958    ;  254	{
-0407C6                     A  1959    _SD_readSingleBlock:
+0408CF                     A  1959    _SD_readSingleBlock:
                            A  1960    .DEFINE "_SD_readSingleBlock"
                            A  1961    
                            A  1962    .VALUE _SD_readSingleBlock
@@ -2045,16 +2045,16 @@ PC     Object              I  Line    Source
                            A  2041    
                            A  2042    .ENDEF
                            A  2043    
-0407C6 DDE5                A  2044    	PUSH	IX
-0407C8 DD210000 00         A  2045    	LD	IX,0
-0407CD DD39                A  2046    	ADD	IX,SP
-0407CF C5                  A  2047    	PUSH	BC
-0407D0 C5                  A  2048    	PUSH	BC
+0408CF DDE5                A  2044    	PUSH	IX
+0408D1 DD210000 00         A  2045    	LD	IX,0
+0408D6 DD39                A  2046    	ADD	IX,SP
+0408D8 C5                  A  2047    	PUSH	BC
+0408D9 C5                  A  2048    	PUSH	BC
                            A  2049    ;  255	    BYTE	res1;
                            A  2050    ;  256		BYTE	read = 0x00;
                            A  2051    .LINE 256
                            A  2052    
-0407D1 DD36FF00            A  2053    	LD	(IX+%FFFFFFFF),%0
+0408DA DD36FF00            A  2053    	LD	(IX+%FFFFFFFF),%0
                            A  2054    ;  257	    WORD	readAttempts, i;
                            A  2055    ;  258		//
                            A  2056    ;  259	    // Set token to none
@@ -2062,165 +2062,165 @@ PC     Object              I  Line    Source
                            A  2058    ;  261	    *token = 0xFF;
                            A  2059    .LINE 261
                            A  2060    
-0407D5 DD270F              A  2061    	LD	HL,(IX+%F)
-0407D8 36FF                A  2062    	LD	(HL),%FF
+0408DE DD270F              A  2061    	LD	HL,(IX+%F)
+0408E1 36FF                A  2062    	LD	(HL),%FF
                            A  2063    ;  262		//
                            A  2064    ;  263	    // Assert chip select
                            A  2065    ;  264		//
                            A  2066    ;  265	    spi_transfer(0xFF);
                            A  2067    .LINE 265
                            A  2068    
-0407DA 01FF0000            A  2069    	LD	BC,255
-0407DE C5                  A  2070    	PUSH	BC
-0407DF CD 96 3D 04         A  2071    	CALL	_spi_transfer
-0407E3 C1                  A  2072    	POP	BC
+0408E3 01FF0000            A  2069    	LD	BC,255
+0408E7 C5                  A  2070    	PUSH	BC
+0408E8 CD 9F 3E 04         A  2071    	CALL	_spi_transfer
+0408EC C1                  A  2072    	POP	BC
                            A  2073    ;  266	    SD_CS_enable();
                            A  2074    .LINE 266
                            A  2075    
-0407E4 CD 6A 3D 04         A  2076    	CALL	_SD_CS_enable
+0408ED CD 73 3E 04         A  2076    	CALL	_SD_CS_enable
                            A  2077    ;  267	    spi_transfer(0xFF);
                            A  2078    .LINE 267
                            A  2079    
-0407E8 01FF0000            A  2080    	LD	BC,255
-0407EC C5                  A  2081    	PUSH	BC
-0407ED CD 96 3D 04         A  2082    	CALL	_spi_transfer
-0407F1 C1                  A  2083    	POP	BC
+0408F1 01FF0000            A  2080    	LD	BC,255
+0408F5 C5                  A  2081    	PUSH	BC
+0408F6 CD 9F 3E 04         A  2082    	CALL	_spi_transfer
+0408FA C1                  A  2083    	POP	BC
                            A  2084    ;  268		//
                            A  2085    ;  269	    // Send CMD17
                            A  2086    ;  270		//
                            A  2087    ;  271	    SD_command(CMD17, addr, CMD17_CRC);
                            A  2088    .LINE 271
                            A  2089    
-0407F2 01000000            A  2090    	LD	BC,0
-0407F6 C5                  A  2091    	PUSH	BC
-0407F7 DD4E09              A  2092    	LD	C,(IX+%9)
-0407FA 0600                A  2093    	LD	B,%0
-0407FC C5                  A  2094    	PUSH	BC
-0407FD DD0706              A  2095    	LD	BC,(IX+%6)
-040800 C5                  A  2096    	PUSH	BC
-040801 01110000            A  2097    	LD	BC,17
-040805 C5                  A  2098    	PUSH	BC
-040806 CD 46 02 04         A  2099    	CALL	_SD_command
-04080A C1                  A  2100    	POP	BC
-04080B C1                  A  2101    	POP	BC
-04080C C1                  A  2102    	POP	BC
-04080D C1                  A  2103    	POP	BC
+0408FB 01000000            A  2090    	LD	BC,0
+0408FF C5                  A  2091    	PUSH	BC
+040900 DD4E09              A  2092    	LD	C,(IX+%9)
+040903 0600                A  2093    	LD	B,%0
+040905 C5                  A  2094    	PUSH	BC
+040906 DD0706              A  2095    	LD	BC,(IX+%6)
+040909 C5                  A  2096    	PUSH	BC
+04090A 01110000            A  2097    	LD	BC,17
+04090E C5                  A  2098    	PUSH	BC
+04090F CD 4F 03 04         A  2099    	CALL	_SD_command
+040913 C1                  A  2100    	POP	BC
+040914 C1                  A  2101    	POP	BC
+040915 C1                  A  2102    	POP	BC
+040916 C1                  A  2103    	POP	BC
                            A  2104    ;  272		//
                            A  2105    ;  273	    // Read R1
                            A  2106    ;  274		//
                            A  2107    ;  275	    res1 = SD_readRes1();
                            A  2108    .LINE 275
                            A  2109    
-04080E CD B4 02 04         A  2110    	CALL	_SD_readRes1
-040812 DD77FA              A  2111    	LD	(IX+%FFFFFFFA),A
+040917 CD BD 03 04         A  2110    	CALL	_SD_readRes1
+04091B DD77FA              A  2111    	LD	(IX+%FFFFFFFA),A
                            A  2112    ;  276		//
                            A  2113    ;  277	    // If response received from card
                            A  2114    ;  278		//
                            A  2115    ;  279	    if(res1 != 0xFF) {
                            A  2116    .LINE 279
                            A  2117    
-040815 FEFF                A  2118    	CP	A,%FF
-040817 CA A5 08 04         A  2119    	JR	Z,L_69
+04091E FEFF                A  2118    	CP	A,%FF
+040920 CA AE 09 04         A  2119    	JR	Z,L_69
                            A  2120    ;  280			//
                            A  2121    ;  281	        // Wait for a response token (t
                            A  2122    ;  282			//
                            A  2123    ;  283	        readAttempts = 0;
                            A  2124    .LINE 283
                            A  2125    
-04081B DD36FB00            A  2126    	LD	(IX+%FFFFFFFB),%0
-04081F DD36FC00            A  2127    	LD	(IX+%FFFFFFFC),%0
+040924 DD36FB00            A  2126    	LD	(IX+%FFFFFFFB),%0
+040928 DD36FC00            A  2127    	LD	(IX+%FFFFFFFC),%0
                            A  2128    ;  284	        while(++readAttempts != SD_MAX_
                            A  2129    .LINE 284
                            A  2130    
-040823 18 11               A  2131    	JR	L_57
-040825                     A  2132    L_58:
+04092C 18 11               A  2131    	JR	L_57
+04092E                     A  2132    L_58:
                            A  2133    ;  285	            if((read = spi_transfer(0xF
                            A  2134    .LINE 285
                            A  2135    
-040825 01FF0000            A  2136    	LD	BC,255
-040829 C5                  A  2137    	PUSH	BC
-04082A CD 96 3D 04         A  2138    	CALL	_spi_transfer
-04082E C1                  A  2139    	POP	BC
-04082F DD77FF              A  2140    	LD	(IX+%FFFFFFFF),A
-040832 FEFF                A  2141    	CP	A,%FF
-040834 20 17               A  2142    	JR	NZ,L_66
+04092E 01FF0000            A  2136    	LD	BC,255
+040932 C5                  A  2137    	PUSH	BC
+040933 CD 9F 3E 04         A  2138    	CALL	_spi_transfer
+040937 C1                  A  2139    	POP	BC
+040938 DD77FF              A  2140    	LD	(IX+%FFFFFFFF),A
+04093B FEFF                A  2141    	CP	A,%FF
+04093D 20 17               A  2142    	JR	NZ,L_66
                            A  2143    ;  286					break;
-040836                     A  2144    L_57:
+04093F                     A  2144    L_57:
                            A  2145    .LINE 286
                            A  2146    
-040836 DD27FB              A  2147    	LD	HL,(IX+%FFFFFFFB)
-040839 23                  A  2148    	INC	HL
-04083A DD75FB              A  2149    	LD	(IX+%FFFFFFFB),L
-04083D DD74FC              A  2150    	LD	(IX+%FFFFFFFC),H
-040840 49011B06            A  2151    	LD.LIS	BC,1563
-040844 DD27FB              A  2152    	LD	HL,(IX+%FFFFFFFB)
-040847 B7                  A  2153    	OR	A,A
-040848 40ED42              A  2154    	SBC.SIS	HL,BC
-04084B 20 D8               A  2155    	JR	NZ,L_58
-04084D                     A  2156    L_66:
+04093F DD27FB              A  2147    	LD	HL,(IX+%FFFFFFFB)
+040942 23                  A  2148    	INC	HL
+040943 DD75FB              A  2149    	LD	(IX+%FFFFFFFB),L
+040946 DD74FC              A  2150    	LD	(IX+%FFFFFFFC),H
+040949 49011B06            A  2151    	LD.LIS	BC,1563
+04094D DD27FB              A  2152    	LD	HL,(IX+%FFFFFFFB)
+040950 B7                  A  2153    	OR	A,A
+040951 40ED42              A  2154    	SBC.SIS	HL,BC
+040954 20 D8               A  2155    	JR	NZ,L_58
+040956                     A  2156    L_66:
                            A  2157    ;  287			//
                            A  2158    ;  288	        // If response token is 0xFE
                            A  2159    ;  289			//
                            A  2160    ;  290	        if(read == SD_START_TOKEN) {
                            A  2161    .LINE 290
                            A  2162    
-04084D DD7EFF              A  2163    	LD	A,(IX+%FFFFFFFF)
-040850 FEFE                A  2164    	CP	A,%FE
-040852 20 4A               A  2165    	JR	NZ,L_67
+040956 DD7EFF              A  2163    	LD	A,(IX+%FFFFFFFF)
+040959 FEFE                A  2164    	CP	A,%FE
+04095B 20 4A               A  2165    	JR	NZ,L_67
                            A  2166    ;  291				//
                            A  2167    ;  292	            // Read 512 byte block
                            A  2168    ;  293				//
                            A  2169    ;  294	            for(i = 0; i < SD_BLOCK_LEN
                            A  2170    .LINE 294
                            A  2171    
-040854 DD36FD00            A  2172    	LD	(IX+%FFFFFFFD),%0
-040858 DD36FE00            A  2173    	LD	(IX+%FFFFFFFE),%0
-04085C 18 1F               A  2174    	JR	L_63
-04085E                     A  2175    L_61:
+04095D DD36FD00            A  2172    	LD	(IX+%FFFFFFFD),%0
+040961 DD36FE00            A  2173    	LD	(IX+%FFFFFFFE),%0
+040965 18 1F               A  2174    	JR	L_63
+040967                     A  2175    L_61:
                            A  2176    ;  295					*buf++ = spi_transfer(0
                            A  2177    .LINE 295
                            A  2178    
-04085E 01FF0000            A  2179    	LD	BC,255
-040862 C5                  A  2180    	PUSH	BC
-040863 CD 96 3D 04         A  2181    	CALL	_spi_transfer
-040867 C1                  A  2182    	POP	BC
-040868 DD270C              A  2183    	LD	HL,(IX+%C)
-04086B 77                  A  2184    	LD	(HL),A
-04086C DD070C              A  2185    	LD	BC,(IX+%C)
-04086F 03                  A  2186    	INC	BC
-040870 DD0F0C              A  2187    	LD	(IX+%C),BC
-040873 DD27FD              A  2188    	LD	HL,(IX+%FFFFFFFD)
-040876 23                  A  2189    	INC	HL
-040877 DD75FD              A  2190    	LD	(IX+%FFFFFFFD),L
-04087A DD74FE              A  2191    	LD	(IX+%FFFFFFFE),H
+040967 01FF0000            A  2179    	LD	BC,255
+04096B C5                  A  2180    	PUSH	BC
+04096C CD 9F 3E 04         A  2181    	CALL	_spi_transfer
+040970 C1                  A  2182    	POP	BC
+040971 DD270C              A  2183    	LD	HL,(IX+%C)
+040974 77                  A  2184    	LD	(HL),A
+040975 DD070C              A  2185    	LD	BC,(IX+%C)
+040978 03                  A  2186    	INC	BC
+040979 DD0F0C              A  2187    	LD	(IX+%C),BC
+04097C DD27FD              A  2188    	LD	HL,(IX+%FFFFFFFD)
+04097F 23                  A  2189    	INC	HL
+040980 DD75FD              A  2190    	LD	(IX+%FFFFFFFD),L
+040983 DD74FE              A  2191    	LD	(IX+%FFFFFFFE),H
                            A  2192    ;  296				}
-04087D                     A  2193    L_63:
+040986                     A  2193    L_63:
                            A  2194    .LINE 296
                            A  2195    
-04087D 49010002            A  2196    	LD.LIS	BC,512
-040881 DD27FD              A  2197    	LD	HL,(IX+%FFFFFFFD)
-040884 B7                  A  2198    	OR	A,A
-040885 40ED42              A  2199    	SBC.SIS	HL,BC
-040888 38 D4               A  2200    	JR	C,L_61
+040986 49010002            A  2196    	LD.LIS	BC,512
+04098A DD27FD              A  2197    	LD	HL,(IX+%FFFFFFFD)
+04098D B7                  A  2198    	OR	A,A
+04098E 40ED42              A  2199    	SBC.SIS	HL,BC
+040991 38 D4               A  2200    	JR	C,L_61
                            A  2201    ;  297				//
                            A  2202    ;  298	            // Read 16-bit CRC
                            A  2203    ;  299				//
                            A  2204    ;  300	            spi_transfer(0xFF);
                            A  2205    .LINE 300
                            A  2206    
-04088A 01FF0000            A  2207    	LD	BC,255
-04088E C5                  A  2208    	PUSH	BC
-04088F CD 96 3D 04         A  2209    	CALL	_spi_transfer
-040893 C1                  A  2210    	POP	BC
+040993 01FF0000            A  2207    	LD	BC,255
+040997 C5                  A  2208    	PUSH	BC
+040998 CD 9F 3E 04         A  2209    	CALL	_spi_transfer
+04099C C1                  A  2210    	POP	BC
                            A  2211    ;  301	            spi_transfer(0xFF);
                            A  2212    .LINE 301
                            A  2213    
-040894 01FF0000            A  2214    	LD	BC,255
-040898 C5                  A  2215    	PUSH	BC
-040899 CD 96 3D 04         A  2216    	CALL	_spi_transfer
-04089D C1                  A  2217    	POP	BC
+04099D 01FF0000            A  2214    	LD	BC,255
+0409A1 C5                  A  2215    	PUSH	BC
+0409A2 CD 9F 3E 04         A  2216    	CALL	_spi_transfer
+0409A6 C1                  A  2217    	POP	BC
                            A  2218    ;  302	        }
-04089E                     A  2219    L_67:
+0409A7                     A  2219    L_67:
                            A  2220    .LINE 302
                            A  2221    
                            A  2222    ;  303			//
@@ -2229,11 +2229,11 @@ PC     Object              I  Line    Source
                            A  2225    ;  306	        *token = read;
                            A  2226    .LINE 306
                            A  2227    
-04089E DD270F              A  2228    	LD	HL,(IX+%F)
-0408A1 DD7EFF              A  2229    	LD	A,(IX+%FFFFFFFF)
-0408A4 77                  A  2230    	LD	(HL),A
+0409A7 DD270F              A  2228    	LD	HL,(IX+%F)
+0409AA DD7EFF              A  2229    	LD	A,(IX+%FFFFFFFF)
+0409AD 77                  A  2230    	LD	(HL),A
                            A  2231    ;  307	    }
-0408A5                     A  2232    L_69:
+0409AE                     A  2232    L_69:
                            A  2233    .LINE 307
                            A  2234    
                            A  2235    ;  308		//
@@ -2242,32 +2242,32 @@ PC     Object              I  Line    Source
                            A  2238    ;  311	    spi_transfer(0xFF);
                            A  2239    .LINE 311
                            A  2240    
-0408A5 01FF0000            A  2241    	LD	BC,255
-0408A9 C5                  A  2242    	PUSH	BC
-0408AA CD 96 3D 04         A  2243    	CALL	_spi_transfer
-0408AE C1                  A  2244    	POP	BC
+0409AE 01FF0000            A  2241    	LD	BC,255
+0409B2 C5                  A  2242    	PUSH	BC
+0409B3 CD 9F 3E 04         A  2243    	CALL	_spi_transfer
+0409B7 C1                  A  2244    	POP	BC
                            A  2245    ;  312	    SD_CS_disable();
                            A  2246    .LINE 312
                            A  2247    
-0408AF CD 80 3D 04         A  2248    	CALL	_SD_CS_disable
+0409B8 CD 89 3E 04         A  2248    	CALL	_SD_CS_disable
                            A  2249    ;  313	    spi_transfer(0xFF);
                            A  2250    .LINE 313
                            A  2251    
-0408B3 01FF0000            A  2252    	LD	BC,255
-0408B7 C5                  A  2253    	PUSH	BC
-0408B8 CD 96 3D 04         A  2254    	CALL	_spi_transfer
-0408BC C1                  A  2255    	POP	BC
+0409BC 01FF0000            A  2252    	LD	BC,255
+0409C0 C5                  A  2253    	PUSH	BC
+0409C1 CD 9F 3E 04         A  2254    	CALL	_spi_transfer
+0409C5 C1                  A  2255    	POP	BC
                            A  2256    ;  314	
                            A  2257    ;  315	    return res1;
                            A  2258    .LINE 315
                            A  2259    
-0408BD DD7EFA              A  2260    	LD	A,(IX+%FFFFFFFA)
+0409C6 DD7EFA              A  2260    	LD	A,(IX+%FFFFFFFA)
                            A  2261    ;  316	}
                            A  2262    .LINE 316
                            A  2263    
-0408C0 DDF9                A  2264    	LD	SP,IX
-0408C2 DDE1                A  2265    	POP	IX
-0408C4 C9                  A  2266    	RET	
+0409C9 DDF9                A  2264    	LD	SP,IX
+0409CB DDE1                A  2265    	POP	IX
+0409CD C9                  A  2266    	RET	
                            A  2267    
                            A  2268    
                            A  2269    ;**************************** _SD_readSingleBlo
@@ -2293,7 +2293,7 @@ PC     Object              I  Line    Source
                            A  2289    .ENDFUNC "SD_readSingleBlock",316,"_SD_readSing
                            A  2290    ;  317	
                            A  2291    ;  318	BYTE SD_init(void) {
-0408C5                     A  2292    _SD_init:
+0409CE                     A  2292    _SD_init:
                            A  2293    .DEFINE "_SD_init"
                            A  2294    
                            A  2295    .VALUE _SD_init
@@ -2330,92 +2330,92 @@ PC     Object              I  Line    Source
                            A  2326    
                            A  2327    .ENDEF
                            A  2328    
-0408C5 DDE5                A  2329    	PUSH	IX
-0408C7 DD210000 00         A  2330    	LD	IX,0
-0408CC DD39                A  2331    	ADD	IX,SP
-0408CE C5                  A  2332    	PUSH	BC
-0408CF C5                  A  2333    	PUSH	BC
+0409CE DDE5                A  2329    	PUSH	IX
+0409D0 DD210000 00         A  2330    	LD	IX,0
+0409D5 DD39                A  2331    	ADD	IX,SP
+0409D7 C5                  A  2332    	PUSH	BC
+0409D8 C5                  A  2333    	PUSH	BC
                            A  2334    ;  319		BYTE res[5], cmdAttempts = 0;
                            A  2335    .LINE 319
                            A  2336    
-0408D0 DD36FF00            A  2337    	LD	(IX+%FFFFFFFF),%0
+0409D9 DD36FF00            A  2337    	LD	(IX+%FFFFFFFF),%0
                            A  2338    ;  320	
                            A  2339    ;  321		init_timer0(10, 16, 0x00);  // 10ms
                            A  2340    .LINE 321
                            A  2341    
-0408D4 01000000            A  2342    	LD	BC,0
-0408D8 C5                  A  2343    	PUSH	BC
-0408D9 01100000            A  2344    	LD	BC,16
-0408DD C5                  A  2345    	PUSH	BC
-0408DE 010A0000            A  2346    	LD	BC,10
-0408E2 C5                  A  2347    	PUSH	BC
-0408E3 CD A6 3E 04         A  2348    	CALL	_init_timer0
-0408E7 C1                  A  2349    	POP	BC
-0408E8 C1                  A  2350    	POP	BC
-0408E9 C1                  A  2351    	POP	BC
+0409DD 01000000            A  2342    	LD	BC,0
+0409E1 C5                  A  2343    	PUSH	BC
+0409E2 01100000            A  2344    	LD	BC,16
+0409E6 C5                  A  2345    	PUSH	BC
+0409E7 010A0000            A  2346    	LD	BC,10
+0409EB C5                  A  2347    	PUSH	BC
+0409EC CD AF 3F 04         A  2348    	CALL	_init_timer0
+0409F0 C1                  A  2349    	POP	BC
+0409F1 C1                  A  2350    	POP	BC
+0409F2 C1                  A  2351    	POP	BC
                            A  2352    ;  322	
                            A  2353    ;  323		SD_powerUpSeq();
                            A  2354    .LINE 323
                            A  2355    
-0408EA CD 36 05 04         A  2356    	CALL	_SD_powerUpSeq
+0409F3 CD 3F 06 04         A  2356    	CALL	_SD_powerUpSeq
                            A  2357    ;  324		//
                            A  2358    ;  325	    // Command card to idle
                            A  2359    ;  326		//
                            A  2360    ;  327	    while((res[0] = SD_goIdleState()) !
                            A  2361    .LINE 327
                            A  2362    
-0408EE 18 10               A  2363    	JR	L_73
-0408F0                     A  2364    L_74:
+0409F7 18 10               A  2363    	JR	L_73
+0409F9                     A  2364    L_74:
                            A  2365    ;  328	        cmdAttempts++;
                            A  2366    .LINE 328
                            A  2367    
-0408F0 DD34FF              A  2368    	INC	(IX+%FFFFFFFF)
+0409F9 DD34FF              A  2368    	INC	(IX+%FFFFFFFF)
                            A  2369    ;  329	        if(cmdAttempts > 10) return SD_
                            A  2370    .LINE 329
                            A  2371    
-0408F3 3E0A                A  2372    	LD	A,%A
-0408F5 DDBEFF              A  2373    	CP	A,(IX+%FFFFFFFF)
-0408F8 30 06               A  2374    	JR	NC,L_73
-0408FA 3E01                A  2375    	LD	A,%1
-0408FC C3 9E 09 04         A  2376    	JR	L_90
+0409FC 3E0A                A  2372    	LD	A,%A
+0409FE DDBEFF              A  2373    	CP	A,(IX+%FFFFFFFF)
+040A01 30 06               A  2374    	JR	NC,L_73
+040A03 3E01                A  2375    	LD	A,%1
+040A05 C3 A7 0A 04         A  2376    	JR	L_90
                            A  2377    ;  330	    }
-040900                     A  2378    L_73:
+040A09                     A  2378    L_73:
                            A  2379    .LINE 330
                            A  2380    
-040900 CD 59 03 04         A  2381    	CALL	_SD_goIdleState
-040904 DD77FA              A  2382    	LD	(IX+%FFFFFFFA),A
-040907 B7ED62              A  2383    	UEXT	HL
-04090A 6F                  A  2384    	LD	L,A
-04090B 01010000            A  2385    	LD	BC,1
-04090F B7                  A  2386    	OR	A,A
-040910 ED42                A  2387    	SBC	HL,BC
-040912 20 DC               A  2388    	JR	NZ,L_74
+040A09 CD 62 04 04         A  2381    	CALL	_SD_goIdleState
+040A0D DD77FA              A  2382    	LD	(IX+%FFFFFFFA),A
+040A10 B7ED62              A  2383    	UEXT	HL
+040A13 6F                  A  2384    	LD	L,A
+040A14 01010000            A  2385    	LD	BC,1
+040A18 B7                  A  2386    	OR	A,A
+040A19 ED42                A  2387    	SBC	HL,BC
+040A1B 20 DC               A  2388    	JR	NZ,L_74
                            A  2389    ;  331		//
                            A  2390    ;  332	    // Send interface conditions
                            A  2391    ;  333		//
                            A  2392    ;  334	    SD_sendIfCond(res);
                            A  2393    .LINE 334
                            A  2394    
-040914 ED65FA              A  2395    	PEA	IX+%FFFFFFFA
-040917 CD B6 03 04         A  2396    	CALL	_SD_sendIfCond
-04091B C1                  A  2397    	POP	BC
+040A1D ED65FA              A  2395    	PEA	IX+%FFFFFFFA
+040A20 CD BF 04 04         A  2396    	CALL	_SD_sendIfCond
+040A24 C1                  A  2397    	POP	BC
                            A  2398    ;  335	    if(res[0] != 0x01) {
                            A  2399    .LINE 335
                            A  2400    
-04091C DD7EFA              A  2401    	LD	A,(IX+%FFFFFFFA)
-04091F B7ED62              A  2402    	UEXT	HL
-040922 6F                  A  2403    	LD	L,A
-040923 01010000            A  2404    	LD	BC,1
-040927 B7                  A  2405    	OR	A,A
-040928 ED42                A  2406    	SBC	HL,BC
-04092A 28 04               A  2407    	JR	Z,L_78
+040A25 DD7EFA              A  2401    	LD	A,(IX+%FFFFFFFA)
+040A28 B7ED62              A  2402    	UEXT	HL
+040A2B 6F                  A  2403    	LD	L,A
+040A2C 01010000            A  2404    	LD	BC,1
+040A30 B7                  A  2405    	OR	A,A
+040A31 ED42                A  2406    	SBC	HL,BC
+040A33 28 04               A  2407    	JR	Z,L_78
                            A  2408    ;  336	        return SD_ERROR;
                            A  2409    .LINE 336
                            A  2410    
-04092C 3E01                A  2411    	LD	A,%1
-04092E 18 6E               A  2412    	JR	L_90
+040A35 3E01                A  2411    	LD	A,%1
+040A37 18 6E               A  2412    	JR	L_90
                            A  2413    ;  337	    }
-040930                     A  2414    L_78:
+040A39                     A  2414    L_78:
                            A  2415    .LINE 337
                            A  2416    
                            A  2417    ;  338		//
@@ -2424,21 +2424,21 @@ PC     Object              I  Line    Source
                            A  2420    ;  341	    if(res[4] != 0xAA) {
                            A  2421    .LINE 341
                            A  2422    
-040930 ED22FE              A  2423    	LEA	HL,IX+%FFFFFFFE
-040933 7E                  A  2424    	LD	A,(HL)
-040934 B7ED62              A  2425    	UEXT	HL
-040937 6F                  A  2426    	LD	L,A
-040938 01AA0000            A  2427    	LD	BC,170
-04093C B7                  A  2428    	OR	A,A
-04093D ED42                A  2429    	SBC	HL,BC
-04093F 28 04               A  2430    	JR	Z,L_79
+040A39 ED22FE              A  2423    	LEA	HL,IX+%FFFFFFFE
+040A3C 7E                  A  2424    	LD	A,(HL)
+040A3D B7ED62              A  2425    	UEXT	HL
+040A40 6F                  A  2426    	LD	L,A
+040A41 01AA0000            A  2427    	LD	BC,170
+040A45 B7                  A  2428    	OR	A,A
+040A46 ED42                A  2429    	SBC	HL,BC
+040A48 28 04               A  2430    	JR	Z,L_79
                            A  2431    ;  342	        return SD_ERROR;
                            A  2432    .LINE 342
                            A  2433    
-040941 3E01                A  2434    	LD	A,%1
-040943 18 59               A  2435    	JR	L_90
+040A4A 3E01                A  2434    	LD	A,%1
+040A4C 18 59               A  2435    	JR	L_90
                            A  2436    ;  343	    }
-040945                     A  2437    L_79:
+040A4E                     A  2437    L_79:
                            A  2438    .LINE 343
                            A  2439    
                            A  2440    ;  344		//
@@ -2447,47 +2447,47 @@ PC     Object              I  Line    Source
                            A  2443    ;  347	    cmdAttempts = 0;
                            A  2444    .LINE 347
                            A  2445    
-040945 DD36FF00            A  2446    	LD	(IX+%FFFFFFFF),%0
+040A4E DD36FF00            A  2446    	LD	(IX+%FFFFFFFF),%0
                            A  2447    ;  348	    do {
-040949                     A  2448    L_85:
+040A52                     A  2448    L_85:
                            A  2449    .LINE 348
                            A  2450    
                            A  2451    ;  349	        if(cmdAttempts > 100) return SD
                            A  2452    .LINE 349
                            A  2453    
-040949 3E64                A  2454    	LD	A,%64
-04094B DDBEFF              A  2455    	CP	A,(IX+%FFFFFFFF)
-04094E 30 04               A  2456    	JR	NC,L_81
-040950 3E01                A  2457    	LD	A,%1
-040952 18 4A               A  2458    	JR	L_90
-040954                     A  2459    L_81:
+040A52 3E64                A  2454    	LD	A,%64
+040A54 DDBEFF              A  2455    	CP	A,(IX+%FFFFFFFF)
+040A57 30 04               A  2456    	JR	NC,L_81
+040A59 3E01                A  2457    	LD	A,%1
+040A5B 18 4A               A  2458    	JR	L_90
+040A5D                     A  2459    L_81:
                            A  2460    ;  350			//
                            A  2461    ;  351	        // Send app cmd
                            A  2462    ;  352			//
                            A  2463    ;  353	        res[0] = SD_sendApp();
                            A  2464    .LINE 353
                            A  2465    
-040954 CD 19 04 04         A  2466    	CALL	_SD_sendApp
-040958 DD77FA              A  2467    	LD	(IX+%FFFFFFFA),A
+040A5D CD 22 05 04         A  2466    	CALL	_SD_sendApp
+040A61 DD77FA              A  2467    	LD	(IX+%FFFFFFFA),A
                            A  2468    ;  354			//
                            A  2469    ;  355	        // If no error in response
                            A  2470    ;  356			//
                            A  2471    ;  357	        if(res[0] < 2) {
                            A  2472    .LINE 357
                            A  2473    
-04095B B7ED62              A  2474    	UEXT	HL
-04095E 6F                  A  2475    	LD	L,A
-04095F 01020000            A  2476    	LD	BC,2
-040963 B7                  A  2477    	OR	A,A
-040964 ED42                A  2478    	SBC	HL,BC
-040966 F2 71 09 04         A  2479    	JP	P,L_83
+040A64 B7ED62              A  2474    	UEXT	HL
+040A67 6F                  A  2475    	LD	L,A
+040A68 01020000            A  2476    	LD	BC,2
+040A6C B7                  A  2477    	OR	A,A
+040A6D ED42                A  2478    	SBC	HL,BC
+040A6F F2 7A 0A 04         A  2479    	JP	P,L_83
                            A  2480    ;  358	            res[0] = SD_sendOpCond();
                            A  2481    .LINE 358
                            A  2482    
-04096A CD 76 04 04         A  2483    	CALL	_SD_sendOpCond
-04096E DD77FA              A  2484    	LD	(IX+%FFFFFFFA),A
+040A73 CD 7F 05 04         A  2483    	CALL	_SD_sendOpCond
+040A77 DD77FA              A  2484    	LD	(IX+%FFFFFFFA),A
                            A  2485    ;  359	        }
-040971                     A  2486    L_83:
+040A7A                     A  2486    L_83:
                            A  2487    .LINE 359
                            A  2488    
                            A  2489    ;  360			//
@@ -2496,63 +2496,63 @@ PC     Object              I  Line    Source
                            A  2492    ;  363	        wait_timer0();
                            A  2493    .LINE 363
                            A  2494    
-040971 CD E3 00 04         A  2495    	CALL	_wait_timer0
+040A7A CD E3 00 04         A  2495    	CALL	_wait_timer0
                            A  2496    ;  364	        cmdAttempts++;
                            A  2497    .LINE 364
                            A  2498    
-040975 DD34FF              A  2499    	INC	(IX+%FFFFFFFF)
+040A7E DD34FF              A  2499    	INC	(IX+%FFFFFFFF)
                            A  2500    ;  365	    }
                            A  2501    ;  366	    while(res[0] != SD_READY);
                            A  2502    .LINE 366
                            A  2503    
-040978 DD7EFA              A  2504    	LD	A,(IX+%FFFFFFFA)
-04097B B7                  A  2505    	OR	A,A
-04097C 20 CB               A  2506    	JR	NZ,L_85
+040A81 DD7EFA              A  2504    	LD	A,(IX+%FFFFFFFA)
+040A84 B7                  A  2505    	OR	A,A
+040A85 20 CB               A  2506    	JR	NZ,L_85
                            A  2507    ;  367		//
                            A  2508    ;  368	    // Read OCR
                            A  2509    ;  369		//
                            A  2510    ;  370	    SD_readOCR(res);
                            A  2511    .LINE 370
                            A  2512    
-04097E ED65FA              A  2513    	PEA	IX+%FFFFFFFA
-040981 CD DB 04 04         A  2514    	CALL	_SD_readOCR
-040985 C1                  A  2515    	POP	BC
+040A87 ED65FA              A  2513    	PEA	IX+%FFFFFFFA
+040A8A CD E4 05 04         A  2514    	CALL	_SD_readOCR
+040A8E C1                  A  2515    	POP	BC
                            A  2516    ;  371	    //
                            A  2517    ;  372	    // Disable 10ms timer
                            A  2518    ;  373	    //
                            A  2519    ;  374	   	enable_timer0(0);
                            A  2520    .LINE 374
                            A  2521    
-040986 01000000            A  2522    	LD	BC,0
-04098A C5                  A  2523    	PUSH	BC
-04098B CD 33 3F 04         A  2524    	CALL	_enable_timer0
-04098F C1                  A  2525    	POP	BC
+040A8F 01000000            A  2522    	LD	BC,0
+040A93 C5                  A  2523    	PUSH	BC
+040A94 CD 3C 40 04         A  2524    	CALL	_enable_timer0
+040A98 C1                  A  2525    	POP	BC
                            A  2526    ;  375		//
                            A  2527    ;  376	    // Check card is ready
                            A  2528    ;  377		//
                            A  2529    ;  378	    if(!(res[1] & 0x80)) return SD_ERRO
                            A  2530    .LINE 378
                            A  2531    
-040990 ED22FA              A  2532    	LEA	HL,IX+%FFFFFFFA
-040993 23                  A  2533    	INC	HL
-040994 7E                  A  2534    	LD	A,(HL)
-040995 E680                A  2535    	AND	A,%80
-040997 20 04               A  2536    	JR	NZ,L_89
-040999 3E01                A  2537    	LD	A,%1
-04099B 18 01               A  2538    	JR	L_90
-04099D                     A  2539    L_89:
+040A99 ED22FA              A  2532    	LEA	HL,IX+%FFFFFFFA
+040A9C 23                  A  2533    	INC	HL
+040A9D 7E                  A  2534    	LD	A,(HL)
+040A9E E680                A  2535    	AND	A,%80
+040AA0 20 04               A  2536    	JR	NZ,L_89
+040AA2 3E01                A  2537    	LD	A,%1
+040AA4 18 01               A  2538    	JR	L_90
+040AA6                     A  2539    L_89:
                            A  2540    ;  379	
                            A  2541    ;  380	    return SD_SUCCESS;	
                            A  2542    .LINE 380
                            A  2543    
-04099D AF                  A  2544    	XOR	A,A
+040AA6 AF                  A  2544    	XOR	A,A
                            A  2545    ;  381	}
-04099E                     A  2546    L_90:
+040AA7                     A  2546    L_90:
                            A  2547    .LINE 381
                            A  2548    
-04099E DDF9                A  2549    	LD	SP,IX
-0409A0 DDE1                A  2550    	POP	IX
-0409A2 C9                  A  2551    	RET	
+040AA7 DDF9                A  2549    	LD	SP,IX
+040AA9 DDE1                A  2550    	POP	IX
+040AAB C9                  A  2551    	RET	
                            A  2552    
                            A  2553    
                            A  2554    ;**************************** _SD_init ********

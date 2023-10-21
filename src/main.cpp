@@ -20,23 +20,6 @@ fabgl::Terminal         terminal;
 CPU*                    cpu;
 ZDI*                    zdi;
 
-/*
-void term_printf (const char* format, ...) {
-	va_list list;
-   	int size = vsnprintf(nullptr, 0, format, list) + 1;
-    //char buffer[size + 1];
-    char buffer[256];
-   	va_start(list, format);
-   	if (size > 0) {
-    	va_end(list);
-     	va_start(list, format);
-     	vsnprintf(buffer, size, format, list);
-        terminal.write (buffer, size);
-   	}
-   	va_end(list);
-}
-*/
-
 void fg_white(void) {
     terminal.write("\e[44;37m"); // background: blue, foreground: white
 }
@@ -75,7 +58,7 @@ void ask_initial() {
     terminal.write("    with filename \"MOS.bin\"\r\n");
     terminal.write(" 3) Reset the board after inserting the SD card\r\n\r\n");
     terminal.write("Press ENTER to proceed:");
-    waitforKey(0x0D);
+    //waitforKey(0x0D);
     terminal.write("\r\n\r\n");
 }
 
@@ -195,6 +178,7 @@ void loop() {
     uint8_t  revision;
     uint8_t memval;
     char buffer[128];
+    serialpackage_t status;
 
     //boot_screen();
     //ask_initial();
@@ -220,25 +204,24 @@ void loop() {
     terminal.write("Done\r\n");
 
     cpu->pc(USERLOAD);
-    cpu->setBreakpoint(0, BREAKPOINT);
-    cpu->enableBreakpoint(0);
+    //cpu->setBreakpoint(0, BREAKPOINT);
+    //cpu->enableBreakpoint(0);
     cpu->setContinue(); // start uploaded program
     
     terminal.write("Starting flashloader          - ");
-    //waitcontinueLoader();
-    terminal.write("Done\r\n");
 
-/*
-    // DEBUG
-    while(1) {
-        if(Serial2.available()) {
-            sprintf(buffer, "%c", Serial2.read());
-            terminal.write(buffer);
-        }
+    status = getStatus();
+    if((status.state == 'S') && (status.status == 1))
+        terminal.write("Done\r\n");
+    else {
+        fg_red();
+        sprintf(buffer, "Status <%d> <%d> <0x%08X> - ",status.state, status.status, status.result);
+        terminal.write(buffer);
+        terminal.write("Error");
+        while(1);
     }
 
-    // DEBUG
-*/
+    /*
     // DEBUG
     serialpackage_t status;
     while(1) {
@@ -250,81 +233,79 @@ void loop() {
     }
 
     // DEBUG
-
-
-
-
-
-    terminal.write("Waiting for payload\r\n");
-
-
-
+    */
     terminal.write("Opening file from SD card     - ");
-    
-    //waitcontinueLoader();
-    //if(get_flashloader_result() == 0) {
-    //    fg_red();
-    //    terminal.write("Error opening \"MOS.bin\"");
-    //    while(1);
-    //}
-    //filesize = get_flashloader_value();
-    //if(filesize == 0xFFFFFF) {
-    //    fg_red();
-    //    terminal.write("Invalid file size for \"MOS.bin\"");
-    //    while(1);
-    //}
-    terminal.write("Done");
-    //terminal.write(" (%d bytes)\r\n", filesize);
-    terminal.write("(");
-    sprintf(buffer, "%ld", filesize);
+    status = getStatus();
+    if((status.state == 'F') && (status.status == 1))
+        terminal.write("Done");
+    else {
+        fg_red();
+        terminal.write("Error opening \"MOS.bin\"");
+        while(1);
+    }
+    filesize = status.result;
+    if(filesize > 0x20000) {
+        fg_red();
+        terminal.write("Invalid file size for \"MOS.bin\"");
+        while(1);
+    }
+    sprintf(buffer, " (%d bytes)\r\n", filesize);
     terminal.write(buffer);
-    terminal.write(")\r\n");
     
     terminal.write("Reading file to ez80 memory   - ");
-    //waitcontinueLoader();
-    //readsize = get_flashloader_value();
-    //readsize = waitcontinueLoader();
-    //if(filesize == readsize) terminal.write("Done\r\n");
-    //else {
-    //    fg_red();
-    //    terminal.write("Error (");
-    //    sprintf(buffer,"%ld", readsize);
-    //    terminal.write(buffer);
-    //    terminal.write(") bytes read\r\n");
-    //    while(1);
-    //}
+    status = getStatus();
+    if((status.state == 'M') && (status.status == 1))
+        terminal.write("Done");
+    else {
+        fg_red();
+        terminal.write("Error reading file into memory");
+        while(1);
+    }
+    readsize = status.result;
+    if(readsize == filesize) terminal.write("\r\n");
+    else {
+        fg_red();
+        terminal.write("Error reading file");
+        while(1);
+    }
     ask_proceed();
-    //waitcontinueLoader();
+    Serial2.write(1);
 
     terminal.write("Erasing flash                 - ");
-    //delay(6000);
-    //pages = waitcontinueLoader();
-    //waitcontinueLoader();
-    //pages = get_flashloader_value();
-    //waitcontinueLoader();
+    status = getStatus();
+    if((status.state == 'E') && (status.status == 1))
+        terminal.write("Done\r\n");
+    else {
+        fg_red();
+        terminal.write("Error erasing flash");
+        while(1);
+    }
+    if(status.result != 128) {
+        fg_red();
+        sprintf(buffer, "Error erasing flash (%d pages erased)", status.result);
+        terminal.write(buffer);
+        while(1);
+    }
+
     // determine number of pages to write
-    //pages = filesize/1024;
-    //if(filesize%1024) pages += 1;
-
-    sprintf(buffer, "%d", pages);
-    terminal.write(buffer);
-
-    terminal.write(" - ");
-
-    terminal.write("Done\r\n");
-
-    terminal.write("Programming ");
-
-    terminal.write(" - ");
-
-    //pages = waitcontinueLoader();
-    //waitcontinueLoader();
-    //pages = get_flashloader_value();
-    sprintf(buffer, "%d pages written - ", pages);
-    terminal.write(buffer);
-
-
-    terminal.write(" Done\r\n\r\n");
+    pages = filesize/1024;
+    if(filesize%1024) pages += 1;
+    terminal.write("Programming                   - ");
+    status = getStatus();
+    if((status.state == 'P') && (status.status == 1))
+        terminal.write("Done\r\n");
+    else {
+        fg_red();
+        terminal.write("Error writing to flash");
+        while(1);
+    }
+    if(status.result != pages) {
+        fg_red();
+        sprintf(buffer, "Error writing flash (%d pages written)", status.result);
+        terminal.write(buffer);
+        while(1);
+    }
+    terminal.write("\r\n");
     terminal.write("MOS has been programmed to ez80 flash\r\n");
     terminal.write("Please (re)program ESP32 with matching VDP");
 

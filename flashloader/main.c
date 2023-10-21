@@ -37,42 +37,22 @@ int main(int argc, char * argv[]) {
 	init_spi();
 	init_UART0();
 
-	/*
-	while(1) {
-		putch('A');
-		delayms(500);
-		putch('X');
-		delayms(500);
-	}
-	*/
-	while(1) {
-		sendStatus('S', 1, 0xAABBCCDD);
-		getch();
-		//delayms(500);
-		sendStatus('E', 1, 0);
-		getch();
-		//delayms(500);
-	}
-
 	f_mount(&fs, "", 1);
-
+	sendStatus('S', 1, 0); // startup complete
 	addressto = FLASHSTART;
 	addressfrom = LOADADDRESS;
 
 	fr = f_open(&fil, MOSFILENAME, FA_READ);
 	if(fr == FR_OK) {
-
-		di();
 		size = f_size(&fil);
-		//waitZDI(FEEDBACK_OPEN, size);
+		sendStatus('F', 1, size); // file read ok
 
 		fr = f_read(&fil, (void *)LOADADDRESS, size, &br);
+		sendStatus('M', 1, br); // file read into memory
 
 		f_close(&fil);
-		//waitZDI(FEEDBACK_FILEDONE, br);
-		
 		// Wait for user to acknowledge proceed (remote ZDI)
-		//waitZDI(FEEDBACK_PROCEED, 0);
+		getch();
 		
 		// Unprotect and erase flash
 		enableFlashKeyRegister();	// unlock Flash Key Register, so we can write to the Flash Write/Erase protection registers
@@ -92,7 +72,9 @@ int main(int argc, char * argv[]) {
 			}
 			while(value & 0x02);// wait for completion of erase			
 		}
-		
+
+		sendStatus('E', 1, counter); // number of pages erased
+
 		// determine number of pages to write
 		pagemax = size/PAGESIZE;
 		if(size%PAGESIZE) // last page has less than PAGESIZE bytes
@@ -101,8 +83,6 @@ int main(int argc, char * argv[]) {
 			lastpagebytes = size%PAGESIZE;			
 		}
 		else lastpagebytes = PAGESIZE; // normal last page
-
-		//waitZDI(FEEDBACK_ERASEDONE, pagemax);
 
 		// write out each page to flash
 		for(counter = 0; counter < pagemax; counter++)
@@ -119,9 +99,9 @@ int main(int argc, char * argv[]) {
 			////waitZDI(FEEDBACK_PAGEWRITTEN, counter);
 		}
 		lockFlashKeyRegister();	// lock the flash before WARM reset
-		//waitZDI(FEEDBACK_PAGEWRITTEN, counter);
+		sendStatus('P', 1, counter); // programming ok
 	}
-	else //waitZDI(FEEDBACK_OPEN, 0);
+	else sendStatus('F', 0, 0); // file not read ok
 	while(1);
 	return 0;
 }

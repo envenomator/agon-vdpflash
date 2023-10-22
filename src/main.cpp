@@ -31,7 +31,7 @@ void boot_screen() {
     fg_white();
     terminal.write("\e[2J");     // clear screen
     terminal.write("\e[1;1H");   // move cursor to 1,1
-    terminal.write("Agon MOS ZDI flash utility - version 0.7\r\n\r\n");
+    terminal.write("Agon MOS ZDI flash utility - version 0.71\r\n\r\n");
 }
 
 void waitforKey(uint8_t key) {
@@ -155,6 +155,22 @@ void ZDI_upload(void) {
     zdi->write_memory(address, filesize, buffer);
 }
 
+void ask_initial() {
+    terminal.write("This utility will (baremetal) program a new MOS to the Agon ez80 flash,\r\n");
+    terminal.write("from a file on the SD card. This can be performed in case of\r\n");
+    terminal.write("an initially erased or corrupted flash, or having previously flashed\r\n");
+    terminal.write("an incompatible MOS version.\r\n");
+    terminal.write("\r\nRequirements before proceeding:\r\n");
+    terminal.write(" 1) Connect two cables between the GPIO and ZDI ports:\r\n");
+    terminal.write("    - ESP GPIO26 to ZDI TCK (pin 4)\r\n");
+    terminal.write("    - ESP GPIO27 to ZDI TDI (pin 6)\r\n");
+    terminal.write(" 2) Place the required MOS version on the SD card's root directory\r\n"); 
+    terminal.write("    named as \"MOS.bin\"\r\n");
+    terminal.write("\r\nPress ENTER to proceed:");
+    waitforKey(0x0D);
+    terminal.write("\r\n\r\n");
+}
+
 void loop() {
     uint32_t page,pages,filesize,readsize;
     uint16_t productid;
@@ -162,6 +178,13 @@ void loop() {
     uint8_t memval;
     char buffer[128];
     serialpackage_t status;
+
+    boot_screen();
+    ask_initial();
+
+    while(Serial2.available()) {
+        Serial2.read(); // read terminal startup 0x17/0x00/0x80/0x17 sequences
+    }
 
     boot_screen();
     terminal.write("Action                          Status\r\n");
@@ -176,6 +199,7 @@ void loop() {
     }
     sprintf(buffer,"UP (ID %X.%02X)\r\n",productid, revision);
     terminal.write(buffer);
+
     terminal.write("Uploading flashloader to ez80 - ");
 
     init_ez80();

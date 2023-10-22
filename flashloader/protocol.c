@@ -5,6 +5,7 @@
 int putch(int c)
 {
 	while((UART0_LSR & UART_LSR_TEMT) == 0);
+	while(PD_DR & 0x08); // wait for CTS to go low
 	UART0_THR = c;
 	return c;
 }

@@ -1,4 +1,4 @@
-Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED21-Oct-23     19:23:07     page:   1
+Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED22-Oct-23     15:29:33     page:   1
 
 
 PC     Object              I  Line    Source 
@@ -225,52 +225,52 @@ PC     Object              I  Line    Source
        00000001            A    42    BRD_LOW                .equ    001h
        00000000            A    43    BRD_HIGH               .equ    000h
                            A    44    
-044097                     A    45    _init_UART0:
+044166                     A    45    _init_UART0:
                            A    46        ; all pins to GPIO mode 2, high impedance i
-044097 3EFF                A    47        ld a, PORTD_DRVAL_DEF
-044099 ED39A2              A    48        out0 (PD_DR),a
-04409C 3EFF                A    49        ld a, PORTD_DDRVAL_DEF
-04409E ED39A3              A    50        out0 (PD_DDR),a
-0440A1 3E00                A    51        ld a, PORTD_ALT1VAL_DEF
-0440A3 ED39A4              A    52        out0 (PD_ALT1),a
-0440A6 3E00                A    53        ld a, PORTD_ALT2VAL_DEF
-0440A8 ED39A5              A    54        out0 (PD_ALT2),a
+044166 3EFF                A    47        ld a, PORTD_DRVAL_DEF
+044168 ED39A2              A    48        out0 (PD_DR),a
+04416B 3EFF                A    49        ld a, PORTD_DDRVAL_DEF
+04416D ED39A3              A    50        out0 (PD_DDR),a
+044170 3E00                A    51        ld a, PORTD_ALT1VAL_DEF
+044172 ED39A4              A    52        out0 (PD_ALT1),a
+044175 3E00                A    53        ld a, PORTD_ALT2VAL_DEF
+044177 ED39A5              A    54        out0 (PD_ALT2),a
                            A    55    
                            A    56        ; initialize for correct operation
                            A    57        ; pin 0 and 1 to alternate function
                            A    58        ; set pin 3 (CTS) to high-impedance input
-0440AB ED38A3              A    59        in0 a,(PD_DDR)
-0440AE F60B                A    60        or  00001011b; set pin 0,1,3
-0440B0 ED39A3              A    61        out0 (PD_DDR), a
-0440B3 ED38A4              A    62        in0 a,(PD_ALT1)
-0440B6 E6F4                A    63        and 11110100b; reset pin 0,1,3
-0440B8 ED39A4              A    64        out0 (PD_ALT1), a
-0440BB ED38A5              A    65        in0 a,(PD_ALT2)
-0440BE E6F7                A    66        and 11110111b; reset pin 3
-0440C0 F603                A    67        or  00000011b; set pin 0,1
-0440C2 ED39A5              A    68        out0 (PD_ALT2), a
+04417A ED38A3              A    59        in0 a,(PD_DDR)
+04417D F60B                A    60        or  00001011b; set pin 0,1,3
+04417F ED39A3              A    61        out0 (PD_DDR), a
+044182 ED38A4              A    62        in0 a,(PD_ALT1)
+044185 E6F4                A    63        and 11110100b; reset pin 0,1,3
+044187 ED39A4              A    64        out0 (PD_ALT1), a
+04418A ED38A5              A    65        in0 a,(PD_ALT2)
+04418D E6F7                A    66        and 11110111b; reset pin 3
+04418F F603                A    67        or  00000011b; set pin 0,1
+044191 ED39A5              A    68        out0 (PD_ALT2), a
                            A    69        
-0440C5 ED38C3              A    70        in0 a,(UART0_LCTL)
-0440C8 F680                A    71        or 10000000b ; set UART_LCTL_DLAB
-0440CA ED39C3              A    72        out0 (UART0_LCTL),a
-0440CD 3E01                A    73        ld a, BRD_LOW ;// Load divisor low
-0440CF ED39C0              A    74        out0 (UART0_BRG_L),a
-0440D2 3E00                A    75        ld a, BRD_HIGH ;// Load divisor high
-0440D4 ED39C1              A    76        out0 (UART0_BRG_H),a
-0440D7 ED38C3              A    77        in0 a,(UART0_LCTL)
-0440DA E67F                A    78        and 01111111b ; reset UART_LCTL_DLAB
-0440DC ED39C3              A    79        out0 (UART0_LCTL),a
-0440DF 3E00                A    80        ld a, 000h  ; reset modem control register
-0440E1 ED39C4              A    81        out0 (UART0_MCTL),a
-0440E4 3E07                A    82        ld a, 007h  ; enable and clear hardware fif
-0440E6 ED39C2              A    83        out0 (UART0_FCTL),a
-0440E9 3E00                A    84        ld a, 000h  ; no interrupts
-0440EB ED39C1              A    85        out0 (UART0_IER),a
-0440EE ED38C3              A    86        in0 a, (UART0_LCTL)
-0440F1 F603                A    87        or  00000011b    ; 8 databits, 1 stopbit
-0440F3 E6F7                A    88        and 11110111b    ; no parity
-0440F5 ED39C3              A    89        out0 (UART0_LCTL),a
-0440F8 C9                  A    90    	ret
+044194 ED38C3              A    70        in0 a,(UART0_LCTL)
+044197 F680                A    71        or 10000000b ; set UART_LCTL_DLAB
+044199 ED39C3              A    72        out0 (UART0_LCTL),a
+04419C 3E01                A    73        ld a, BRD_LOW ;// Load divisor low
+04419E ED39C0              A    74        out0 (UART0_BRG_L),a
+0441A1 3E00                A    75        ld a, BRD_HIGH ;// Load divisor high
+0441A3 ED39C1              A    76        out0 (UART0_BRG_H),a
+0441A6 ED38C3              A    77        in0 a,(UART0_LCTL)
+0441A9 E67F                A    78        and 01111111b ; reset UART_LCTL_DLAB
+0441AB ED39C3              A    79        out0 (UART0_LCTL),a
+0441AE 3E00                A    80        ld a, 000h  ; reset modem control register
+0441B0 ED39C4              A    81        out0 (UART0_MCTL),a
+0441B3 3E07                A    82        ld a, 007h  ; enable and clear hardware fif
+0441B5 ED39C2              A    83        out0 (UART0_FCTL),a
+0441B8 3E00                A    84        ld a, 000h  ; no interrupts
+0441BA ED39C1              A    85        out0 (UART0_IER),a
+0441BD ED38C3              A    86        in0 a, (UART0_LCTL)
+0441C0 F603                A    87        or  00000011b    ; 8 databits, 1 stopbit
+0441C2 E6F7                A    88        and 11110111b    ; no parity
+0441C4 ED39C3              A    89        out0 (UART0_LCTL),a
+0441C7 C9                  A    90    	ret
 
 
 Errors: 0

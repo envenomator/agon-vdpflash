@@ -216,8 +216,8 @@ flashloader: $(OBJS)
 
 $(WORKDIR_ESCSPACE)\init.obj :  \
             $(PRJDIR_ESCSPACE)\init.asm  \
-            $(INCLUDE_ESCSPACE)\zilog\ez80F92.inc  \
-            $(PRJDIR_ESCSPACE)\equs.inc
+            $(PRJDIR_ESCSPACE)\equs.inc  \
+            $(PRJDIR_ESCSPACE)\ez80F92.inc
 	 $(AS) $(ASFLAGS) "$(PRJDIR)\init.asm"
 
 $(WORKDIR_ESCSPACE)\main.obj :  \
@@ -234,6 +234,8 @@ $(WORKDIR_ESCSPACE)\main.obj :  \
             $(INCLUDE_ESCSPACE)\zilog\gpio.h  \
             $(INCLUDE_ESCSPACE)\zilog\uart.h  \
             $(INCLUDE_ESCSPACE)\zilog\uartdefs.h  \
+            $(PRJDIR_ESCSPACE)\agontimer.h  \
+            $(PRJDIR_ESCSPACE)\protocol.h  \
             $(PRJDIR_ESCSPACE)\spi.h  \
             $(PRJDIR_ESCSPACE)\src_fatfs\ff.h  \
             $(PRJDIR_ESCSPACE)\src_fatfs\ffconf.h  \
@@ -243,6 +245,17 @@ $(WORKDIR_ESCSPACE)\main.obj :  \
 $(WORKDIR_ESCSPACE)\diskio.obj :  \
             $(PRJDIR_ESCSPACE)\src_fatfs\diskio.c  \
             $(INCLUDE_ESCSPACE)\std\FLOAT.H  \
+            $(INCLUDE_ESCSPACE)\zilog\cio.h  \
+            $(INCLUDE_ESCSPACE)\zilog\defines.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80190.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80F91.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80F92.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80F93.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80L92.h  \
+            $(INCLUDE_ESCSPACE)\zilog\ez80.h  \
+            $(INCLUDE_ESCSPACE)\zilog\gpio.h  \
+            $(INCLUDE_ESCSPACE)\zilog\uart.h  \
+            $(INCLUDE_ESCSPACE)\zilog\uartdefs.h  \
             $(PRJDIR_ESCSPACE)\src_fatfs\diskio.h  \
             $(PRJDIR_ESCSPACE)\src_fatfs\ff.h  \
             $(PRJDIR_ESCSPACE)\src_fatfs\ffconf.h
@@ -254,6 +267,17 @@ $(WORKDIR_ESCSPACE)\ff.obj :  \
             $(INCLUDE_ESCSPACE)\std\Math.h  \
             $(INCLUDE_ESCSPACE)\std\Stdarg.h  \
             $(INCLUDE_ESCSPACE)\std\String.h  \
+            $(INCLUDE_ESCSPACE)\zilog\cio.h  \
+            $(INCLUDE_ESCSPACE)\zilog\defines.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80190.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80F91.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80F92.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80F93.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80L92.h  \
+            $(INCLUDE_ESCSPACE)\zilog\ez80.h  \
+            $(INCLUDE_ESCSPACE)\zilog\gpio.h  \
+            $(INCLUDE_ESCSPACE)\zilog\uart.h  \
+            $(INCLUDE_ESCSPACE)\zilog\uartdefs.h  \
             $(PRJDIR_ESCSPACE)\src_fatfs\diskio.h  \
             $(PRJDIR_ESCSPACE)\src_fatfs\ff.h  \
             $(PRJDIR_ESCSPACE)\src_fatfs\ffconf.h
@@ -262,6 +286,17 @@ $(WORKDIR_ESCSPACE)\ff.obj :  \
 $(WORKDIR_ESCSPACE)\ffunicode.obj :  \
             $(PRJDIR_ESCSPACE)\src_fatfs\ffunicode.c  \
             $(INCLUDE_ESCSPACE)\std\FLOAT.H  \
+            $(INCLUDE_ESCSPACE)\zilog\cio.h  \
+            $(INCLUDE_ESCSPACE)\zilog\defines.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80190.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80F91.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80F92.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80F93.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80L92.h  \
+            $(INCLUDE_ESCSPACE)\zilog\ez80.h  \
+            $(INCLUDE_ESCSPACE)\zilog\gpio.h  \
+            $(INCLUDE_ESCSPACE)\zilog\uart.h  \
+            $(INCLUDE_ESCSPACE)\zilog\uartdefs.h  \
             $(PRJDIR_ESCSPACE)\src_fatfs\ff.h  \
             $(PRJDIR_ESCSPACE)\src_fatfs\ffconf.h
 	 $(CC) $(CFLAGS) "$(PRJDIR)\src_fatfs\ffunicode.c"
@@ -322,14 +357,38 @@ $(WORKDIR_ESCSPACE)\timer.obj :  \
 	 $(CC) $(CFLAGS) "$(PRJDIR)\timer.c"
 
 $(WORKDIR_ESCSPACE)\serial.obj :  \
-            $(PRJDIR_ESCSPACE)\serial.asm
+            $(PRJDIR_ESCSPACE)\serial.asm  \
+            $(PRJDIR_ESCSPACE)\ez80F92.inc
 	 $(AS) $(ASFLAGS) "$(PRJDIR)\serial.asm"
 
 $(WORKDIR_ESCSPACE)\agontimer.obj :  \
-            $(PRJDIR_ESCSPACE)\agontimer.c
+            $(PRJDIR_ESCSPACE)\agontimer.c  \
+            $(INCLUDE_ESCSPACE)\zilog\cio.h  \
+            $(INCLUDE_ESCSPACE)\zilog\defines.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80190.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80F91.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80F92.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80F93.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80L92.h  \
+            $(INCLUDE_ESCSPACE)\zilog\ez80.h  \
+            $(INCLUDE_ESCSPACE)\zilog\gpio.h  \
+            $(INCLUDE_ESCSPACE)\zilog\uart.h  \
+            $(INCLUDE_ESCSPACE)\zilog\uartdefs.h  \
+            $(PRJDIR_ESCSPACE)\agontimer.h
 	 $(CC) $(CFLAGS) "$(PRJDIR)\agontimer.c"
 
 $(WORKDIR_ESCSPACE)\protocol.obj :  \
-            $(PRJDIR_ESCSPACE)\protocol.c
+            $(PRJDIR_ESCSPACE)\protocol.c  \
+            $(INCLUDE_ESCSPACE)\zilog\cio.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80190.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80F91.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80F92.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80F93.h  \
+            $(INCLUDE_ESCSPACE)\zilog\eZ80L92.h  \
+            $(INCLUDE_ESCSPACE)\zilog\ez80.h  \
+            $(INCLUDE_ESCSPACE)\zilog\gpio.h  \
+            $(INCLUDE_ESCSPACE)\zilog\uart.h  \
+            $(INCLUDE_ESCSPACE)\zilog\uartdefs.h  \
+            $(PRJDIR_ESCSPACE)\protocol.h
 	 $(CC) $(CFLAGS) "$(PRJDIR)\protocol.c"
 

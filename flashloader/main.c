@@ -34,10 +34,17 @@ int main(int argc, char * argv[]) {
 	UINT24 addressto,addressfrom;
 	UINT8	value;
 	UINT24 timer;
+
+	char buffer[1024];
+	int n;
+	uint32_t total;
+
+
 	init_spi();
 	init_UART0();
 
 	f_mount(&fs, "", 1);
+
 	sendStatus('S', 1, 0); // startup complete
 
 	addressto = FLASHSTART;
@@ -51,6 +58,25 @@ int main(int argc, char * argv[]) {
 		sendStatus('M', 1, br); // file read into memory
 
 		f_close(&fil);
+
+		fr = f_open(&fil, "video.ino.bin", FA_READ);
+		if(fr == FR_OK) {
+			size = f_size(&fil);
+			sendStatus('V', 1, size); // file read ok
+			
+			total = 0;
+			while(1) {
+				fr = f_read(&fil, (void *)buffer, 1024, &br);
+				if(br == 0) break;
+				for(n = 0; n < br; n++) {
+					putch(buffer[n]);
+					total += buffer[n];
+				}
+			}
+			sendStatus('W', 1, total);
+		}
+		else sendStatus('V', 0, fr);
+		while(1)
 		// Wait for user to acknowledge to proceed
 		getch();
 		
@@ -60,21 +86,6 @@ int main(int argc, char * argv[]) {
 		enableFlashKeyRegister();	// will need to unlock again after previous write to the flash protection register
 		FLASH_FDIV = 0x5F;			// Ceiling(18Mhz * 5,1us) = 95, or 0x5F
 
-		/*
-		// Erase all flash pages
-		for(counter = 0; counter < FLASHPAGES; counter++)
-		{
-			FLASH_PAGE = counter;
-			FLASH_PGCTL = 0x02;			// Page erase bit enable, start erase
-
-			do
-			{
-				value = FLASH_PGCTL;
-			}
-			while(value & 0x02);// wait for completion of erase			
-		}
-		sendStatus('E', 1, counter); // number of pages erased
-		*/
 		// Mass erase flash
 		FLASH_PGCTL = 0x01;	// mass erase bit enable, start erase all pages
 		do {
@@ -106,7 +117,7 @@ int main(int argc, char * argv[]) {
 		lockFlashKeyRegister();	// lock the flash before WARM reset
 		sendStatus('P', 1, counter); // programming ok
 	}
-	else sendStatus('F', 0, 0); // file not read ok
+	else sendStatus('F', 0, fr); // file not read ok
 	while(1);
 	return 0;
 }

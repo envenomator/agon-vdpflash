@@ -178,9 +178,9 @@ void loop() {
     uint8_t memval;
     char buffer[128];
     serialpackage_t status;
-
-    boot_screen();
-    ask_initial();
+    
+    //boot_screen();
+    //ask_initial();
 
     while(Serial2.available()) {
         Serial2.read(); // read terminal startup 0x17/0x00/0x80/0x17 sequences
@@ -224,7 +224,7 @@ void loop() {
     }
 
     terminal.write("Opening MOS.bin from SD card  - ");
-    status = getStatus();
+    status = getStatus();    
     if((status.state == 'F') && (status.status == 1))
         terminal.write("Done");
     else {
@@ -257,6 +257,36 @@ void loop() {
         terminal.write(" Error reading file");
         while(1);
     }
+
+    // DEBUG
+    //status = getStatus();
+    //terminal.write("\r\n");
+    //sprintf(buffer, "State <%d><%02x><'%c'> - status <0x%02x> - value <0x%08X>\r\n", status.state, status.state, status.state, status.status, status.result);
+    //terminal.write(buffer);
+    //while(1);
+    // DEBUG
+
+
+    // TEMP
+    status = getStatus();
+    sprintf(buffer, "Receiving %d bytes", status.result);
+    terminal.write(buffer);
+    uint32_t total = 0;
+    int count = 0;
+    for(uint32_t n = 0; n < status.result; n++) {
+        while(!Serial2.available());
+        total += Serial2.read();
+        count++;
+        if(count > 1023) {
+            count = 0;
+            terminal.write('.');
+        }
+    }
+    status = getStatus();
+    if(total == status.result) terminal.write("Match");
+    else terminal.write("No match");
+    // TEMP
+
     ask_proceed();
     Serial2.write(1);
 

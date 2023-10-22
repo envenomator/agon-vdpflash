@@ -49,17 +49,24 @@ L_1:
 	LD	L,A
 	CALL	__icmpzero
 	JR	Z,L_1
-;    8		UART0_THR = c;
+;    8		while(PD_DR & 0x08); // wait for CTS to go low
+L_3:
 .LINE 8
+
+	IN0	A,(162)
+	AND	A,%8
+	JR	NZ,L_3
+;    9		UART0_THR = c;
+.LINE 9
 
 	LD	A,(IX+%6)
 	OUT0	(192),A
-;    9		return c;
-.LINE 9
+;   10		return c;
+.LINE 10
 
 	LD	HL,(IX+%6)
-;   10	}
-.LINE 10
+;   11	}
+.LINE 11
 
 	LD	SP,IX
 	POP	IX
@@ -75,9 +82,9 @@ L_1:
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "putch",10,"_putch"
-;   11	
-;   12	void sendStatus(char state, UINT8 status, UINT32 result) {
+.ENDFUNC "putch",11,"_putch"
+;   12	
+;   13	void sendStatus(char state, UINT8 status, UINT32 result) {
 _sendStatus:
 .DEFINE "_sendStatus"
 
@@ -89,9 +96,9 @@ _sendStatus:
 
 .ENDEF
 
-.BEGFUNC "sendStatus",12,"_sendStatus"
+.BEGFUNC "sendStatus",13,"_sendStatus"
 
-.LINE 12
+.LINE 13
 
 .DEFINE "state"
 
@@ -126,8 +133,8 @@ _sendStatus:
 	PUSH	IX
 	LD	IX,0
 	ADD	IX,SP
-;   13		putch(state);
-.LINE 13
+;   14		putch(state);
+.LINE 14
 
 	LD	A,(IX+%6)
 	SEXT	HL
@@ -135,8 +142,8 @@ _sendStatus:
 	PUSH	HL
 	CALL	_putch
 	POP	BC
-;   14		putch(status);
-.LINE 14
+;   15		putch(status);
+.LINE 15
 
 	LD	A,(IX+%9)
 	UEXT	HL
@@ -144,8 +151,8 @@ _sendStatus:
 	PUSH	HL
 	CALL	_putch
 	POP	BC
-;   15		putch((result) & 0xFF);
-.LINE 15
+;   16		putch((result) & 0xFF);
+.LINE 16
 
 	LD	HL,(IX+%C)
 	LD	A,L
@@ -154,8 +161,8 @@ _sendStatus:
 	PUSH	HL
 	CALL	_putch
 	POP	BC
-;   16		putch((result >> 8) & 0xFF);
-.LINE 16
+;   17		putch((result >> 8) & 0xFF);
+.LINE 17
 
 	LD	BC,(IX+%C)
 	LD	A,(IX+%F)
@@ -168,8 +175,8 @@ _sendStatus:
 	PUSH	HL
 	CALL	_putch
 	POP	BC
-;   17		putch((result >> 16) & 0xFF);
-.LINE 17
+;   18		putch((result >> 16) & 0xFF);
+.LINE 18
 
 	LD	BC,(IX+%C)
 	LD	A,(IX+%F)
@@ -182,8 +189,8 @@ _sendStatus:
 	PUSH	HL
 	CALL	_putch
 	POP	BC
-;   18		putch((result >> 24) & 0xFF);
-.LINE 18
+;   19		putch((result >> 24) & 0xFF);
+.LINE 19
 
 	LD	A,(IX+%F)
 	UEXT	HL
@@ -191,8 +198,8 @@ _sendStatus:
 	PUSH	HL
 	CALL	_putch
 	POP	BC
-;   19	}
-.LINE 19
+;   20	}
+.LINE 20
 
 	LD	SP,IX
 	POP	IX
@@ -211,9 +218,9 @@ _sendStatus:
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "sendStatus",19,"_sendStatus"
-;   20	
-;   21	UCHAR read_UART0(CHAR *pData, int *nbytes) {
+.ENDFUNC "sendStatus",20,"_sendStatus"
+;   21	
+;   22	UCHAR read_UART0(CHAR *pData, int *nbytes) {
 _read_UART0:
 .DEFINE "_read_UART0"
 
@@ -225,9 +232,9 @@ _read_UART0:
 
 .ENDEF
 
-.BEGFUNC "read_UART0",21,"_read_UART0"
+.BEGFUNC "read_UART0",22,"_read_UART0"
 
-.LINE 21
+.LINE 22
 
 .DEFINE "pData"
 
@@ -285,91 +292,91 @@ _read_UART0:
 	PUSH	BC
 	DEC	SP
 	DEC	SP
-;   22		UCHAR lsr ;
-;   23		UCHAR status = UART_ERR_NONE ;
-.LINE 23
+;   23		UCHAR lsr ;
+;   24		UCHAR status = UART_ERR_NONE ;
+.LINE 24
 
 	LD	(IX+%FFFFFFFF),%0
-;   24		int   index = 0 ;
-.LINE 24
+;   25		int   index = 0 ;
+.LINE 25
 
 	LD	BC,0
 	LD	(IX+%FFFFFFFB),BC
-;   25	
-;   26		while( UART_ERR_NONE == status ) {
-.LINE 26
-
-	JR	L_17
-L_18:
-;   27			lsr = UART0_LSR ;											//! Read the line status.
+;   26	
+;   27		while( UART_ERR_NONE == status ) {
 .LINE 27
+
+	JR	L_20
+L_21:
+;   28			lsr = UART0_LSR ;											//! Read the line status.
+.LINE 28
 
 	IN0	A,(197)
 	LD	(IX+%FFFFFFFE),A
-;   28			
-;   29			if( 0 != (lsr & UART_LSR_BREAKINDICATIONERR) ) {			//! Check if there is any Break Indication Error.
-.LINE 29
-
-	AND	A,%10
-	JR	Z,L_7
-;   30				status = UART_ERR_BREAKINDICATIONERR ;					//! Failure code.
+;   29			
+;   30			if( 0 != (lsr & UART_LSR_BREAKINDICATIONERR) ) {			//! Check if there is any Break Indication Error.
 .LINE 30
 
-	LD	(IX+%FFFFFFFF),%5
-;   31			}
-L_7:
+	AND	A,%10
+	JR	Z,L_10
+;   31				status = UART_ERR_BREAKINDICATIONERR ;					//! Failure code.
 .LINE 31
 
-;   32			if( 0 != (lsr & UART_LSR_FRAMINGERR) ) {					//! Check if there is any Framing error.
+	LD	(IX+%FFFFFFFF),%5
+;   32			}
+L_10:
 .LINE 32
+
+;   33			if( 0 != (lsr & UART_LSR_FRAMINGERR) ) {					//! Check if there is any Framing error.
+.LINE 33
 
 	LD	A,(IX+%FFFFFFFE)
 	AND	A,%8
-	JR	Z,L_9
-;   33				status = UART_ERR_FRAMINGERR ;							//! Failure code.
-.LINE 33
-
-	LD	(IX+%FFFFFFFF),%2
-;   34			}
-L_9:
+	JR	Z,L_12
+;   34				status = UART_ERR_FRAMINGERR ;							//! Failure code.
 .LINE 34
 
-;   35			if( 0 != (lsr & UART_LSR_PARITYERR) ) {						//! Check if there is any Parity error.
+	LD	(IX+%FFFFFFFF),%2
+;   35			}
+L_12:
 .LINE 35
+
+;   36			if( 0 != (lsr & UART_LSR_PARITYERR) ) {						//! Check if there is any Parity error.
+.LINE 36
 
 	LD	A,(IX+%FFFFFFFE)
 	AND	A,%4
-	JR	Z,L_11
-;   36				status = UART_ERR_PARITYERR ;							//! Failure code.
-.LINE 36
-
-	LD	(IX+%FFFFFFFF),%3
-;   37			}
-L_11:
+	JR	Z,L_14
+;   37				status = UART_ERR_PARITYERR ;							//! Failure code.
 .LINE 37
 
-;   38			if( 0 != (lsr & UART_LSR_OVERRRUNERR) )	{					//! Check if there is any Overrun error.
+	LD	(IX+%FFFFFFFF),%3
+;   38			}
+L_14:
 .LINE 38
+
+;   39			if( 0 != (lsr & UART_LSR_OVERRRUNERR) )	{					//! Check if there is any Overrun error.
+.LINE 39
 
 	LD	A,(IX+%FFFFFFFE)
 	AND	A,%2
-	JR	Z,L_14
-;   39				status = UART_ERR_OVERRUNERR ;							//! Failure code.
-.LINE 39
-
-	LD	(IX+%FFFFFFFF),%4
-;   40			}
-L_14:
+	JR	Z,L_17
+;   40				status = UART_ERR_OVERRUNERR ;							//! Failure code.
 .LINE 40
 
-;   41			if( 0 != (lsr & UART_LSR_DATA_READY) ) {					//! See if there is any data byte to be read.
+	LD	(IX+%FFFFFFFF),%4
+;   41			}
+L_17:
 .LINE 41
+
+;   42			if( 0 != (lsr & UART_LSR_DATA_READY) ) {					//! See if there is any data byte to be read.
+.LINE 42
 
 	LD	A,(IX+%FFFFFFFE)
 	AND	A,%1
-	JR	Z,L_16
-;   42				pData[ index++ ] = UART0_RBR ;							//! Read it from the receive buffer register.
-.LINE 42
+	JR	Z,L_19
+;   43				pData[ index++ ] = UART0_RBR ;							//! Read it from the receive buffer register.
+.LINE 43
 
 	LD	BC,(IX+%FFFFFFFB)
 	LD	HL,(IX+%6)
@@ -379,42 +386,42 @@ L_14:
 	LD	BC,(IX+%FFFFFFFB)
 	INC	BC
 	LD	(IX+%FFFFFFFB),BC
-;   43			}
-L_16:
-.LINE 43
-
-;   44			if( index == (*nbytes) ) {									//! On completion break the while loop.
+;   44			}
+L_19:
 .LINE 44
+
+;   45			if( index == (*nbytes) ) {									//! On completion break the while loop.
+.LINE 45
 
 	LD	HL,(IX+%9)
 	LD	BC,(IX+%FFFFFFFB)
 	LD	HL,(HL)
 	OR	A,A
 	SBC	HL,BC
-	JR	Z,L_19
-;   45				break ;
-;   46			}
-;   47		}
-L_17:
-.LINE 47
+	JR	Z,L_22
+;   46				break ;
+;   47			}
+;   48		}
+L_20:
+.LINE 48
 
 	LD	A,(IX+%FFFFFFFF)
 	OR	A,A
-	JR	Z,L_18
-L_19:
-;   48		*nbytes = index ;
-.LINE 48
+	JR	Z,L_21
+L_22:
+;   49		*nbytes = index ;
+.LINE 49
 
 	LD	HL,(IX+%9)
 	LD	BC,(IX+%FFFFFFFB)
 	LD	(HL),BC
-;   49		return status ;
-.LINE 49
+;   50		return status ;
+.LINE 50
 
 	LD	A,(IX+%FFFFFFFF)
-;   50		
-;   51	}
-.LINE 51
+;   51		
+;   52	}
+.LINE 52
 
 	LD	SP,IX
 	POP	IX
@@ -434,9 +441,9 @@ L_19:
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "read_UART0",51,"_read_UART0"
-;   52	
-;   53	int getch(void) {
+.ENDFUNC "read_UART0",52,"_read_UART0"
+;   53	
+;   54	int getch(void) {
 _getch:
 .DEFINE "_getch"
 
@@ -448,9 +455,9 @@ _getch:
 
 .ENDEF
 
-.BEGFUNC "getch",53,"_getch"
+.BEGFUNC "getch",54,"_getch"
 
-.LINE 53
+.LINE 54
 
 .DEFINE "nbytes"
 
@@ -489,14 +496,14 @@ _getch:
 	PUSH	BC
 	DEC	SP
 	DEC	SP
-;   54		CHAR ch;
-;   55		int nbytes = 1;
-.LINE 55
+;   55		CHAR ch;
+;   56		int nbytes = 1;
+.LINE 56
 
 	LD	BC,1
 	LD	(IX+%FFFFFFFD),BC
-;   56		UCHAR status = read_UART0(&ch, &nbytes);
-.LINE 56
+;   57		UCHAR status = read_UART0(&ch, &nbytes);
+.LINE 57
 
 	PEA	IX+%FFFFFFFD
 	PEA	IX+%FFFFFFFC
@@ -504,36 +511,36 @@ _getch:
 	POP	BC
 	POP	BC
 	LD	(IX+%FFFFFFFB),A
-;   57		nbytes = (UINT)ch;
-.LINE 57
+;   58		nbytes = (UINT)ch;
+.LINE 58
 
 	LD	A,(IX+%FFFFFFFC)
 	SEXT	HL
 	LD	L,(IX+%FFFFFFFC)
 	LD	(IX+%FFFFFFFD),HL
-;   58		nbytes = (nbytes & 0x0000FF);
-.LINE 58
+;   59		nbytes = (nbytes & 0x0000FF);
+.LINE 59
 
 	LD	A,(IX+%FFFFFFFD)
 	UEXT	HL
 	LD	L,A
 	LD	(IX+%FFFFFFFD),HL
-;   59		return (UART_ERR_NONE!=status) ? -1 : nbytes;
-.LINE 59
+;   60		return (UART_ERR_NONE!=status) ? -1 : nbytes;
+.LINE 60
 
 	LD	A,(IX+%FFFFFFFB)
 	OR	A,A
-	JR	Z,L_23
+	JR	Z,L_26
 	LD	BC,16777215
 	LD	(IX+%FFFFFFF8),BC
-	JR	L_24
-L_23:
+	JR	L_27
+L_26:
 	LD	BC,(IX+%FFFFFFFD)
 	LD	(IX+%FFFFFFF8),BC
-L_24:
+L_27:
 	LD	HL,(IX+%FFFFFFF8)
-;   60	}
-.LINE 60
+;   61	}
+.LINE 61
 
 	LD	SP,IX
 	POP	IX
@@ -542,7 +549,7 @@ L_24:
 
 ;**************************** _getch ***************************
 ;Name                         Addr/Register   Size   Type
-;temp21                                IX-8      3   variable
+;temp24                                IX-8      3   variable
 ;status                                IX-5      1   variable
 ;ch                                    IX-4      1   variable
 ;nbytes                                IX-3      3   variable
@@ -552,7 +559,7 @@ L_24:
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "getch",60,"_getch"
+.ENDFUNC "getch",61,"_getch"
 	XREF __lshru:ROM
 	XREF __icmpzero:ROM
 	XDEF _getch

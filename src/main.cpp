@@ -5,6 +5,7 @@
 #include "eZ80F92.h"
 #include <esp_task_wdt.h>
 #include "serial.h"
+#include "updater.h"
 
 #define PAGESIZE       1024
 #define USERLOAD    0x40000
@@ -266,7 +267,12 @@ void loop() {
     //while(1);
     // DEBUG
 
-
+    status = getStatus();
+    sprintf(buffer, "Receiving %d bytes", status.result);
+    terminal.write(buffer);
+    receiveFirmware(&terminal, status.result);
+    while(1);
+    /*
     // TEMP
     status = getStatus();
     sprintf(buffer, "Receiving %d bytes", status.result);
@@ -277,15 +283,18 @@ void loop() {
         while(!Serial2.available());
         total += Serial2.read();
         count++;
-        if(count > 1023) {
+        if(count > 20480) {
             count = 0;
             terminal.write('.');
         }
     }
     status = getStatus();
-    if(total == status.result) terminal.write("Match");
-    else terminal.write("No match");
+    sprintf(buffer, "\r\nReceived total: %d - local total: %d\r\n", status.result, total);
+    terminal.write(buffer);
+    //if(total == status.result) terminal.write("Match");
+    //else terminal.write("No match");
     // TEMP
+    */
 
     ask_proceed();
     Serial2.write(1);

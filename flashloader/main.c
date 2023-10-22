@@ -35,7 +35,7 @@ int main(int argc, char * argv[]) {
 	UINT8	value;
 	UINT24 timer;
 
-	char buffer[1024];
+	unsigned char buffer[1024];
 	int n;
 	uint32_t total;
 

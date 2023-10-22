@@ -525,18 +525,17 @@ _main:
 ;   41		int n;
 ;   42		uint32_t checksum;
 ;   43	
-;   44	
-;   45		init_spi();
-.LINE 45
+;   44		init_spi();
+.LINE 44
 
 	CALL	_init_spi
-;   46		init_UART0();
-.LINE 46
+;   45		init_UART0();
+.LINE 45
 
 	CALL	_init_UART0
-;   47	
-;   48		f_mount(&fs, "", 1);
-.LINE 48
+;   46	
+;   47		f_mount(&fs, "", 1);
+.LINE 47
 
 	LD	BC,1
 	PUSH	BC
@@ -548,9 +547,9 @@ _main:
 	POP	BC
 	POP	BC
 	POP	BC
-;   49	
-;   50		sendStatus('S', 1, 0); // startup complete
-.LINE 50
+;   48	
+;   49		sendStatus('S', 1, 0); // startup complete
+.LINE 49
 
 	LD	BC,0
 	PUSH	BC
@@ -564,20 +563,20 @@ _main:
 	POP	BC
 	POP	BC
 	POP	BC
-;   51	
-;   52		addressto = FLASHSTART;
-.LINE 52
+;   50	
+;   51		addressto = FLASHSTART;
+.LINE 51
 
 	LD	BC,0
 	LD	(IX+%FFFFFFF1),BC
-;   53		addressfrom = LOADADDRESS;
-.LINE 53
+;   52		addressfrom = LOADADDRESS;
+.LINE 52
 
 	LD	BC,327680
 	LD	(IX+%FFFFFFEE),BC
-;   54	
-;   55		frmos= f_open(&filmos, MOSFILENAME, FA_READ);
-.LINE 55
+;   53	
+;   54		frmos= f_open(&filmos, MOSFILENAME, FA_READ);
+.LINE 54
 
 	LD	BC,1
 	PUSH	BC
@@ -589,13 +588,13 @@ _main:
 	POP	BC
 	POP	BC
 	LD	(IX+%FFFFFFE4),HL
-;   56		if(frmos != FR_OK) {
-.LINE 56
+;   55		if(frmos != FR_OK) {
+.LINE 55
 
 	CALL	__icmpzero
 	JR	Z,L_3
-;   57			sendStatus('F', 0, frmos); // file not read ok
-.LINE 57
+;   56			sendStatus('F', 0, frmos); // file not read ok
+.LINE 56
 
 	LD	BC,(IX+%FFFFFFE4)
 	CALL	__itol
@@ -613,17 +612,41 @@ _main:
 	POP	BC
 	POP	BC
 	POP	BC
-;   58			while(1);
+;   57			while(1);
 L_1:
-.LINE 58
+.LINE 57
 
 	JR	L_1
-;   59		}
+;   58		}
 L_3:
+.LINE 58
+
+;   59		mossize = f_size(&filmos);
 .LINE 59
 
-;   60		frvdp= f_open(&filvdp, VDPFILENAME, FA_READ);
+	LD	BC,(IX+%FFFFFFC5)
+	LD	(IX+%FFFFFFEB),BC
+;   60		sendStatus('F', 1, mossize); // file read ok
 .LINE 60
+
+	XOR	A,A
+	LD	DE,BC
+	LD	C,A
+	LD	B,%0
+	PUSH	BC
+	PUSH	DE
+	LD	BC,1
+	PUSH	BC
+	LD	BC,70
+	PUSH	BC
+	CALL	_sendStatus
+	POP	BC
+	POP	BC
+	POP	BC
+	POP	BC
+;   61	
+;   62		frvdp= f_open(&filvdp, VDPFILENAME, FA_READ);
+.LINE 62
 
 	LD	BC,1
 	PUSH	BC
@@ -635,13 +658,13 @@ L_3:
 	POP	BC
 	POP	BC
 	LD	(IX+%FFFFFFE8),HL
-;   61		if(frvdp != FR_OK) {
-.LINE 61
+;   63		if(frvdp != FR_OK) {
+.LINE 63
 
 	CALL	__icmpzero
 	JR	Z,L_7
-;   62			sendStatus('V', 0, frvdp); // file not read ok
-.LINE 62
+;   64			sendStatus('V', 0, frvdp); // file not read ok
+.LINE 64
 
 	LD	BC,(IX+%FFFFFFE8)
 	CALL	__itol
@@ -659,38 +682,15 @@ L_3:
 	POP	BC
 	POP	BC
 	POP	BC
-;   63			while(1);
+;   65			while(1);
 L_5:
-.LINE 63
-
-	JR	L_5
-;   64		}
-L_7:
-.LINE 64
-
-;   65		mossize = f_size(&filmos);
 .LINE 65
 
-	LD	BC,(IX+%FFFFFFC5)
-	LD	(IX+%FFFFFFEB),BC
-;   66		sendStatus('F', 1, mossize); // file read ok
+	JR	L_5
+;   66		}
+L_7:
 .LINE 66
 
-	XOR	A,A
-	LD	DE,BC
-	LD	C,A
-	LD	B,%0
-	PUSH	BC
-	PUSH	DE
-	LD	BC,1
-	PUSH	BC
-	LD	BC,70
-	PUSH	BC
-	CALL	_sendStatus
-	POP	BC
-	POP	BC
-	POP	BC
-	POP	BC
 ;   67		vdpsize = f_size(&filvdp);
 .LINE 67
 

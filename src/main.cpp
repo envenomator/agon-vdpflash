@@ -48,7 +48,7 @@ void boot_screen() {
 }
 
 void ask_initial() {
-    terminal.write("This utility will program a new MOS firmwareto the Agon ez80 flash,\r\n");
+    terminal.write("This utility will program a new MOS firmware to the Agon ez80 flash,\r\n");
     terminal.write("from a MOS.bin file on the SD card.\r\n");
     terminal.write("After programming, it loads the VDP.bin firmware file,\r\n");
     terminal.write("and programs it to the ESP32, replacing this utility upon completion.\r\n");
@@ -56,7 +56,7 @@ void ask_initial() {
 
     terminal.write("Use cases include having flashed a non-working MOS version,\r\n");
     terminal.write("being confronted with erased or corrupted flash,\r\n");
-    terminal.write("or simply programming the initial set of firmware the Agon system.\r\n");
+    terminal.write("or simply programming the initial set of firmware to the Agon system.\r\n");
 
     terminal.write("\r\nRequirements before proceeding:\r\n\r\n");
     terminal.write(" 1) Connect two jumper cables between the GPIO and ZDI ports:\r\n");
@@ -228,9 +228,7 @@ void loop() {
         terminal.write("Done\r\n");
     else {
         fg_red();
-        sprintf(buffer, "Status <%d> <%d> <0x%08X>  - ",status.state, status.status, status.result);
-        terminal.write(buffer);
-        terminal.write("Error");
+        terminal.write("Error - press reset and retry");
         while(1);
     }
 

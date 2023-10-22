@@ -56,13 +56,14 @@ int main(int argc, char * argv[]) {
 		sendStatus('F', 0, frmos); // file not read ok
 		while(1);
 	}
+	mossize = f_size(&filmos);
+	sendStatus('F', 1, mossize); // file read ok
+
 	frvdp= f_open(&filvdp, VDPFILENAME, FA_READ);
 	if(frvdp != FR_OK) {
 		sendStatus('V', 0, frvdp); // file not read ok
 		while(1);
 	}
-	mossize = f_size(&filmos);
-	sendStatus('F', 1, mossize); // file read ok
 	vdpsize = f_size(&filvdp);
 	sendStatus('V', 1, vdpsize); // file read ok
 

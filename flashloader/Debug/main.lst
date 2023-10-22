@@ -1,4 +1,4 @@
-Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED22-Oct-23     17:06:38     page:   1
+Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED22-Oct-23     19:01:07     page:   1
 
 
 PC     Object              I  Line    Source 
@@ -529,172 +529,172 @@ PC     Object              I  Line    Source
                            A   525    ;   41		int n;
                            A   526    ;   42		uint32_t checksum;
                            A   527    ;   43	
-                           A   528    ;   44	
-                           A   529    ;   45		init_spi();
-                           A   530    .LINE 45
-                           A   531    
-040154 CD 1D 40 04         A   532    	CALL	_init_spi
-                           A   533    ;   46		init_UART0();
-                           A   534    .LINE 46
-                           A   535    
-040158 CD DB 41 04         A   536    	CALL	_init_UART0
-                           A   537    ;   47	
-                           A   538    ;   48		f_mount(&fs, "", 1);
-                           A   539    .LINE 48
-                           A   540    
-04015C 01010000            A   541    	LD	BC,1
-040160 C5                  A   542    	PUSH	BC
-040161 01 CA 48 04         A   543    	LD	BC,L__0
-040165 C5                  A   544    	PUSH	BC
-040166 01 F4 48 04         A   545    	LD	BC,_fs
-04016A C5                  A   546    	PUSH	BC
-04016B CD 87 33 04         A   547    	CALL	_f_mount
-04016F C1                  A   548    	POP	BC
-040170 C1                  A   549    	POP	BC
-040171 C1                  A   550    	POP	BC
-                           A   551    ;   49	
-                           A   552    ;   50		sendStatus('S', 1, 0); // startup c
-                           A   553    .LINE 50
-                           A   554    
-040172 01000000            A   555    	LD	BC,0
-040176 C5                  A   556    	PUSH	BC
-040177 C5                  A   557    	PUSH	BC
-040178 01010000            A   558    	LD	BC,1
-04017C C5                  A   559    	PUSH	BC
-04017D 01530000            A   560    	LD	BC,83
-040181 C5                  A   561    	PUSH	BC
-040182 CD CC 42 04         A   562    	CALL	_sendStatus
-040186 C1                  A   563    	POP	BC
-040187 C1                  A   564    	POP	BC
-040188 C1                  A   565    	POP	BC
-040189 C1                  A   566    	POP	BC
-                           A   567    ;   51	
-                           A   568    ;   52		addressto = FLASHSTART;
-                           A   569    .LINE 52
-                           A   570    
-04018A 01000000            A   571    	LD	BC,0
-04018E DD0FF1              A   572    	LD	(IX+%FFFFFFF1),BC
-                           A   573    ;   53		addressfrom = LOADADDRESS;
-                           A   574    .LINE 53
-                           A   575    
-040191 01000005            A   576    	LD	BC,327680
-040195 DD0FEE              A   577    	LD	(IX+%FFFFFFEE),BC
-                           A   578    ;   54	
-                           A   579    ;   55		frmos= f_open(&filmos, MOSFILENAME,
-                           A   580    .LINE 55
-                           A   581    
-040198 01010000            A   582    	LD	BC,1
-04019C C5                  A   583    	PUSH	BC
-04019D 01 CB 48 04         A   584    	LD	BC,L__1
-0401A1 C5                  A   585    	PUSH	BC
-0401A2 ED65BA              A   586    	PEA	IX+%FFFFFFBA
-0401A5 CD 13 34 04         A   587    	CALL	_f_open
-0401A9 C1                  A   588    	POP	BC
-0401AA C1                  A   589    	POP	BC
-0401AB C1                  A   590    	POP	BC
-0401AC DD2FE4              A   591    	LD	(IX+%FFFFFFE4),HL
-                           A   592    ;   56		if(frmos != FR_OK) {
-                           A   593    .LINE 56
-                           A   594    
-0401AF CD 7C 46 04         A   595    	CALL	__icmpzero
-0401B3 28 22               A   596    	JR	Z,L_3
-                           A   597    ;   57			sendStatus('F', 0, frmos); // f
-                           A   598    .LINE 57
-                           A   599    
-0401B5 DD07E4              A   600    	LD	BC,(IX+%FFFFFFE4)
-0401B8 CD 18 47 04         A   601    	CALL	__itol
-0401BC C5D1                A   602    	LD	DE,BC
-0401BE 4F                  A   603    	LD	C,A
-0401BF 0600                A   604    	LD	B,%0
-0401C1 C5                  A   605    	PUSH	BC
-0401C2 D5                  A   606    	PUSH	DE
-0401C3 01000000            A   607    	LD	BC,0
-0401C7 C5                  A   608    	PUSH	BC
-0401C8 01460000            A   609    	LD	BC,70
-0401CC C5                  A   610    	PUSH	BC
-0401CD CD CC 42 04         A   611    	CALL	_sendStatus
-0401D1 C1                  A   612    	POP	BC
-0401D2 C1                  A   613    	POP	BC
-0401D3 C1                  A   614    	POP	BC
-0401D4 C1                  A   615    	POP	BC
-                           A   616    ;   58			while(1);
-0401D5                     A   617    L_1:
-                           A   618    .LINE 58
-                           A   619    
-0401D5 18 FE               A   620    	JR	L_1
-                           A   621    ;   59		}
-0401D7                     A   622    L_3:
-                           A   623    .LINE 59
-                           A   624    
-                           A   625    ;   60		frvdp= f_open(&filvdp, VDPFILENAME,
-                           A   626    .LINE 60
-                           A   627    
-0401D7 01010000            A   628    	LD	BC,1
-0401DB C5                  A   629    	PUSH	BC
-0401DC 01 D3 48 04         A   630    	LD	BC,L__3
-0401E0 C5                  A   631    	PUSH	BC
-0401E1 ED659D              A   632    	PEA	IX+%FFFFFF9D
-0401E4 CD 13 34 04         A   633    	CALL	_f_open
-0401E8 C1                  A   634    	POP	BC
-0401E9 C1                  A   635    	POP	BC
-0401EA C1                  A   636    	POP	BC
-0401EB DD2FE8              A   637    	LD	(IX+%FFFFFFE8),HL
-                           A   638    ;   61		if(frvdp != FR_OK) {
-                           A   639    .LINE 61
-                           A   640    
-0401EE CD 7C 46 04         A   641    	CALL	__icmpzero
-0401F2 28 22               A   642    	JR	Z,L_7
-                           A   643    ;   62			sendStatus('V', 0, frvdp); // f
-                           A   644    .LINE 62
-                           A   645    
-0401F4 DD07E8              A   646    	LD	BC,(IX+%FFFFFFE8)
-0401F7 CD 18 47 04         A   647    	CALL	__itol
-0401FB C5D1                A   648    	LD	DE,BC
-0401FD 4F                  A   649    	LD	C,A
-0401FE 0600                A   650    	LD	B,%0
-040200 C5                  A   651    	PUSH	BC
-040201 D5                  A   652    	PUSH	DE
-040202 01000000            A   653    	LD	BC,0
-040206 C5                  A   654    	PUSH	BC
-040207 01560000            A   655    	LD	BC,86
-04020B C5                  A   656    	PUSH	BC
-04020C CD CC 42 04         A   657    	CALL	_sendStatus
-040210 C1                  A   658    	POP	BC
-040211 C1                  A   659    	POP	BC
-040212 C1                  A   660    	POP	BC
-040213 C1                  A   661    	POP	BC
-                           A   662    ;   63			while(1);
-040214                     A   663    L_5:
-                           A   664    .LINE 63
-                           A   665    
-040214 18 FE               A   666    	JR	L_5
-                           A   667    ;   64		}
-040216                     A   668    L_7:
-                           A   669    .LINE 64
-                           A   670    
-                           A   671    ;   65		mossize = f_size(&filmos);
-                           A   672    .LINE 65
-                           A   673    
-040216 DD07C5              A   674    	LD	BC,(IX+%FFFFFFC5)
-040219 DD0FEB              A   675    	LD	(IX+%FFFFFFEB),BC
-                           A   676    ;   66		sendStatus('F', 1, mossize); // fil
-                           A   677    .LINE 66
-                           A   678    
-04021C AF                  A   679    	XOR	A,A
-04021D C5D1                A   680    	LD	DE,BC
-04021F 4F                  A   681    	LD	C,A
-040220 0600                A   682    	LD	B,%0
-040222 C5                  A   683    	PUSH	BC
-040223 D5                  A   684    	PUSH	DE
-040224 01010000            A   685    	LD	BC,1
-040228 C5                  A   686    	PUSH	BC
-040229 01460000            A   687    	LD	BC,70
-04022D C5                  A   688    	PUSH	BC
-04022E CD CC 42 04         A   689    	CALL	_sendStatus
-040232 C1                  A   690    	POP	BC
-040233 C1                  A   691    	POP	BC
-040234 C1                  A   692    	POP	BC
-040235 C1                  A   693    	POP	BC
+                           A   528    ;   44		init_spi();
+                           A   529    .LINE 44
+                           A   530    
+040154 CD 1D 40 04         A   531    	CALL	_init_spi
+                           A   532    ;   45		init_UART0();
+                           A   533    .LINE 45
+                           A   534    
+040158 CD DB 41 04         A   535    	CALL	_init_UART0
+                           A   536    ;   46	
+                           A   537    ;   47		f_mount(&fs, "", 1);
+                           A   538    .LINE 47
+                           A   539    
+04015C 01010000            A   540    	LD	BC,1
+040160 C5                  A   541    	PUSH	BC
+040161 01 CA 48 04         A   542    	LD	BC,L__0
+040165 C5                  A   543    	PUSH	BC
+040166 01 F4 48 04         A   544    	LD	BC,_fs
+04016A C5                  A   545    	PUSH	BC
+04016B CD 87 33 04         A   546    	CALL	_f_mount
+04016F C1                  A   547    	POP	BC
+040170 C1                  A   548    	POP	BC
+040171 C1                  A   549    	POP	BC
+                           A   550    ;   48	
+                           A   551    ;   49		sendStatus('S', 1, 0); // startup c
+                           A   552    .LINE 49
+                           A   553    
+040172 01000000            A   554    	LD	BC,0
+040176 C5                  A   555    	PUSH	BC
+040177 C5                  A   556    	PUSH	BC
+040178 01010000            A   557    	LD	BC,1
+04017C C5                  A   558    	PUSH	BC
+04017D 01530000            A   559    	LD	BC,83
+040181 C5                  A   560    	PUSH	BC
+040182 CD CC 42 04         A   561    	CALL	_sendStatus
+040186 C1                  A   562    	POP	BC
+040187 C1                  A   563    	POP	BC
+040188 C1                  A   564    	POP	BC
+040189 C1                  A   565    	POP	BC
+                           A   566    ;   50	
+                           A   567    ;   51		addressto = FLASHSTART;
+                           A   568    .LINE 51
+                           A   569    
+04018A 01000000            A   570    	LD	BC,0
+04018E DD0FF1              A   571    	LD	(IX+%FFFFFFF1),BC
+                           A   572    ;   52		addressfrom = LOADADDRESS;
+                           A   573    .LINE 52
+                           A   574    
+040191 01000005            A   575    	LD	BC,327680
+040195 DD0FEE              A   576    	LD	(IX+%FFFFFFEE),BC
+                           A   577    ;   53	
+                           A   578    ;   54		frmos= f_open(&filmos, MOSFILENAME,
+                           A   579    .LINE 54
+                           A   580    
+040198 01010000            A   581    	LD	BC,1
+04019C C5                  A   582    	PUSH	BC
+04019D 01 CB 48 04         A   583    	LD	BC,L__1
+0401A1 C5                  A   584    	PUSH	BC
+0401A2 ED65BA              A   585    	PEA	IX+%FFFFFFBA
+0401A5 CD 13 34 04         A   586    	CALL	_f_open
+0401A9 C1                  A   587    	POP	BC
+0401AA C1                  A   588    	POP	BC
+0401AB C1                  A   589    	POP	BC
+0401AC DD2FE4              A   590    	LD	(IX+%FFFFFFE4),HL
+                           A   591    ;   55		if(frmos != FR_OK) {
+                           A   592    .LINE 55
+                           A   593    
+0401AF CD 7C 46 04         A   594    	CALL	__icmpzero
+0401B3 28 22               A   595    	JR	Z,L_3
+                           A   596    ;   56			sendStatus('F', 0, frmos); // f
+                           A   597    .LINE 56
+                           A   598    
+0401B5 DD07E4              A   599    	LD	BC,(IX+%FFFFFFE4)
+0401B8 CD 18 47 04         A   600    	CALL	__itol
+0401BC C5D1                A   601    	LD	DE,BC
+0401BE 4F                  A   602    	LD	C,A
+0401BF 0600                A   603    	LD	B,%0
+0401C1 C5                  A   604    	PUSH	BC
+0401C2 D5                  A   605    	PUSH	DE
+0401C3 01000000            A   606    	LD	BC,0
+0401C7 C5                  A   607    	PUSH	BC
+0401C8 01460000            A   608    	LD	BC,70
+0401CC C5                  A   609    	PUSH	BC
+0401CD CD CC 42 04         A   610    	CALL	_sendStatus
+0401D1 C1                  A   611    	POP	BC
+0401D2 C1                  A   612    	POP	BC
+0401D3 C1                  A   613    	POP	BC
+0401D4 C1                  A   614    	POP	BC
+                           A   615    ;   57			while(1);
+0401D5                     A   616    L_1:
+                           A   617    .LINE 57
+                           A   618    
+0401D5 18 FE               A   619    	JR	L_1
+                           A   620    ;   58		}
+0401D7                     A   621    L_3:
+                           A   622    .LINE 58
+                           A   623    
+                           A   624    ;   59		mossize = f_size(&filmos);
+                           A   625    .LINE 59
+                           A   626    
+0401D7 DD07C5              A   627    	LD	BC,(IX+%FFFFFFC5)
+0401DA DD0FEB              A   628    	LD	(IX+%FFFFFFEB),BC
+                           A   629    ;   60		sendStatus('F', 1, mossize); // fil
+                           A   630    .LINE 60
+                           A   631    
+0401DD AF                  A   632    	XOR	A,A
+0401DE C5D1                A   633    	LD	DE,BC
+0401E0 4F                  A   634    	LD	C,A
+0401E1 0600                A   635    	LD	B,%0
+0401E3 C5                  A   636    	PUSH	BC
+0401E4 D5                  A   637    	PUSH	DE
+0401E5 01010000            A   638    	LD	BC,1
+0401E9 C5                  A   639    	PUSH	BC
+0401EA 01460000            A   640    	LD	BC,70
+0401EE C5                  A   641    	PUSH	BC
+0401EF CD CC 42 04         A   642    	CALL	_sendStatus
+0401F3 C1                  A   643    	POP	BC
+0401F4 C1                  A   644    	POP	BC
+0401F5 C1                  A   645    	POP	BC
+0401F6 C1                  A   646    	POP	BC
+                           A   647    ;   61	
+                           A   648    ;   62		frvdp= f_open(&filvdp, VDPFILENAME,
+                           A   649    .LINE 62
+                           A   650    
+0401F7 01010000            A   651    	LD	BC,1
+0401FB C5                  A   652    	PUSH	BC
+0401FC 01 D3 48 04         A   653    	LD	BC,L__3
+040200 C5                  A   654    	PUSH	BC
+040201 ED659D              A   655    	PEA	IX+%FFFFFF9D
+040204 CD 13 34 04         A   656    	CALL	_f_open
+040208 C1                  A   657    	POP	BC
+040209 C1                  A   658    	POP	BC
+04020A C1                  A   659    	POP	BC
+04020B DD2FE8              A   660    	LD	(IX+%FFFFFFE8),HL
+                           A   661    ;   63		if(frvdp != FR_OK) {
+                           A   662    .LINE 63
+                           A   663    
+04020E CD 7C 46 04         A   664    	CALL	__icmpzero
+040212 28 22               A   665    	JR	Z,L_7
+                           A   666    ;   64			sendStatus('V', 0, frvdp); // f
+                           A   667    .LINE 64
+                           A   668    
+040214 DD07E8              A   669    	LD	BC,(IX+%FFFFFFE8)
+040217 CD 18 47 04         A   670    	CALL	__itol
+04021B C5D1                A   671    	LD	DE,BC
+04021D 4F                  A   672    	LD	C,A
+04021E 0600                A   673    	LD	B,%0
+040220 C5                  A   674    	PUSH	BC
+040221 D5                  A   675    	PUSH	DE
+040222 01000000            A   676    	LD	BC,0
+040226 C5                  A   677    	PUSH	BC
+040227 01560000            A   678    	LD	BC,86
+04022B C5                  A   679    	PUSH	BC
+04022C CD CC 42 04         A   680    	CALL	_sendStatus
+040230 C1                  A   681    	POP	BC
+040231 C1                  A   682    	POP	BC
+040232 C1                  A   683    	POP	BC
+040233 C1                  A   684    	POP	BC
+                           A   685    ;   65			while(1);
+040234                     A   686    L_5:
+                           A   687    .LINE 65
+                           A   688    
+040234 18 FE               A   689    	JR	L_5
+                           A   690    ;   66		}
+040236                     A   691    L_7:
+                           A   692    .LINE 66
+                           A   693    
                            A   694    ;   67		vdpsize = f_size(&filvdp);
                            A   695    .LINE 67
                            A   696    

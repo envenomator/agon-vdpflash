@@ -1,13 +1,13 @@
 # Agon MOS ZDI flash utility
 ## Overview
-This utility provides a means to (baremetal) program a new MOS firmware to a AgonLight ez80 flashchip. This can be performed in case of an initially erased or corrupted flash, or having previously flashed an incompatible MOS version.
+This utility provides a means to (bare-metal) program a new MOS firmware to a AgonLight ez80 flashchip. This can be performed in case of an initially erased or corrupted flash, or having previously flashed an incompatible MOS version.
 The premise of this utility is that there is no running firmware in the ez80 itself, MOS or otherwise. The only means to program the ez80 flash in this case is to use the Zilog Debug Interface (ZDI), using a 6-pin connector on the AgonLight board.
 
-The ZDI can be used with one of the Zilog Smart Cable options, together with the Zilog Developer Studio II software to program a new MOS firmware, or use this utility without needing such a cable.
+The ZDI can be used with one of the Zilog Smart Cable options, together with the Zilog Developer Studio II software to program a new MOS firmware, or through the use of this utility.
 
-The utility needs to be flashed to the onboard ESP32 IC, normally used as graphics processor (VDP). When the ESP32 IC is done running the utility and flashing the MOS firmware to the ez80 flash, it needs to be flashed again with the VDP code, to resume it's role as graphics processor.
+The utility needs to be flashed to the onboard ESP32 IC, normally used as graphics processor (VDP). When the ESP32 IC is done running the utility and flashing the MOS firmware to the ez80 flash, it flashes itself with the VDP firmware file on the SD card, fully restoring functionality of the Agon system.
 
-To enable the utility access to the ZDI interface, it needs two cables connected as detailed below. After installation, the user simply places the required MOS firmware on the SD card, which the utility picks up and flashes.
+To enable the utility access to the ZDI interface, it needs two female/female dupont jumpercables connected as detailed below. After installation, the user simply places the required MOS and VDP firmware files on the SD card, which the utility picks up and flashes in the correct order.
 
 ## Flashing the utility
 The utility can be flashed in multiple ways:
@@ -44,4 +44,4 @@ Then press 'Start', wait for the tool to finish and follow the on-screen instruc
 ## Implementation details
 This utility makes use of the excellent ZDI code from Mario Smit ([S0urceror](https://github.com/S0urceror/AgonElectronHAL)), many thanks for the hard work of getting this working with the onboard ESP32!
 
-After the utility is flashed and boots up the ESP32, it opens the ZDI interface and tries to upload a 2nd stage utility (ez80 code) to the ez80 and places that in memory to execute. This 2nd stage opens the SD card interface, reads the "MOS.bin" file and programs it to ez80 flash.
+After the utility is flashed and boots up the ESP32, it opens the ZDI interface and tries to upload a 2nd stage utility (ez80 code) to the ez80 and places that in memory to execute. This 2nd stage opens the SD card interface, reads the "MOS.bin" file and programs it to ez80 flash. Finally the loader uploads the "VDP.bin" file through the serial back to this utility which then flashes itself.

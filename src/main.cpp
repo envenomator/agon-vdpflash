@@ -27,13 +27,6 @@ void fg_white(void) {
 void fg_red(void) {
     terminal.write("\e[41;37m"); // background: blue, foreground: red
 }
-void boot_screen() {
-    // initialize terminal
-    fg_white();
-    terminal.write("\e[2J");     // clear screen
-    terminal.write("\e[1;1H");   // move cursor to 1,1
-    terminal.write("Agon ZDI flash utility - version 0.8\r\n\r\n");
-}
 
 void waitforKey(uint8_t key) {
     fabgl::Keyboard *kb = PS2Controller.keyboard();
@@ -44,6 +37,38 @@ void waitforKey(uint8_t key) {
             if(item.ASCII == key) break;
         }
     }
+}
+
+void boot_screen() {
+    // initialize terminal
+    fg_white();
+    terminal.write("\e[2J");     // clear screen
+    terminal.write("\e[1;1H");   // move cursor to 1,1
+    terminal.write("Agon ZDI bare-metal flash utility - version 0.8\r\n\r\n");
+}
+
+void ask_initial() {
+    terminal.write("This utility will program a new MOS firmwareto the Agon ez80 flash,\r\n");
+    terminal.write("from a MOS.bin file on the SD card.\r\n");
+    terminal.write("After programming, it loads the VDP.bin firmware file,\r\n");
+    terminal.write("and programs it to the ESP32, replacing this utility upon completion.\r\n");
+    terminal.write("\r\n");
+
+    terminal.write("Use cases include having flashed a non-working MOS version,\r\n");
+    terminal.write("being confronted with erased or corrupted flash,\r\n");
+    terminal.write("or simply programming the initial set of firmware the Agon system.\r\n");
+
+    terminal.write("\r\nRequirements before proceeding:\r\n\r\n");
+    terminal.write(" 1) Connect two jumper cables between the GPIO and ZDI ports:\r\n");
+    terminal.write("    - ESP GPIO26 to ZDI TCK (pin 4)\r\n");
+    terminal.write("    - ESP GPIO27 to ZDI TDI (pin 6)\r\n");
+    terminal.write("    detailed connection diagrams can be found at\r\n");
+    terminal.write("    https://github.com/envenomator/agon-vdpflash\r\n\r\n");
+    terminal.write(" 2) Place the required firmware files on the SD card's root:\r\n");
+    terminal.write("    MOS.bin - containing the MOS firmware\r\n");
+    terminal.write("    VDP.bin - containing a matching VDP firmware\r\n");
+    terminal.write("\r\n\r\nPress ENTER to proceed:");
+    waitforKey(0x0D);
 }
 
 void ask_proceed(void) {
@@ -156,22 +181,6 @@ void ZDI_upload(void) {
     zdi->write_memory(address, filesize, buffer);
 }
 
-void ask_initial() {
-    terminal.write("This utility will (baremetal) program a new MOS to the Agon ez80 flash,\r\n");
-    terminal.write("from a file on the SD card. This can be performed in case of\r\n");
-    terminal.write("an initially erased or corrupted flash, or having previously flashed\r\n");
-    terminal.write("an incompatible MOS version.\r\n");
-    terminal.write("\r\nRequirements before proceeding:\r\n");
-    terminal.write(" 1) Connect two cables between the GPIO and ZDI ports:\r\n");
-    terminal.write("    - ESP GPIO26 to ZDI TCK (pin 4)\r\n");
-    terminal.write("    - ESP GPIO27 to ZDI TDI (pin 6)\r\n");
-    terminal.write(" 2) Place the required MOS version on the SD card's root directory\r\n"); 
-    terminal.write("    named as \"MOS.bin\"\r\n");
-    terminal.write("\r\nPress ENTER to proceed:");
-    waitforKey(0x0D);
-    terminal.write("\r\n\r\n");
-}
-
 void loop() {
     uint32_t page,pages,mosfilesize,readsize;
     uint32_t vdpfilesize;
@@ -181,8 +190,8 @@ void loop() {
     char buffer[128];
     serialpackage_t status;
     
-    //boot_screen();
-    //ask_initial();
+    boot_screen();
+    ask_initial();
 
     while(Serial2.available()) {
         Serial2.read(); // read terminal startup 0x17/0x00/0x80/0x17 sequences

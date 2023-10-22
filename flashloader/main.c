@@ -41,7 +41,6 @@ int main(int argc, char * argv[]) {
 	int n;
 	uint32_t checksum;
 
-
 	init_spi();
 	init_UART0();
 

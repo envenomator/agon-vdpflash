@@ -2,6 +2,9 @@
 #include "fabgl.h"
 #include "serial.h"
 
+#define BUFFERSIZE 1024
+#define KBPERDOT	10*1024
+
 void receiveFirmware(fabgl::Terminal *terminal, uint32_t update_size) {
 	char textbuffer[128];
 	serialpackage_t status;
@@ -20,7 +23,7 @@ void receiveFirmware(fabgl::Terminal *terminal, uint32_t update_size) {
 	}
 
 	uint32_t remaining_bytes = update_size;
-	const size_t buffer_size = 1024;
+	const size_t buffer_size = BUFFERSIZE;
 
 	uint32_t total = 0;
 	int tickcount = 0;
@@ -40,7 +43,7 @@ void receiveFirmware(fabgl::Terminal *terminal, uint32_t update_size) {
 			buffer[n] = input;
 			total += input;
 			tickcount++;
-			if(tickcount > 20480) {
+			if(tickcount > KBPERDOT) {
 				tickcount = 0;
 				terminal->write('.');
 			}
@@ -52,38 +55,19 @@ void receiveFirmware(fabgl::Terminal *terminal, uint32_t update_size) {
 			terminal->write(textbuffer);
 			while(1);
 		}
-
 		remaining_bytes -= bytes_to_read;
 	}
 
 	status = getStatus();
-    if(total == status.result) terminal->write("Checksum ok!\r\n");
+    if(total == status.result) terminal->write(" Done\r\n");
     else {
 		terminal->write("Checksum error!\r\n");
 		while(1);
 	}
-	// checksum check
-	//uint8_t checksum_complement = readByte_b();
-	//printFmt("checksum_complement: 0x%x\n\r", checksum_complement);
-	//if(uint8_t(code + checksum_complement)) {
-	//	printFmt("checksum error!\n\r");
-	//	return;
-	//}
-	//printFmt("checksum ok!\n\r");
 
 	err = esp_ota_set_boot_partition(update_partition);
 	if (err != ESP_OK) {
 		terminal->write("esp_ota_set_boot_partition failed!");
 		while(1);
 	}
-
-	terminal->write("Rebooting in 2s");
-	//print("Rebooting in ");
-	//for(int i = 3; i > 0; i--) {
-	//	printFmt("%d...", i);
-	delay(2000);
-	//}
-	terminal->write("0!\n\r");
-	
-	esp_restart();
 }

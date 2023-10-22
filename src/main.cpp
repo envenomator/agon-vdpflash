@@ -32,7 +32,7 @@ void boot_screen() {
     fg_white();
     terminal.write("\e[2J");     // clear screen
     terminal.write("\e[1;1H");   // move cursor to 1,1
-    terminal.write("Agon MOS ZDI flash utility - version 0.71\r\n\r\n");
+    terminal.write("Agon ZDI flash utility - version 0.8\r\n\r\n");
 }
 
 void waitforKey(uint8_t key) {
@@ -47,7 +47,7 @@ void waitforKey(uint8_t key) {
 }
 
 void ask_proceed(void) {
-    terminal.write("\r\nPress [y] to start programming MOS:");
+    terminal.write("\r\nPress [y] to start programming:");
     waitforKey('y');
     terminal.write("\r\n\r\n");
 }
@@ -173,7 +173,8 @@ void ask_initial() {
 }
 
 void loop() {
-    uint32_t page,pages,filesize,readsize;
+    uint32_t page,pages,mosfilesize,readsize;
+    uint32_t vdpfilesize;
     uint16_t productid;
     uint8_t  revision;
     uint8_t memval;
@@ -190,7 +191,7 @@ void loop() {
     boot_screen();
     terminal.write("Action                          Status\r\n");
     terminal.write("--------------------------------------\r\n");
-    terminal.write("Checking ZDI interface        - ");
+    terminal.write("Checking ZDI interface         - ");
     productid = zdi->get_productid();
     revision = zdi->get_revision();
     if((productid != 7)) {
@@ -201,7 +202,7 @@ void loop() {
     sprintf(buffer,"UP (ID %X.%02X)\r\n",productid, revision);
     terminal.write(buffer);
 
-    terminal.write("Uploading flashloader to ez80 - ");
+    terminal.write("Uploading flashloader to ez80  - ");
 
     init_ez80();
     ZDI_upload();
@@ -211,20 +212,20 @@ void loop() {
     cpu->pc(USERLOAD);
     cpu->setContinue(); // start uploaded program
     
-    terminal.write("Starting flashloader          - ");
+    terminal.write("Starting flashloader           - ");
 
     status = getStatus();
     if((status.state == 'S') && (status.status == 1))
         terminal.write("Done\r\n");
     else {
         fg_red();
-        sprintf(buffer, "Status <%d> <%d> <0x%08X> - ",status.state, status.status, status.result);
+        sprintf(buffer, "Status <%d> <%d> <0x%08X>  - ",status.state, status.status, status.result);
         terminal.write(buffer);
         terminal.write("Error");
         while(1);
     }
 
-    terminal.write("Opening MOS.bin from SD card  - ");
+    terminal.write("Opening MOS.bin from SD card   - ");
     status = getStatus();    
     if((status.state == 'F') && (status.status == 1))
         terminal.write("Done");
@@ -233,16 +234,29 @@ void loop() {
         terminal.write("Error opening \"MOS.bin\"");
         while(1);
     }
-    filesize = status.result;
-    if(filesize > 0x20000) {
+    mosfilesize = status.result;
+    if(mosfilesize > 0x20000) {
         fg_red();
         terminal.write(" Invalid file size for \"MOS.bin\"");
         while(1);
     }
-    sprintf(buffer, " (%d bytes)\r\n", filesize);
+    sprintf(buffer, " (%d bytes)\r\n", mosfilesize);
     terminal.write(buffer);
-    
-    terminal.write("Reading to ez80 memory        - ");
+
+    terminal.write("Opening VDP.bin from SD card   - ");
+    status = getStatus();    
+    if((status.state == 'V') && (status.status == 1)) {
+        sprintf(buffer, "Done (%d bytes)\r\n", status.result);
+        terminal.write(buffer);
+    }
+    else {
+        fg_red();
+        terminal.write("Error opening \"VDP.bin\"");
+        while(1);
+    }
+    vdpfilesize = status.result;
+
+    terminal.write("Reading MOS.bin to ez80 memory - ");
     status = getStatus();
     if((status.state == 'M') && (status.status == 1))
         terminal.write("Done");
@@ -252,54 +266,17 @@ void loop() {
         while(1);
     }
     readsize = status.result;
-    if(readsize == filesize) terminal.write("\r\n");
+    if(readsize == mosfilesize) terminal.write("\r\n");
     else {
         fg_red();
         terminal.write(" Error reading file");
         while(1);
     }
 
-    // DEBUG
-    //status = getStatus();
-    //terminal.write("\r\n");
-    //sprintf(buffer, "State <%d><%02x><'%c'> - status <0x%02x> - value <0x%08X>\r\n", status.state, status.state, status.state, status.status, status.result);
-    //terminal.write(buffer);
-    //while(1);
-    // DEBUG
-
-    status = getStatus();
-    sprintf(buffer, "Receiving %d bytes", status.result);
-    terminal.write(buffer);
-    receiveFirmware(&terminal, status.result);
-    while(1);
-    /*
-    // TEMP
-    status = getStatus();
-    sprintf(buffer, "Receiving %d bytes", status.result);
-    terminal.write(buffer);
-    uint32_t total = 0;
-    int count = 0;
-    for(uint32_t n = 0; n < status.result; n++) {
-        while(!Serial2.available());
-        total += Serial2.read();
-        count++;
-        if(count > 20480) {
-            count = 0;
-            terminal.write('.');
-        }
-    }
-    status = getStatus();
-    sprintf(buffer, "\r\nReceived total: %d - local total: %d\r\n", status.result, total);
-    terminal.write(buffer);
-    //if(total == status.result) terminal.write("Match");
-    //else terminal.write("No match");
-    // TEMP
-    */
-
     ask_proceed();
     Serial2.write(1);
 
-    terminal.write("Erasing flash                 - ");
+    terminal.write("Erasing ez80 flash             - ");
     status = getStatus();
     if((status.state == 'E') && (status.status == 1))
         terminal.write("Done\r\n");
@@ -316,9 +293,9 @@ void loop() {
     }
 
     // determine number of pages to write
-    pages = filesize/1024;
-    if(filesize%1024) pages += 1;
-    terminal.write("\r\nProgramming ");
+    pages = mosfilesize/1024;
+    if(mosfilesize%1024) pages += 1;
+    terminal.write("\r\nProgramming MOS ");
     bool done = false;
     while(!done) {
         status = getStatus();
@@ -340,9 +317,13 @@ void loop() {
         terminal.write(buffer);
         while(1);
     }
-    terminal.write("\r\n");
-    terminal.write("MOS has been programmed to ez80 flash\r\n");
-    terminal.write("Please (re)program ESP32 with matching VDP");
 
+    delay(500);
+    Serial2.write(1);
+    terminal.write("Programming VDP (screen will flicker)\r\n");
+    delay(500);
+    receiveFirmware(&terminal, vdpfilesize);
+
+    terminal.write("\r\n\r\nProgramming complete - press reset button");
     while(1);
 }

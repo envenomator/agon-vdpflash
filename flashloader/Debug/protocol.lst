@@ -1,4 +1,4 @@
-Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED22-Oct-23     15:41:20     page:   1
+Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED22-Oct-23     17:06:39     page:   1
 
 
 PC     Object              I  Line    Source 
@@ -15,7 +15,7 @@ PC     Object              I  Line    Source
                            A    11    ;    4	// Blocking non-interrupt putch to UART
                            A    12    ;    5	int putch(int c)
                            A    13    ;    6	{
-044254                     A    14    _putch:
+04429F                     A    14    _putch:
                            A    15    .DEFINE "_putch"
                            A    16    
                            A    17    .VALUE _putch
@@ -38,43 +38,43 @@ PC     Object              I  Line    Source
                            A    34    
                            A    35    .TYPE 4
                            A    36    
-044254 DDE5                A    37    	PUSH	IX
-044256 DD210000 00         A    38    	LD	IX,0
-04425B DD39                A    39    	ADD	IX,SP
+04429F DDE5                A    37    	PUSH	IX
+0442A1 DD210000 00         A    38    	LD	IX,0
+0442A6 DD39                A    39    	ADD	IX,SP
                            A    40    .ENDEF
                            A    41    
                            A    42    ;    7		while((UART0_LSR & UART_LSR_TEMT) =
-04425D                     A    43    L_1:
+0442A8                     A    43    L_1:
                            A    44    .LINE 7
                            A    45    
-04425D ED38C5              A    46    	IN0	A,(197)
-044260 E640                A    47    	AND	A,%40
-044262 B7ED62              A    48    	UEXT	HL
-044265 6F                  A    49    	LD	L,A
-044266 CD 31 46 04         A    50    	CALL	__icmpzero
-04426A 28 F1               A    51    	JR	Z,L_1
+0442A8 ED38C5              A    46    	IN0	A,(197)
+0442AB E640                A    47    	AND	A,%40
+0442AD B7ED62              A    48    	UEXT	HL
+0442B0 6F                  A    49    	LD	L,A
+0442B1 CD 7C 46 04         A    50    	CALL	__icmpzero
+0442B5 28 F1               A    51    	JR	Z,L_1
                            A    52    ;    8		while(PD_DR & 0x08); // wait for CT
-04426C                     A    53    L_3:
+0442B7                     A    53    L_3:
                            A    54    .LINE 8
                            A    55    
-04426C ED38A2              A    56    	IN0	A,(162)
-04426F E608                A    57    	AND	A,%8
-044271 20 F9               A    58    	JR	NZ,L_3
+0442B7 ED38A2              A    56    	IN0	A,(162)
+0442BA E608                A    57    	AND	A,%8
+0442BC 20 F9               A    58    	JR	NZ,L_3
                            A    59    ;    9		UART0_THR = c;
                            A    60    .LINE 9
                            A    61    
-044273 DD7E06              A    62    	LD	A,(IX+%6)
-044276 ED39C0              A    63    	OUT0	(192),A
+0442BE DD7E06              A    62    	LD	A,(IX+%6)
+0442C1 ED39C0              A    63    	OUT0	(192),A
                            A    64    ;   10		return c;
                            A    65    .LINE 10
                            A    66    
-044279 DD2706              A    67    	LD	HL,(IX+%6)
+0442C4 DD2706              A    67    	LD	HL,(IX+%6)
                            A    68    ;   11	}
                            A    69    .LINE 11
                            A    70    
-04427C DDF9                A    71    	LD	SP,IX
-04427E DDE1                A    72    	POP	IX
-044280 C9                  A    73    	RET	
+0442C7 DDF9                A    71    	LD	SP,IX
+0442C9 DDE1                A    72    	POP	IX
+0442CB C9                  A    73    	RET	
                            A    74    
                            A    75    
                            A    76    ;**************************** _putch **********
@@ -89,7 +89,7 @@ PC     Object              I  Line    Source
                            A    85    .ENDFUNC "putch",11,"_putch"
                            A    86    ;   12	
                            A    87    ;   13	void sendStatus(char state, UINT8 statu
-044281                     A    88    _sendStatus:
+0442CC                     A    88    _sendStatus:
                            A    89    .DEFINE "_sendStatus"
                            A    90    
                            A    91    .VALUE _sendStatus
@@ -134,80 +134,80 @@ PC     Object              I  Line    Source
                            A   130    
                            A   131    .ENDEF
                            A   132    
-044281 DDE5                A   133    	PUSH	IX
-044283 DD210000 00         A   134    	LD	IX,0
-044288 DD39                A   135    	ADD	IX,SP
+0442CC DDE5                A   133    	PUSH	IX
+0442CE DD210000 00         A   134    	LD	IX,0
+0442D3 DD39                A   135    	ADD	IX,SP
                            A   136    ;   14		putch(state);
                            A   137    .LINE 14
                            A   138    
-04428A DD7E06              A   139    	LD	A,(IX+%6)
-04428D 17ED62              A   140    	SEXT	HL
-044290 DD6E06              A   141    	LD	L,(IX+%6)
-044293 E5                  A   142    	PUSH	HL
-044294 CD 54 42 04         A   143    	CALL	_putch
-044298 C1                  A   144    	POP	BC
+0442D5 DD7E06              A   139    	LD	A,(IX+%6)
+0442D8 17ED62              A   140    	SEXT	HL
+0442DB DD6E06              A   141    	LD	L,(IX+%6)
+0442DE E5                  A   142    	PUSH	HL
+0442DF CD 9F 42 04         A   143    	CALL	_putch
+0442E3 C1                  A   144    	POP	BC
                            A   145    ;   15		putch(status);
                            A   146    .LINE 15
                            A   147    
-044299 DD7E09              A   148    	LD	A,(IX+%9)
-04429C B7ED62              A   149    	UEXT	HL
-04429F 6F                  A   150    	LD	L,A
-0442A0 E5                  A   151    	PUSH	HL
-0442A1 CD 54 42 04         A   152    	CALL	_putch
-0442A5 C1                  A   153    	POP	BC
+0442E4 DD7E09              A   148    	LD	A,(IX+%9)
+0442E7 B7ED62              A   149    	UEXT	HL
+0442EA 6F                  A   150    	LD	L,A
+0442EB E5                  A   151    	PUSH	HL
+0442EC CD 9F 42 04         A   152    	CALL	_putch
+0442F0 C1                  A   153    	POP	BC
                            A   154    ;   16		putch((result) & 0xFF);
                            A   155    .LINE 16
                            A   156    
-0442A6 DD270C              A   157    	LD	HL,(IX+%C)
-0442A9 7D                  A   158    	LD	A,L
-0442AA B7ED62              A   159    	UEXT	HL
-0442AD 6F                  A   160    	LD	L,A
-0442AE E5                  A   161    	PUSH	HL
-0442AF CD 54 42 04         A   162    	CALL	_putch
-0442B3 C1                  A   163    	POP	BC
+0442F1 DD270C              A   157    	LD	HL,(IX+%C)
+0442F4 7D                  A   158    	LD	A,L
+0442F5 B7ED62              A   159    	UEXT	HL
+0442F8 6F                  A   160    	LD	L,A
+0442F9 E5                  A   161    	PUSH	HL
+0442FA CD 9F 42 04         A   162    	CALL	_putch
+0442FE C1                  A   163    	POP	BC
                            A   164    ;   17		putch((result >> 8) & 0xFF);
                            A   165    .LINE 17
                            A   166    
-0442B4 DD070C              A   167    	LD	BC,(IX+%C)
-0442B7 DD7E0F              A   168    	LD	A,(IX+%F)
-0442BA 2E08                A   169    	LD	L,%8
-0442BC CD D3 45 04         A   170    	CALL	__lshru
-0442C0 C5E1                A   171    	LD	HL,BC
-0442C2 7D                  A   172    	LD	A,L
-0442C3 B7ED62              A   173    	UEXT	HL
-0442C6 6F                  A   174    	LD	L,A
-0442C7 E5                  A   175    	PUSH	HL
-0442C8 CD 54 42 04         A   176    	CALL	_putch
-0442CC C1                  A   177    	POP	BC
+0442FF DD070C              A   167    	LD	BC,(IX+%C)
+044302 DD7E0F              A   168    	LD	A,(IX+%F)
+044305 2E08                A   169    	LD	L,%8
+044307 CD 1E 46 04         A   170    	CALL	__lshru
+04430B C5E1                A   171    	LD	HL,BC
+04430D 7D                  A   172    	LD	A,L
+04430E B7ED62              A   173    	UEXT	HL
+044311 6F                  A   174    	LD	L,A
+044312 E5                  A   175    	PUSH	HL
+044313 CD 9F 42 04         A   176    	CALL	_putch
+044317 C1                  A   177    	POP	BC
                            A   178    ;   18		putch((result >> 16) & 0xFF);
                            A   179    .LINE 18
                            A   180    
-0442CD DD070C              A   181    	LD	BC,(IX+%C)
-0442D0 DD7E0F              A   182    	LD	A,(IX+%F)
-0442D3 2E10                A   183    	LD	L,%10
-0442D5 CD D3 45 04         A   184    	CALL	__lshru
-0442D9 C5E1                A   185    	LD	HL,BC
-0442DB 7D                  A   186    	LD	A,L
-0442DC B7ED62              A   187    	UEXT	HL
-0442DF 6F                  A   188    	LD	L,A
-0442E0 E5                  A   189    	PUSH	HL
-0442E1 CD 54 42 04         A   190    	CALL	_putch
-0442E5 C1                  A   191    	POP	BC
+044318 DD070C              A   181    	LD	BC,(IX+%C)
+04431B DD7E0F              A   182    	LD	A,(IX+%F)
+04431E 2E10                A   183    	LD	L,%10
+044320 CD 1E 46 04         A   184    	CALL	__lshru
+044324 C5E1                A   185    	LD	HL,BC
+044326 7D                  A   186    	LD	A,L
+044327 B7ED62              A   187    	UEXT	HL
+04432A 6F                  A   188    	LD	L,A
+04432B E5                  A   189    	PUSH	HL
+04432C CD 9F 42 04         A   190    	CALL	_putch
+044330 C1                  A   191    	POP	BC
                            A   192    ;   19		putch((result >> 24) & 0xFF);
                            A   193    .LINE 19
                            A   194    
-0442E6 DD7E0F              A   195    	LD	A,(IX+%F)
-0442E9 B7ED62              A   196    	UEXT	HL
-0442EC 6F                  A   197    	LD	L,A
-0442ED E5                  A   198    	PUSH	HL
-0442EE CD 54 42 04         A   199    	CALL	_putch
-0442F2 C1                  A   200    	POP	BC
+044331 DD7E0F              A   195    	LD	A,(IX+%F)
+044334 B7ED62              A   196    	UEXT	HL
+044337 6F                  A   197    	LD	L,A
+044338 E5                  A   198    	PUSH	HL
+044339 CD 9F 42 04         A   199    	CALL	_putch
+04433D C1                  A   200    	POP	BC
                            A   201    ;   20	}
                            A   202    .LINE 20
                            A   203    
-0442F3 DDF9                A   204    	LD	SP,IX
-0442F5 DDE1                A   205    	POP	IX
-0442F7 C9                  A   206    	RET	
+04433E DDF9                A   204    	LD	SP,IX
+044340 DDE1                A   205    	POP	IX
+044342 C9                  A   206    	RET	
                            A   207    
                            A   208    
                            A   209    ;**************************** _sendStatus *****
@@ -225,7 +225,7 @@ PC     Object              I  Line    Source
                            A   221    .ENDFUNC "sendStatus",20,"_sendStatus"
                            A   222    ;   21	
                            A   223    ;   22	UCHAR read_UART0(CHAR *pData, int *nbyt
-0442F8                     A   224    _read_UART0:
+044343                     A   224    _read_UART0:
                            A   225    .DEFINE "_read_UART0"
                            A   226    
                            A   227    .VALUE _read_UART0
@@ -290,146 +290,146 @@ PC     Object              I  Line    Source
                            A   286    
                            A   287    .ENDEF
                            A   288    
-0442F8 DDE5                A   289    	PUSH	IX
-0442FA DD210000 00         A   290    	LD	IX,0
-0442FF DD39                A   291    	ADD	IX,SP
-044301 C5                  A   292    	PUSH	BC
-044302 3B                  A   293    	DEC	SP
-044303 3B                  A   294    	DEC	SP
+044343 DDE5                A   289    	PUSH	IX
+044345 DD210000 00         A   290    	LD	IX,0
+04434A DD39                A   291    	ADD	IX,SP
+04434C C5                  A   292    	PUSH	BC
+04434D 3B                  A   293    	DEC	SP
+04434E 3B                  A   294    	DEC	SP
                            A   295    ;   23		UCHAR lsr ;
                            A   296    ;   24		UCHAR status = UART_ERR_NONE ;
                            A   297    .LINE 24
                            A   298    
-044304 DD36FF00            A   299    	LD	(IX+%FFFFFFFF),%0
+04434F DD36FF00            A   299    	LD	(IX+%FFFFFFFF),%0
                            A   300    ;   25		int   index = 0 ;
                            A   301    .LINE 25
                            A   302    
-044308 01000000            A   303    	LD	BC,0
-04430C DD0FFB              A   304    	LD	(IX+%FFFFFFFB),BC
+044353 01000000            A   303    	LD	BC,0
+044357 DD0FFB              A   304    	LD	(IX+%FFFFFFFB),BC
                            A   305    ;   26	
                            A   306    ;   27		while( UART_ERR_NONE == status ) {
                            A   307    .LINE 27
                            A   308    
-04430F 18 55               A   309    	JR	L_20
-044311                     A   310    L_21:
+04435A 18 55               A   309    	JR	L_20
+04435C                     A   310    L_21:
                            A   311    ;   28			lsr = UART0_LSR ;				
                            A   312    .LINE 28
                            A   313    
-044311 ED38C5              A   314    	IN0	A,(197)
-044314 DD77FE              A   315    	LD	(IX+%FFFFFFFE),A
+04435C ED38C5              A   314    	IN0	A,(197)
+04435F DD77FE              A   315    	LD	(IX+%FFFFFFFE),A
                            A   316    ;   29			
                            A   317    ;   30			if( 0 != (lsr & UART_LSR_BREAKI
                            A   318    .LINE 30
                            A   319    
-044317 E610                A   320    	AND	A,%10
-044319 28 04               A   321    	JR	Z,L_10
+044362 E610                A   320    	AND	A,%10
+044364 28 04               A   321    	JR	Z,L_10
                            A   322    ;   31				status = UART_ERR_BREAKINDI
                            A   323    .LINE 31
                            A   324    
-04431B DD36FF05            A   325    	LD	(IX+%FFFFFFFF),%5
+044366 DD36FF05            A   325    	LD	(IX+%FFFFFFFF),%5
                            A   326    ;   32			}
-04431F                     A   327    L_10:
+04436A                     A   327    L_10:
                            A   328    .LINE 32
                            A   329    
                            A   330    ;   33			if( 0 != (lsr & UART_LSR_FRAMIN
                            A   331    .LINE 33
                            A   332    
-04431F DD7EFE              A   333    	LD	A,(IX+%FFFFFFFE)
-044322 E608                A   334    	AND	A,%8
-044324 28 04               A   335    	JR	Z,L_12
+04436A DD7EFE              A   333    	LD	A,(IX+%FFFFFFFE)
+04436D E608                A   334    	AND	A,%8
+04436F 28 04               A   335    	JR	Z,L_12
                            A   336    ;   34				status = UART_ERR_FRAMINGER
                            A   337    .LINE 34
                            A   338    
-044326 DD36FF02            A   339    	LD	(IX+%FFFFFFFF),%2
+044371 DD36FF02            A   339    	LD	(IX+%FFFFFFFF),%2
                            A   340    ;   35			}
-04432A                     A   341    L_12:
+044375                     A   341    L_12:
                            A   342    .LINE 35
                            A   343    
                            A   344    ;   36			if( 0 != (lsr & UART_LSR_PARITY
                            A   345    .LINE 36
                            A   346    
-04432A DD7EFE              A   347    	LD	A,(IX+%FFFFFFFE)
-04432D E604                A   348    	AND	A,%4
-04432F 28 04               A   349    	JR	Z,L_14
+044375 DD7EFE              A   347    	LD	A,(IX+%FFFFFFFE)
+044378 E604                A   348    	AND	A,%4
+04437A 28 04               A   349    	JR	Z,L_14
                            A   350    ;   37				status = UART_ERR_PARITYERR
                            A   351    .LINE 37
                            A   352    
-044331 DD36FF03            A   353    	LD	(IX+%FFFFFFFF),%3
+04437C DD36FF03            A   353    	LD	(IX+%FFFFFFFF),%3
                            A   354    ;   38			}
-044335                     A   355    L_14:
+044380                     A   355    L_14:
                            A   356    .LINE 38
                            A   357    
                            A   358    ;   39			if( 0 != (lsr & UART_LSR_OVERRR
                            A   359    .LINE 39
                            A   360    
-044335 DD7EFE              A   361    	LD	A,(IX+%FFFFFFFE)
-044338 E602                A   362    	AND	A,%2
-04433A 28 04               A   363    	JR	Z,L_17
+044380 DD7EFE              A   361    	LD	A,(IX+%FFFFFFFE)
+044383 E602                A   362    	AND	A,%2
+044385 28 04               A   363    	JR	Z,L_17
                            A   364    ;   40				status = UART_ERR_OVERRUNER
                            A   365    .LINE 40
                            A   366    
-04433C DD36FF04            A   367    	LD	(IX+%FFFFFFFF),%4
+044387 DD36FF04            A   367    	LD	(IX+%FFFFFFFF),%4
                            A   368    ;   41			}
-044340                     A   369    L_17:
+04438B                     A   369    L_17:
                            A   370    .LINE 41
                            A   371    
                            A   372    ;   42			if( 0 != (lsr & UART_LSR_DATA_R
                            A   373    .LINE 42
                            A   374    
-044340 DD7EFE              A   375    	LD	A,(IX+%FFFFFFFE)
-044343 E601                A   376    	AND	A,%1
-044345 28 12               A   377    	JR	Z,L_19
+04438B DD7EFE              A   375    	LD	A,(IX+%FFFFFFFE)
+04438E E601                A   376    	AND	A,%1
+044390 28 12               A   377    	JR	Z,L_19
                            A   378    ;   43				pData[ index++ ] = UART0_RB
                            A   379    .LINE 43
                            A   380    
-044347 DD07FB              A   381    	LD	BC,(IX+%FFFFFFFB)
-04434A DD2706              A   382    	LD	HL,(IX+%6)
-04434D 09                  A   383    	ADD	HL,BC
-04434E ED38C0              A   384    	IN0	A,(192)
-044351 77                  A   385    	LD	(HL),A
-044352 DD07FB              A   386    	LD	BC,(IX+%FFFFFFFB)
-044355 03                  A   387    	INC	BC
-044356 DD0FFB              A   388    	LD	(IX+%FFFFFFFB),BC
+044392 DD07FB              A   381    	LD	BC,(IX+%FFFFFFFB)
+044395 DD2706              A   382    	LD	HL,(IX+%6)
+044398 09                  A   383    	ADD	HL,BC
+044399 ED38C0              A   384    	IN0	A,(192)
+04439C 77                  A   385    	LD	(HL),A
+04439D DD07FB              A   386    	LD	BC,(IX+%FFFFFFFB)
+0443A0 03                  A   387    	INC	BC
+0443A1 DD0FFB              A   388    	LD	(IX+%FFFFFFFB),BC
                            A   389    ;   44			}
-044359                     A   390    L_19:
+0443A4                     A   390    L_19:
                            A   391    .LINE 44
                            A   392    
                            A   393    ;   45			if( index == (*nbytes) ) {		
                            A   394    .LINE 45
                            A   395    
-044359 DD2709              A   396    	LD	HL,(IX+%9)
-04435C DD07FB              A   397    	LD	BC,(IX+%FFFFFFFB)
-04435F ED27                A   398    	LD	HL,(HL)
-044361 B7                  A   399    	OR	A,A
-044362 ED42                A   400    	SBC	HL,BC
-044364 28 06               A   401    	JR	Z,L_22
+0443A4 DD2709              A   396    	LD	HL,(IX+%9)
+0443A7 DD07FB              A   397    	LD	BC,(IX+%FFFFFFFB)
+0443AA ED27                A   398    	LD	HL,(HL)
+0443AC B7                  A   399    	OR	A,A
+0443AD ED42                A   400    	SBC	HL,BC
+0443AF 28 06               A   401    	JR	Z,L_22
                            A   402    ;   46				break ;
                            A   403    ;   47			}
                            A   404    ;   48		}
-044366                     A   405    L_20:
+0443B1                     A   405    L_20:
                            A   406    .LINE 48
                            A   407    
-044366 DD7EFF              A   408    	LD	A,(IX+%FFFFFFFF)
-044369 B7                  A   409    	OR	A,A
-04436A 28 A5               A   410    	JR	Z,L_21
-04436C                     A   411    L_22:
+0443B1 DD7EFF              A   408    	LD	A,(IX+%FFFFFFFF)
+0443B4 B7                  A   409    	OR	A,A
+0443B5 28 A5               A   410    	JR	Z,L_21
+0443B7                     A   411    L_22:
                            A   412    ;   49		*nbytes = index ;
                            A   413    .LINE 49
                            A   414    
-04436C DD2709              A   415    	LD	HL,(IX+%9)
-04436F DD07FB              A   416    	LD	BC,(IX+%FFFFFFFB)
-044372 ED0F                A   417    	LD	(HL),BC
+0443B7 DD2709              A   415    	LD	HL,(IX+%9)
+0443BA DD07FB              A   416    	LD	BC,(IX+%FFFFFFFB)
+0443BD ED0F                A   417    	LD	(HL),BC
                            A   418    ;   50		return status ;
                            A   419    .LINE 50
                            A   420    
-044374 DD7EFF              A   421    	LD	A,(IX+%FFFFFFFF)
+0443BF DD7EFF              A   421    	LD	A,(IX+%FFFFFFFF)
                            A   422    ;   51		
                            A   423    ;   52	}
                            A   424    .LINE 52
                            A   425    
-044377 DDF9                A   426    	LD	SP,IX
-044379 DDE1                A   427    	POP	IX
-04437B C9                  A   428    	RET	
+0443C2 DDF9                A   426    	LD	SP,IX
+0443C4 DDE1                A   427    	POP	IX
+0443C6 C9                  A   428    	RET	
                            A   429    
                            A   430    
                            A   431    ;**************************** _read_UART0 *****
@@ -448,7 +448,7 @@ PC     Object              I  Line    Source
                            A   444    .ENDFUNC "read_UART0",52,"_read_UART0"
                            A   445    ;   53	
                            A   446    ;   54	int getch(void) {
-04437C                     A   447    _getch:
+0443C7                     A   447    _getch:
                            A   448    .DEFINE "_getch"
                            A   449    
                            A   450    .VALUE _getch
@@ -493,62 +493,62 @@ PC     Object              I  Line    Source
                            A   489    
                            A   490    .ENDEF
                            A   491    
-04437C DDE5                A   492    	PUSH	IX
-04437E DD210000 00         A   493    	LD	IX,0
-044383 DD39                A   494    	ADD	IX,SP
-044385 C5                  A   495    	PUSH	BC
-044386 C5                  A   496    	PUSH	BC
-044387 3B                  A   497    	DEC	SP
-044388 3B                  A   498    	DEC	SP
+0443C7 DDE5                A   492    	PUSH	IX
+0443C9 DD210000 00         A   493    	LD	IX,0
+0443CE DD39                A   494    	ADD	IX,SP
+0443D0 C5                  A   495    	PUSH	BC
+0443D1 C5                  A   496    	PUSH	BC
+0443D2 3B                  A   497    	DEC	SP
+0443D3 3B                  A   498    	DEC	SP
                            A   499    ;   55		CHAR ch;
                            A   500    ;   56		int nbytes = 1;
                            A   501    .LINE 56
                            A   502    
-044389 01010000            A   503    	LD	BC,1
-04438D DD0FFD              A   504    	LD	(IX+%FFFFFFFD),BC
+0443D4 01010000            A   503    	LD	BC,1
+0443D8 DD0FFD              A   504    	LD	(IX+%FFFFFFFD),BC
                            A   505    ;   57		UCHAR status = read_UART0(&ch, &nby
                            A   506    .LINE 57
                            A   507    
-044390 ED65FD              A   508    	PEA	IX+%FFFFFFFD
-044393 ED65FC              A   509    	PEA	IX+%FFFFFFFC
-044396 CD F8 42 04         A   510    	CALL	_read_UART0
-04439A C1                  A   511    	POP	BC
-04439B C1                  A   512    	POP	BC
-04439C DD77FB              A   513    	LD	(IX+%FFFFFFFB),A
+0443DB ED65FD              A   508    	PEA	IX+%FFFFFFFD
+0443DE ED65FC              A   509    	PEA	IX+%FFFFFFFC
+0443E1 CD 43 43 04         A   510    	CALL	_read_UART0
+0443E5 C1                  A   511    	POP	BC
+0443E6 C1                  A   512    	POP	BC
+0443E7 DD77FB              A   513    	LD	(IX+%FFFFFFFB),A
                            A   514    ;   58		nbytes = (UINT)ch;
                            A   515    .LINE 58
                            A   516    
-04439F DD7EFC              A   517    	LD	A,(IX+%FFFFFFFC)
-0443A2 17ED62              A   518    	SEXT	HL
-0443A5 DD6EFC              A   519    	LD	L,(IX+%FFFFFFFC)
-0443A8 DD2FFD              A   520    	LD	(IX+%FFFFFFFD),HL
+0443EA DD7EFC              A   517    	LD	A,(IX+%FFFFFFFC)
+0443ED 17ED62              A   518    	SEXT	HL
+0443F0 DD6EFC              A   519    	LD	L,(IX+%FFFFFFFC)
+0443F3 DD2FFD              A   520    	LD	(IX+%FFFFFFFD),HL
                            A   521    ;   59		nbytes = (nbytes & 0x0000FF);
                            A   522    .LINE 59
                            A   523    
-0443AB DD7EFD              A   524    	LD	A,(IX+%FFFFFFFD)
-0443AE B7ED62              A   525    	UEXT	HL
-0443B1 6F                  A   526    	LD	L,A
-0443B2 DD2FFD              A   527    	LD	(IX+%FFFFFFFD),HL
+0443F6 DD7EFD              A   524    	LD	A,(IX+%FFFFFFFD)
+0443F9 B7ED62              A   525    	UEXT	HL
+0443FC 6F                  A   526    	LD	L,A
+0443FD DD2FFD              A   527    	LD	(IX+%FFFFFFFD),HL
                            A   528    ;   60		return (UART_ERR_NONE!=status) ? -1
                            A   529    .LINE 60
                            A   530    
-0443B5 DD7EFB              A   531    	LD	A,(IX+%FFFFFFFB)
-0443B8 B7                  A   532    	OR	A,A
-0443B9 28 09               A   533    	JR	Z,L_26
-0443BB 01FFFFFF            A   534    	LD	BC,16777215
-0443BF DD0FF8              A   535    	LD	(IX+%FFFFFFF8),BC
-0443C2 18 06               A   536    	JR	L_27
-0443C4                     A   537    L_26:
-0443C4 DD07FD              A   538    	LD	BC,(IX+%FFFFFFFD)
-0443C7 DD0FF8              A   539    	LD	(IX+%FFFFFFF8),BC
-0443CA                     A   540    L_27:
-0443CA DD27F8              A   541    	LD	HL,(IX+%FFFFFFF8)
+044400 DD7EFB              A   531    	LD	A,(IX+%FFFFFFFB)
+044403 B7                  A   532    	OR	A,A
+044404 28 09               A   533    	JR	Z,L_26
+044406 01FFFFFF            A   534    	LD	BC,16777215
+04440A DD0FF8              A   535    	LD	(IX+%FFFFFFF8),BC
+04440D 18 06               A   536    	JR	L_27
+04440F                     A   537    L_26:
+04440F DD07FD              A   538    	LD	BC,(IX+%FFFFFFFD)
+044412 DD0FF8              A   539    	LD	(IX+%FFFFFFF8),BC
+044415                     A   540    L_27:
+044415 DD27F8              A   541    	LD	HL,(IX+%FFFFFFF8)
                            A   542    ;   61	}
                            A   543    .LINE 61
                            A   544    
-0443CD DDF9                A   545    	LD	SP,IX
-0443CF DDE1                A   546    	POP	IX
-0443D1 C9                  A   547    	RET	
+044418 DDF9                A   545    	LD	SP,IX
+04441A DDE1                A   546    	POP	IX
+04441C C9                  A   547    	RET	
                            A   548    
                            A   549    
                            A   550    ;**************************** _getch **********

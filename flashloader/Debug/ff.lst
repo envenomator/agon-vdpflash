@@ -1,4 +1,4 @@
-Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED22-Oct-23     19:01:07     page:   1
+Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED24-Oct-23     16:52:34     page:   1
 
 
 PC     Object              I  Line    Source 
@@ -269,8 +269,8 @@ PC     Object              I  Line    Source
                            A   265    .ENDEF
                            A   266    .ENDREC "NONAME5"
                            A   267    	SEGMENT BSS
-044B22                     A   268    _FatFs:
-044B22                     A   269    	DS	3
+044F5D                     A   268    _FatFs:
+044F5D                     A   269    	DS	3
                            A   270    .DEFINE "FatFs"
                            A   271    .ALIAS "_FatFs"
                            A   272    .CLASS 83
@@ -279,16 +279,16 @@ PC     Object              I  Line    Source
                            A   275    .TAG "NONAME0"
                            A   276    .TYPE 360
                            A   277    .ENDEF
-044B25                     A   278    _Fsid:
-044B25                     A   279    	DS	2*1
+044F60                     A   278    _Fsid:
+044F60                     A   279    	DS	2*1
                            A   280    .DEFINE "Fsid"
                            A   281    .ALIAS "_Fsid"
                            A   282    .CLASS 83
                            A   283    .VALUE _Fsid
                            A   284    .TYPE 13
                            A   285    .ENDEF
-044B27                     A   286    _CurrVol:
-044B27                     A   287    	DS	1
+044F62                     A   286    _CurrVol:
+044F62                     A   287    	DS	1
                            A   288    .DEFINE "CurrVol"
                            A   289    .ALIAS "_CurrVol"
                            A   290    .CLASS 83
@@ -296,20 +296,20 @@ PC     Object              I  Line    Source
                            A   292    .TYPE 12
                            A   293    .ENDEF
                            A   294    	SEGMENT TEXT
-0453AE                     A   295    _LfnOfs:
-0453AE 01                  A   296    	DB	1
-0453AF 03                  A   297    	DB	3
-0453B0 05                  A   298    	DB	5
-0453B1 07                  A   299    	DB	7
-0453B2 09                  A   300    	DB	9
-0453B3 0E                  A   301    	DB	14
-0453B4 10                  A   302    	DB	16
-0453B5 12                  A   303    	DB	18
-0453B6 14                  A   304    	DB	20
-0453B7 16                  A   305    	DB	22
-0453B8 18                  A   306    	DB	24
-0453B9 1C                  A   307    	DB	28
-0453BA 1E                  A   308    	DB	30
+044C78                     A   295    _LfnOfs:
+044C78 01                  A   296    	DB	1
+044C79 03                  A   297    	DB	3
+044C7A 05                  A   298    	DB	5
+044C7B 07                  A   299    	DB	7
+044C7C 09                  A   300    	DB	9
+044C7D 0E                  A   301    	DB	14
+044C7E 10                  A   302    	DB	16
+044C7F 12                  A   303    	DB	18
+044C80 14                  A   304    	DB	20
+044C81 16                  A   305    	DB	22
+044C82 18                  A   306    	DB	24
+044C83 1C                  A   307    	DB	28
+044C84 1E                  A   308    	DB	30
                            A   309    .DEFINE "LfnOfs"
                            A   310    .ALIAS "_LfnOfs"
                            A   311    .CLASS 84
@@ -317,135 +317,135 @@ PC     Object              I  Line    Source
                            A   313    .DIM 13
                            A   314    .TYPE 108
                            A   315    .ENDEF
-0453BB                     A   316    _ExCvt:
-0453BB 80                  A   317    	DB	128
-0453BC 9A                  A   318    	DB	154
-0453BD 45                  A   319    	DB	69
-0453BE 41                  A   320    	DB	65
-0453BF 8E                  A   321    	DB	142
-0453C0 41                  A   322    	DB	65
-0453C1 8F                  A   323    	DB	143
-0453C2 80                  A   324    	DB	128
-0453C3 45                  A   325    	DB	69
-0453C4 45                  A   326    	DB	69
-0453C5 45                  A   327    	DB	69
-0453C6 49                  A   328    	DB	73
-0453C7 49                  A   329    	DB	73
-0453C8 49                  A   330    	DB	73
-0453C9 8E                  A   331    	DB	142
-0453CA 8F                  A   332    	DB	143
-0453CB 90                  A   333    	DB	144
-0453CC 92                  A   334    	DB	146
-0453CD 92                  A   335    	DB	146
-0453CE 4F                  A   336    	DB	79
-0453CF 99                  A   337    	DB	153
-0453D0 4F                  A   338    	DB	79
-0453D1 55                  A   339    	DB	85
-0453D2 55                  A   340    	DB	85
-0453D3 59                  A   341    	DB	89
-0453D4 99                  A   342    	DB	153
-0453D5 9A                  A   343    	DB	154
-0453D6 9B                  A   344    	DB	155
-0453D7 9C                  A   345    	DB	156
-0453D8 9D                  A   346    	DB	157
-0453D9 9E                  A   347    	DB	158
-0453DA 9F                  A   348    	DB	159
-0453DB 41                  A   349    	DB	65
-0453DC 49                  A   350    	DB	73
-0453DD 4F                  A   351    	DB	79
-0453DE 55                  A   352    	DB	85
-0453DF A5                  A   353    	DB	165
-0453E0 A5                  A   354    	DB	165
-0453E1 A6                  A   355    	DB	166
-0453E2 A7                  A   356    	DB	167
-0453E3 A8                  A   357    	DB	168
-0453E4 A9                  A   358    	DB	169
-0453E5 AA                  A   359    	DB	170
-0453E6 AB                  A   360    	DB	171
-0453E7 AC                  A   361    	DB	172
-0453E8 AD                  A   362    	DB	173
-0453E9 AE                  A   363    	DB	174
-0453EA AF                  A   364    	DB	175
-0453EB B0                  A   365    	DB	176
-0453EC B1                  A   366    	DB	177
-0453ED B2                  A   367    	DB	178
-0453EE B3                  A   368    	DB	179
-0453EF B4                  A   369    	DB	180
-0453F0 B5                  A   370    	DB	181
-0453F1 B6                  A   371    	DB	182
-0453F2 B7                  A   372    	DB	183
-0453F3 B8                  A   373    	DB	184
-0453F4 B9                  A   374    	DB	185
-0453F5 BA                  A   375    	DB	186
-0453F6 BB                  A   376    	DB	187
-0453F7 BC                  A   377    	DB	188
-0453F8 BD                  A   378    	DB	189
-0453F9 BE                  A   379    	DB	190
-0453FA BF                  A   380    	DB	191
-0453FB C0                  A   381    	DB	192
-0453FC C1                  A   382    	DB	193
-0453FD C2                  A   383    	DB	194
-0453FE C3                  A   384    	DB	195
-0453FF C4                  A   385    	DB	196
-045400 C5                  A   386    	DB	197
-045401 C6                  A   387    	DB	198
-045402 C7                  A   388    	DB	199
-045403 C8                  A   389    	DB	200
-045404 C9                  A   390    	DB	201
-045405 CA                  A   391    	DB	202
-045406 CB                  A   392    	DB	203
-045407 CC                  A   393    	DB	204
-045408 CD                  A   394    	DB	205
-045409 CE                  A   395    	DB	206
-04540A CF                  A   396    	DB	207
-04540B D0                  A   397    	DB	208
-04540C D1                  A   398    	DB	209
-04540D D2                  A   399    	DB	210
-04540E D3                  A   400    	DB	211
-04540F D4                  A   401    	DB	212
-045410 D5                  A   402    	DB	213
-045411 D6                  A   403    	DB	214
-045412 D7                  A   404    	DB	215
-045413 D8                  A   405    	DB	216
-045414 D9                  A   406    	DB	217
-045415 DA                  A   407    	DB	218
-045416 DB                  A   408    	DB	219
-045417 DC                  A   409    	DB	220
-045418 DD                  A   410    	DB	221
-045419 DE                  A   411    	DB	222
-04541A DF                  A   412    	DB	223
-04541B E0                  A   413    	DB	224
-04541C E1                  A   414    	DB	225
-04541D E2                  A   415    	DB	226
-04541E E3                  A   416    	DB	227
-04541F E4                  A   417    	DB	228
-045420 E5                  A   418    	DB	229
-045421 E6                  A   419    	DB	230
-045422 E7                  A   420    	DB	231
-045423 E8                  A   421    	DB	232
-045424 E9                  A   422    	DB	233
-045425 EA                  A   423    	DB	234
-045426 EB                  A   424    	DB	235
-045427 EC                  A   425    	DB	236
-045428 ED                  A   426    	DB	237
-045429 EE                  A   427    	DB	238
-04542A EF                  A   428    	DB	239
-04542B F0                  A   429    	DB	240
-04542C F1                  A   430    	DB	241
-04542D F2                  A   431    	DB	242
-04542E F3                  A   432    	DB	243
-04542F F4                  A   433    	DB	244
-045430 F5                  A   434    	DB	245
-045431 F6                  A   435    	DB	246
-045432 F7                  A   436    	DB	247
-045433 F8                  A   437    	DB	248
-045434 F9                  A   438    	DB	249
-045435 FA                  A   439    	DB	250
-045436 FB                  A   440    	DB	251
-045437 FC                  A   441    	DB	252
-045438 FD                  A   442    	DB	253
-045439 FE                  A   443    	DB	254
-04543A FF                  A   444    	DB	255
+044C85                     A   316    _ExCvt:
+044C85 80                  A   317    	DB	128
+044C86 9A                  A   318    	DB	154
+044C87 45                  A   319    	DB	69
+044C88 41                  A   320    	DB	65
+044C89 8E                  A   321    	DB	142
+044C8A 41                  A   322    	DB	65
+044C8B 8F                  A   323    	DB	143
+044C8C 80                  A   324    	DB	128
+044C8D 45                  A   325    	DB	69
+044C8E 45                  A   326    	DB	69
+044C8F 45                  A   327    	DB	69
+044C90 49                  A   328    	DB	73
+044C91 49                  A   329    	DB	73
+044C92 49                  A   330    	DB	73
+044C93 8E                  A   331    	DB	142
+044C94 8F                  A   332    	DB	143
+044C95 90                  A   333    	DB	144
+044C96 92                  A   334    	DB	146
+044C97 92                  A   335    	DB	146
+044C98 4F                  A   336    	DB	79
+044C99 99                  A   337    	DB	153
+044C9A 4F                  A   338    	DB	79
+044C9B 55                  A   339    	DB	85
+044C9C 55                  A   340    	DB	85
+044C9D 59                  A   341    	DB	89
+044C9E 99                  A   342    	DB	153
+044C9F 9A                  A   343    	DB	154
+044CA0 9B                  A   344    	DB	155
+044CA1 9C                  A   345    	DB	156
+044CA2 9D                  A   346    	DB	157
+044CA3 9E                  A   347    	DB	158
+044CA4 9F                  A   348    	DB	159
+044CA5 41                  A   349    	DB	65
+044CA6 49                  A   350    	DB	73
+044CA7 4F                  A   351    	DB	79
+044CA8 55                  A   352    	DB	85
+044CA9 A5                  A   353    	DB	165
+044CAA A5                  A   354    	DB	165
+044CAB A6                  A   355    	DB	166
+044CAC A7                  A   356    	DB	167
+044CAD A8                  A   357    	DB	168
+044CAE A9                  A   358    	DB	169
+044CAF AA                  A   359    	DB	170
+044CB0 AB                  A   360    	DB	171
+044CB1 AC                  A   361    	DB	172
+044CB2 AD                  A   362    	DB	173
+044CB3 AE                  A   363    	DB	174
+044CB4 AF                  A   364    	DB	175
+044CB5 B0                  A   365    	DB	176
+044CB6 B1                  A   366    	DB	177
+044CB7 B2                  A   367    	DB	178
+044CB8 B3                  A   368    	DB	179
+044CB9 B4                  A   369    	DB	180
+044CBA B5                  A   370    	DB	181
+044CBB B6                  A   371    	DB	182
+044CBC B7                  A   372    	DB	183
+044CBD B8                  A   373    	DB	184
+044CBE B9                  A   374    	DB	185
+044CBF BA                  A   375    	DB	186
+044CC0 BB                  A   376    	DB	187
+044CC1 BC                  A   377    	DB	188
+044CC2 BD                  A   378    	DB	189
+044CC3 BE                  A   379    	DB	190
+044CC4 BF                  A   380    	DB	191
+044CC5 C0                  A   381    	DB	192
+044CC6 C1                  A   382    	DB	193
+044CC7 C2                  A   383    	DB	194
+044CC8 C3                  A   384    	DB	195
+044CC9 C4                  A   385    	DB	196
+044CCA C5                  A   386    	DB	197
+044CCB C6                  A   387    	DB	198
+044CCC C7                  A   388    	DB	199
+044CCD C8                  A   389    	DB	200
+044CCE C9                  A   390    	DB	201
+044CCF CA                  A   391    	DB	202
+044CD0 CB                  A   392    	DB	203
+044CD1 CC                  A   393    	DB	204
+044CD2 CD                  A   394    	DB	205
+044CD3 CE                  A   395    	DB	206
+044CD4 CF                  A   396    	DB	207
+044CD5 D0                  A   397    	DB	208
+044CD6 D1                  A   398    	DB	209
+044CD7 D2                  A   399    	DB	210
+044CD8 D3                  A   400    	DB	211
+044CD9 D4                  A   401    	DB	212
+044CDA D5                  A   402    	DB	213
+044CDB D6                  A   403    	DB	214
+044CDC D7                  A   404    	DB	215
+044CDD D8                  A   405    	DB	216
+044CDE D9                  A   406    	DB	217
+044CDF DA                  A   407    	DB	218
+044CE0 DB                  A   408    	DB	219
+044CE1 DC                  A   409    	DB	220
+044CE2 DD                  A   410    	DB	221
+044CE3 DE                  A   411    	DB	222
+044CE4 DF                  A   412    	DB	223
+044CE5 E0                  A   413    	DB	224
+044CE6 E1                  A   414    	DB	225
+044CE7 E2                  A   415    	DB	226
+044CE8 E3                  A   416    	DB	227
+044CE9 E4                  A   417    	DB	228
+044CEA E5                  A   418    	DB	229
+044CEB E6                  A   419    	DB	230
+044CEC E7                  A   420    	DB	231
+044CED E8                  A   421    	DB	232
+044CEE E9                  A   422    	DB	233
+044CEF EA                  A   423    	DB	234
+044CF0 EB                  A   424    	DB	235
+044CF1 EC                  A   425    	DB	236
+044CF2 ED                  A   426    	DB	237
+044CF3 EE                  A   427    	DB	238
+044CF4 EF                  A   428    	DB	239
+044CF5 F0                  A   429    	DB	240
+044CF6 F1                  A   430    	DB	241
+044CF7 F2                  A   431    	DB	242
+044CF8 F3                  A   432    	DB	243
+044CF9 F4                  A   433    	DB	244
+044CFA F5                  A   434    	DB	245
+044CFB F6                  A   435    	DB	246
+044CFC F7                  A   436    	DB	247
+044CFD F8                  A   437    	DB	248
+044CFE F9                  A   438    	DB	249
+044CFF FA                  A   439    	DB	250
+044D00 FB                  A   440    	DB	251
+044D01 FC                  A   441    	DB	252
+044D02 FD                  A   442    	DB	253
+044D03 FE                  A   443    	DB	254
+044D04 FF                  A   444    	DB	255
                            A   445    .DEFINE "ExCvt"
                            A   446    .ALIAS "_ExCvt"
                            A   447    .CLASS 84
@@ -4520,7 +4520,7 @@ PC     Object              I  Line    Source
                            A  4516    ; 1868			uc = ld_word(dir + LfnOfs[s]);	
                            A  4517    .LINE 1868
                            A  4518    
-04194A 01 AE 53 04         A  4519    	LD	BC,_LfnOfs
+04194A 01 78 4C 04         A  4519    	LD	BC,_LfnOfs
 04194E DD27FA              A  4520    	LD	HL,(IX+%FFFFFFFA)
 041951 09                  A  4521    	ADD	HL,BC
 041952 7E                  A  4522    	LD	A,(HL)
@@ -4818,7 +4818,7 @@ PC     Object              I  Line    Source
                            A  4814    ; 1904			uc = ld_word(dir + LfnOfs[s]);	
                            A  4815    .LINE 1904
                            A  4816    
-041A76 01 AE 53 04         A  4817    	LD	BC,_LfnOfs
+041A76 01 78 4C 04         A  4817    	LD	BC,_LfnOfs
 041A7A DD27FA              A  4818    	LD	HL,(IX+%FFFFFFFA)
 041A7D 09                  A  4819    	ADD	HL,BC
 041A7E 7E                  A  4820    	LD	A,(HL)
@@ -7495,7 +7495,7 @@ PC     Object              I  Line    Source
 0422F5 DD07EC              A  7491    	LD	BC,(IX+%FFFFFFEC)
 0422F8 CD 0A 45 04         A  7492    	CALL	__stoiu
 0422FC E5                  A  7493    	PUSH	HL
-0422FD 01 DB 48 04         A  7494    	LD	BC,L__141
+0422FD 01 16 4D 04         A  7494    	LD	BC,L__141
 042301 C5                  A  7495    	PUSH	BC
 042302 CD 88 46 04         A  7496    	CALL	_strchr
 042306 C1                  A  7497    	POP	BC
@@ -8074,7 +8074,7 @@ PC     Object              I  Line    Source
 04268F CBBF                A  8070    	RES	%7,A
 042691 4F                  A  8071    	LD	C,A
 042692 CD 0A 45 04         A  8072    	CALL	__stoiu
-042696 01 BB 53 04         A  8073    	LD	BC,_ExCvt
+042696 01 85 4C 04         A  8073    	LD	BC,_ExCvt
 04269A 09                  A  8074    	ADD	HL,BC
 04269B 4E                  A  8075    	LD	C,(HL)
 04269C 0600                A  8076    	LD	B,%0
@@ -8152,7 +8152,7 @@ PC     Object              I  Line    Source
 042700 DD07FA              A  8148    	LD	BC,(IX+%FFFFFFFA)
 042703 CD 0A 45 04         A  8149    	CALL	__stoiu
 042707 E5                  A  8150    	PUSH	HL
-042708 01 E4 48 04         A  8151    	LD	BC,L__178
+042708 01 1F 4D 04         A  8151    	LD	BC,L__178
 04270C C5                  A  8152    	PUSH	BC
 04270D CD 88 46 04         A  8153    	CALL	_strchr
 042711 C1                  A  8154    	POP	BC
@@ -8438,12 +8438,12 @@ PC     Object              I  Line    Source
                            A  8434    
                            A  8435    .ENDFUNC "create_name",2994,"_create_name"
                            A  8436    	SEGMENT STRSECT
-0448DB                     A  8437    L__141:
-0448DB 2A3A3C3E 7C223F     A  8438    	DB	"*:<>|\"?"
-0448E2 7F00                A  8439    	DB	127,0
-0448E4                     A  8440    L__178:
-0448E4 2B2C3B3D 5B5D       A  8441    	DB	"+,;=[]"
-0448EA 00                  A  8442    	DB	0
+044D16                     A  8437    L__141:
+044D16 2A3A3C3E 7C223F     A  8438    	DB	"*:<>|\"?"
+044D1D 7F00                A  8439    	DB	127,0
+044D1F                     A  8440    L__178:
+044D1F 2B2C3B3D 5B5D       A  8441    	DB	"+,;=[]"
+044D25 00                  A  8442    	DB	0
                            A  8443    	SEGMENT CODE
                            A  8444    ; 2995	
                            A  8445    ; 2996	
@@ -9125,7 +9125,7 @@ PC     Object              I  Line    Source
                            A  9121    ; 3152		vol = CurrVol;	/* Default drive is
                            A  9122    .LINE 3152
                            A  9123    
-042A79 3A 27 4B 04         A  9124    	LD	A,(_CurrVol)
+042A79 3A 62 4F 04         A  9124    	LD	A,(_CurrVol)
 042A7D B7ED62              A  9125    	UEXT	HL
 042A80 6F                  A  9126    	LD	L,A
 042A81 DD2FF3              A  9127    	LD	(IX+%FFFFFFF3),HL
@@ -9135,7 +9135,7 @@ PC     Object              I  Line    Source
                            A  9131    ; 3156		return vol;		/* Return the defau
                            A  9132    .LINE 3156
                            A  9133    
-042A84 3A 27 4B 04         A  9134    	LD	A,(_CurrVol)
+042A84 3A 62 4F 04         A  9134    	LD	A,(_CurrVol)
 042A88 B7ED62              A  9135    	UEXT	HL
 042A8B 6F                  A  9136    	LD	L,A
                            A  9137    ; 3157	}
@@ -9399,7 +9399,7 @@ PC     Object              I  Line    Source
 042B1E DD0FEF              A  9395    	LD	(IX+%FFFFFFEF),BC
 042B21 01080000            A  9396    	LD	BC,8
 042B25 C5                  A  9397    	PUSH	BC
-042B26 01 EB 48 04         A  9398    	LD	BC,L__220
+042B26 01 26 4D 04         A  9398    	LD	BC,L__220
 042B2A C5                  A  9399    	PUSH	BC
 042B2B DD31F9              A  9400    	LD	IY,(IX+%FFFFFFF9)
 042B2E ED0352              A  9401    	LEA	BC,IY+%52
@@ -9602,9 +9602,9 @@ PC     Object              I  Line    Source
                            A  9598    
                            A  9599    .ENDFUNC "check_fs",3272,"_check_fs"
                            A  9600    	SEGMENT STRSECT
-0448EB                     A  9601    L__220:
-0448EB 46415433 32202020   A  9602    	DB	"FAT32   "
-0448F3 00                  A  9603    	DB	0
+044D26                     A  9601    L__220:
+044D26 46415433 32202020   A  9602    	DB	"FAT32   "
+044D2E 00                  A  9603    	DB	0
                            A  9604    	SEGMENT CODE
                            A  9605    ; 3273	
                            A  9606    ; 3274	
@@ -10134,7 +10134,7 @@ PC     Object              I  Line    Source
 042DEC E5C1                A 10130    	LD	BC,HL
 042DEE 29                  A 10131    	ADD	HL,HL
 042DEF 09                  A 10132    	ADD	HL,BC
-042DF0 01 22 4B 04         A 10133    	LD	BC,_FatFs
+042DF0 01 5D 4F 04         A 10133    	LD	BC,_FatFs
 042DF4 09                  A 10134    	ADD	HL,BC
 042DF5 ED07                A 10135    	LD	BC,(HL)
 042DF7 DD0FFD              A 10136    	LD	(IX+%FFFFFFFD),BC
@@ -10907,13 +10907,13 @@ PC     Object              I  Line    Source
                            A 10903    ; 3538		fs->id = ++Fsid;		/* Volume m
                            A 10904    .LINE 3538
                            A 10905    
-0432D0 ED4B 25 4B 04       A 10906    	LD	BC,(_Fsid)
+0432D0 ED4B 60 4F 04       A 10906    	LD	BC,(_Fsid)
 0432D5 03                  A 10907    	INC	BC
-0432D6 21 25 4B 04         A 10908    	LD	HL,_Fsid
+0432D6 21 60 4F 04         A 10908    	LD	HL,_Fsid
 0432DA 71                  A 10909    	LD	(HL),C
 0432DB 23                  A 10910    	INC	HL
 0432DC 70                  A 10911    	LD	(HL),B
-0432DD ED4B 25 4B 04       A 10912    	LD	BC,(_Fsid)
+0432DD ED4B 60 4F 04       A 10912    	LD	BC,(_Fsid)
 0432E2 FD7105              A 10913    	LD	(IY+%5),C
 0432E5 FD7006              A 10914    	LD	(IY+%6),B
                            A 10915    ; 3539	#if FF_USE_LFN == 1
@@ -11306,7 +11306,7 @@ PC     Object              I  Line    Source
 0433B6 E5C1                A 11302    	LD	BC,HL
 0433B8 29                  A 11303    	ADD	HL,HL
 0433B9 09                  A 11304    	ADD	HL,BC
-0433BA 01 22 4B 04         A 11305    	LD	BC,_FatFs
+0433BA 01 5D 4F 04         A 11305    	LD	BC,_FatFs
 0433BE 09                  A 11306    	ADD	HL,BC
 0433BF DD2FF7              A 11307    	LD	(IX+%FFFFFFF7),HL
 0433C2 ED07                A 11308    	LD	BC,(HL)
@@ -12998,7 +12998,7 @@ PC     Object              I  Line    Source
                            A 12994    .LINE 4198
                            A 12995    
 0438F6 DD7EFD              A 12996    	LD	A,(IX+%FFFFFFFD)
-0438F9 32 27 4B 04         A 12997    	LD	(_CurrVol),A
+0438F9 32 62 4F 04         A 12997    	LD	(_CurrVol),A
                            A 12998    ; 4199	
                            A 12999    ; 4200		return FR_OK;
                            A 13000    .LINE 4200

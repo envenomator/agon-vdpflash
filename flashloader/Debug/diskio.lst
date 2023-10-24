@@ -1,4 +1,4 @@
-Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED22-Oct-23     19:01:07     page:   1
+Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED24-Oct-23     16:52:34     page:   1
 
 
 PC     Object              I  Line    Source 
@@ -269,8 +269,8 @@ PC     Object              I  Line    Source
                            A   265    .ENDEF
                            A   266    .ENDREC "NONAME5"
                            A   267    	SEGMENT BSS
-044B28                     A   268    _rtc:
-044B28                     A   269    	DS	1
+044F63                     A   268    _rtc:
+044F63                     A   269    	DS	1
                            A   270    .DEFINE "rtc"
                            A   271    .ALIAS "_rtc"
                            A   272    .CLASS 83
@@ -796,7 +796,7 @@ PC     Object              I  Line    Source
                            A   792    .LINE 115
                            A   793    
 043EEB B7ED62              A   794    	UEXT	HL
-043EEE 3A 28 4B 04         A   795    	LD	A,(_rtc)
+043EEE 3A 63 4F 04         A   795    	LD	A,(_rtc)
 043EF2 6F                  A   796    	LD	L,A
 043EF3 7C                  A   797    	LD	A,H
 043EF4 E5C1                A   798    	LD	BC,HL
@@ -807,7 +807,7 @@ PC     Object              I  Line    Source
                            A   803    ;  116		mo = (*(p+1)+1) << 21;
                            A   804    .LINE 116
                            A   805    
-043F02 FD21 28 4B 04       A   806    	LD	IY,_rtc
+043F02 FD21 63 4F 04       A   806    	LD	IY,_rtc
 043F07 B7ED62              A   807    	UEXT	HL
 043F0A FD6E01              A   808    	LD	L,(IY+%1)
 043F0D 5C                  A   809    	LD	E,H

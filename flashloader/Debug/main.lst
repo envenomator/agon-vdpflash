@@ -1,4 +1,4 @@
-Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED22-Oct-23     19:01:07     page:   1
+Zilog eZ80 Macro Assembler Version 4.3 (19073001) RELISTED24-Oct-23     16:52:34     page:   1
 
 
 PC     Object              I  Line    Source 
@@ -269,8 +269,8 @@ PC     Object              I  Line    Source
                            A   265    .ENDEF
                            A   266    .ENDREC "NONAME5"
                            A   267    	SEGMENT BSS
-0448F4                     A   268    _fs:
-0448F4                     A   269    	DS	558
+044D2F                     A   268    _fs:
+044D2F                     A   269    	DS	558
                            A   270    .DEFINE "fs"
                            A   271    .ALIAS "_fs"
                            A   272    .CLASS 83
@@ -543,9 +543,9 @@ PC     Object              I  Line    Source
                            A   539    
 04015C 01010000            A   540    	LD	BC,1
 040160 C5                  A   541    	PUSH	BC
-040161 01 CA 48 04         A   542    	LD	BC,L__0
+040161 01 05 4D 04         A   542    	LD	BC,L__0
 040165 C5                  A   543    	PUSH	BC
-040166 01 F4 48 04         A   544    	LD	BC,_fs
+040166 01 2F 4D 04         A   544    	LD	BC,_fs
 04016A C5                  A   545    	PUSH	BC
 04016B CD 87 33 04         A   546    	CALL	_f_mount
 04016F C1                  A   547    	POP	BC
@@ -584,7 +584,7 @@ PC     Object              I  Line    Source
                            A   580    
 040198 01010000            A   581    	LD	BC,1
 04019C C5                  A   582    	PUSH	BC
-04019D 01 CB 48 04         A   583    	LD	BC,L__1
+04019D 01 06 4D 04         A   583    	LD	BC,L__1
 0401A1 C5                  A   584    	PUSH	BC
 0401A2 ED65BA              A   585    	PEA	IX+%FFFFFFBA
 0401A5 CD 13 34 04         A   586    	CALL	_f_open
@@ -654,7 +654,7 @@ PC     Object              I  Line    Source
                            A   650    
 0401F7 01010000            A   651    	LD	BC,1
 0401FB C5                  A   652    	PUSH	BC
-0401FC 01 D3 48 04         A   653    	LD	BC,L__3
+0401FC 01 0E 4D 04         A   653    	LD	BC,L__3
 040200 C5                  A   654    	PUSH	BC
 040201 ED659D              A   655    	PEA	IX+%FFFFFF9D
 040204 CD 13 34 04         A   656    	CALL	_f_open
@@ -1168,14 +1168,14 @@ PC     Object              I  Line    Source
                            A  1164    
                            A  1165    .ENDFUNC "main",129,"_main"
                            A  1166    	SEGMENT STRSECT
-0448CA                     A  1167    L__0:
-0448CA 00                  A  1168    	DB	0
-0448CB                     A  1169    L__1:
-0448CB 4D4F532E 62696E     A  1170    	DB	"MOS.bin"
-0448D2 00                  A  1171    	DB	0
-0448D3                     A  1172    L__3:
-0448D3 5644502E 62696E     A  1173    	DB	"VDP.bin"
-0448DA 00                  A  1174    	DB	0
+044D05                     A  1167    L__0:
+044D05 00                  A  1168    	DB	0
+044D06                     A  1169    L__1:
+044D06 4D4F532E 62696E     A  1170    	DB	"MOS.bin"
+044D0D 00                  A  1171    	DB	0
+044D0E                     A  1172    L__3:
+044D0E 5644502E 62696E     A  1173    	DB	"VDP.bin"
+044D15 00                  A  1174    	DB	0
                            A  1175    	XREF _fastmemcpy:ROM
                            A  1176    	XREF _lockFlashKeyRegister:ROM
                            A  1177    	XREF _enableFlashKeyRegister:ROM

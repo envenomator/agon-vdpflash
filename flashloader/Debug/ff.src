@@ -131,7 +131,7 @@
 .TYPE 15
 .ENDEF
 .ENDREC "NONAME1"
-.BEGREC "NONAME2",29
+.BEGREC "NONAME2",541
 .DEFINE "obj"
 .VALUE 0
 .CLASS 8
@@ -162,6 +162,12 @@
 .VALUE 25
 .CLASS 8
 .TYPE 15
+.ENDEF
+.DEFINE "buf"
+.VALUE 29
+.CLASS 8
+.DIM 512
+.TYPE 108
 .ENDEF
 .ENDREC "NONAME2"
 .BEGREC "NONAME3",46
@@ -11977,11 +11983,21 @@ _f_read:
 
 .ENDEF
 
+.DEFINE "sect"
+
+.CLASS 65
+
+.VALUE -7
+
+.TYPE 15
+
+.ENDEF
+
 .DEFINE "fs"
 
 .CLASS 65
 
-.VALUE -6
+.VALUE -10
 
 .TAG "NONAME0"
 
@@ -11993,7 +12009,7 @@ _f_read:
 
 .CLASS 65
 
-.VALUE -9
+.VALUE -13
 
 .TYPE 14
 
@@ -12003,19 +12019,9 @@ _f_read:
 
 .CLASS 65
 
-.VALUE -12
-
-.TYPE 4
-
-.ENDEF
-
-.DEFINE "sect"
-
-.CLASS 65
-
 .VALUE -16
 
-.TYPE 15
+.TYPE 4
 
 .ENDEF
 
@@ -12062,7 +12068,7 @@ _f_read:
 	PUSH	IX
 	LD	IX,0
 	ADD	IX,SP
-	LEA	HL,IX+%FFFFFFDA
+	LEA	HL,IX+%FFFFFFD6
 	LD	SP,HL
 ; 3857		FRESULT res;
 ; 3858		FATFS *fs;
@@ -12086,13 +12092,13 @@ _f_read:
 ; 3867		res = validate(&fp->obj, &fs);				/* Check validity of the file object */
 .LINE 3867
 
-	PEA	IX+%FFFFFFFA
+	PEA	IX+%FFFFFFF6
 	LD	IY,(IX+%6)
 	PEA	IY+%0
 	CALL	_validate
 	POP	BC
 	POP	BC
-	LD	(IX+%FFFFFFF4),HL
+	LD	(IX+%FFFFFFF0),HL
 ; 3868		if (res != FR_OK || (res = (FRESULT)fp->err) != FR_OK) LEAVE_FF(fs, res);	/* Check validity */
 .LINE 3868
 
@@ -12102,12 +12108,12 @@ _f_read:
 	LD	A,(IY+%10)
 	UEXT	HL
 	LD	L,A
-	LD	(IX+%FFFFFFF4),HL
+	LD	(IX+%FFFFFFF0),HL
 	CALL	__icmpzero
 	JR	Z,L_567
 L_565:
-	LD	HL,(IX+%FFFFFFF4)
-	JR	L_598
+	LD	HL,(IX+%FFFFFFF0)
+	JR	L_600
 L_567:
 ; 3869		if (!(fp->flag & FA_READ)) LEAVE_FF(fs, FR_DENIED); /* Check access mode */
 .LINE 3869
@@ -12117,7 +12123,7 @@ L_567:
 	AND	A,%1
 	JR	NZ,L_568
 	LD	HL,7
-	JR	L_598
+	JR	L_600
 L_568:
 ; 3870		remain = fp->obj.objsize - fp->fptr;
 .LINE 3870
@@ -12138,15 +12144,15 @@ L_568:
 	LD	HL,(IX+%FFFFFFDE)
 	LD	E,(IX+%FFFFFFE1)
 	CALL	__lcmpu
-	JR	NC,L_595
+	JR	NC,L_597
 	LD	BC,(IX+%FFFFFFDE)
 	LD	(IX+%C),BC
 ; 3872	
 ; 3873		for ( ; btr > 0; btr -= rcnt, *br += rcnt, rbuff += rcnt, fp->fptr += rcnt) {	/* Repeat until btr bytes read */
 .LINE 3873
 
-	JR	L_595
-L_593:
+	JR	L_597
+L_595:
 ; 3874			if (fp->fptr % SS(fs) == 0) {			/* On the sector boundary? */
 .LINE 3874
 
@@ -12161,23 +12167,23 @@ L_593:
 	XOR	A,A
 	CALL	__land
 	CALL	__lcmpzero
-	JR	NZ,L_588
+	JR	NZ,L_592
 ; 3875				csect = (UINT)(fp->fptr / SS(fs) & (fs->csize - 1));	/* Sector offset in the cluster */
 .LINE 3875
 
-	LD	IY,(IX+%FFFFFFFA)
+	LD	IY,(IX+%FFFFFFF6)
 	LD	BC,(IY+%9)
 	CALL	__stoiu
 	DEC	HL
 	LD	BC,HL
 	CALL	__itol
-	LD	(IX+%FFFFFFDB),BC
+	LD	(IX+%FFFFFFD7),BC
 	LD	E,A
 	LD	BC,(IX+%FFFFFFE2)
 	LD	A,(IX+%FFFFFFE5)
 	LD	L,%9
 	CALL	__lshru
-	LD	HL,(IX+%FFFFFFDB)
+	LD	HL,(IX+%FFFFFFD7)
 	CALL	__land
 	LD	(IX+%FFFFFFED),HL
 ; 3876				if (csect == 0) {					/* On the cluster boundary? */
@@ -12245,7 +12251,7 @@ L_573:
 	LD	IY,(IX+%6)
 	LD	(IY+%10),%2
 	LD	HL,2
-	JR	L_598
+	JR	L_600
 L_574:
 ; 3890					if (clst == 0xFFFFFFFF) ABORT(fs, FR_DISK_ERR);
 .LINE 3890
@@ -12259,7 +12265,7 @@ L_574:
 	LD	IY,(IX+%6)
 	LD	(IY+%10),%1
 	LD	HL,1
-	JR	L_598
+	JR	L_600
 L_576:
 ; 3891					fp->clust = clst;				/* Update current cluster */
 .LINE 3891
@@ -12283,43 +12289,43 @@ L_578:
 	LD	L,A
 	PUSH	HL
 	PUSH	BC
-	LD	BC,(IX+%FFFFFFFA)
+	LD	BC,(IX+%FFFFFFF6)
 	PUSH	BC
 	CALL	_clst2sect
 	POP	BC
 	POP	BC
 	POP	BC
-	LD	(IX+%FFFFFFF0),HL
-	LD	(IX+%FFFFFFF3),E
+	LD	(IX+%FFFFFFF9),HL
+	LD	(IX+%FFFFFFFC),E
 ; 3894				if (sect == 0) ABORT(fs, FR_INT_ERR);
 .LINE 3894
 
-	LD	HL,(IX+%FFFFFFF0)
-	LD	E,(IX+%FFFFFFF3)
+	LD	HL,(IX+%FFFFFFF9)
+	LD	E,(IX+%FFFFFFFC)
 	CALL	__lcmpzero
 	JR	NZ,L_580
 	LD	IY,(IX+%6)
 	LD	(IY+%10),%2
 	LD	HL,2
-	JR	L_598
+	JR	L_600
 L_580:
 ; 3895				sect += csect;
 .LINE 3895
 
 	LD	BC,(IX+%FFFFFFED)
 	XOR	A,A
-	LD	HL,(IX+%FFFFFFF0)
-	LD	E,(IX+%FFFFFFF3)
+	LD	HL,(IX+%FFFFFFF9)
+	LD	E,(IX+%FFFFFFFC)
 	CALL	__ladd
-	LD	(IX+%FFFFFFF0),HL
-	LD	(IX+%FFFFFFF3),E
+	LD	(IX+%FFFFFFF9),HL
+	LD	(IX+%FFFFFFFC),E
 ; 3896				cc = btr / SS(fs);					/* When remaining bytes >= sector size, */
 .LINE 3896
 
 	LD	HL,(IX+%C)
 	LD	A,%9
 	CALL	__ishru_b
-	LD	(IX+%FFFFFFF7),HL
+	LD	(IX+%FFFFFFF3),HL
 ; 3897				if (cc > 0) {						/* Read maximum contiguous sectors directly */
 .LINE 3897
 
@@ -12328,15 +12334,15 @@ L_580:
 	SBC	HL,HL
 	OR	A,A
 	SBC	HL,BC
-	JR	NC,L_586
+	JR	NC,L_589
 ; 3898					if (csect + cc > fs->csize) {	/* Clip at cluster boundary */
 .LINE 3898
 
-	LD	IY,(IX+%FFFFFFFA)
+	LD	IY,(IX+%FFFFFFF6)
 	LD	BC,(IY+%9)
 	CALL	__stoiu
 	LD	BC,HL
-	LD	DE,(IX+%FFFFFFF7)
+	LD	DE,(IX+%FFFFFFF3)
 	LD	HL,(IX+%FFFFFFED)
 	ADD	HL,DE
 	LD	DE,HL
@@ -12347,13 +12353,13 @@ L_580:
 ; 3899						cc = fs->csize - csect;
 .LINE 3899
 
-	LD	IY,(IX+%FFFFFFFA)
+	LD	IY,(IX+%FFFFFFF6)
 	LD	BC,(IY+%9)
 	CALL	__stoiu
 	LD	BC,(IX+%FFFFFFED)
 	OR	A,A
 	SBC	HL,BC
-	LD	(IX+%FFFFFFF7),HL
+	LD	(IX+%FFFFFFF3),HL
 ; 3900					}
 L_583:
 .LINE 3900
@@ -12361,16 +12367,16 @@ L_583:
 ; 3901					if (disk_read(fs->pdrv, rbuff, sect, cc) != RES_OK) ABORT(fs, FR_DISK_ERR);
 .LINE 3901
 
-	LD	BC,(IX+%FFFFFFF7)
+	LD	BC,(IX+%FFFFFFF3)
 	PUSH	BC
-	LD	C,(IX+%FFFFFFF3)
+	LD	C,(IX+%FFFFFFFC)
 	LD	B,%0
 	PUSH	BC
-	LD	BC,(IX+%FFFFFFF0)
+	LD	BC,(IX+%FFFFFFF9)
 	PUSH	BC
 	LD	BC,(IX+%FFFFFFEA)
 	PUSH	BC
-	LD	IY,(IX+%FFFFFFFA)
+	LD	IY,(IX+%FFFFFFF6)
 	LD	C,(IY+%1)
 	LD	B,%0
 	PUSH	BC
@@ -12385,7 +12391,7 @@ L_583:
 	LD	IY,(IX+%6)
 	LD	(IY+%10),%1
 	LD	HL,1
-	JR	L_598
+	JR	L_600
 L_584:
 ; 3902	#if !FF_FS_READONLY && FF_FS_MINIMIZE <= 2		/* Replace one of the read sectors with cached data if it contains a dirty sector */
 ; 3903	#if FF_FS_TINY
@@ -12401,20 +12407,29 @@ L_584:
 ; 3913					rcnt = SS(fs) * cc;				/* Number of bytes transferred */
 .LINE 3913
 
-	LD	HL,(IX+%FFFFFFF7)
+	LD	HL,(IX+%FFFFFFF3)
 	LD	A,%9
 	CALL	__ishl_b
 	LD	(IX+%FFFFFFFD),HL
 ; 3914					continue;
 .LINE 3914
 
-	JR	L_594
+	JR	L_596
 ; 3915				}
-L_586:
+L_589:
 .LINE 3915
 
 ; 3916	#if !FF_FS_TINY
 ; 3917				if (fp->sect != sect) {			/* Load data sector if not in cache */
+.LINE 3917
+
+	LD	IY,(IX+%6)
+	LD	HL,(IY+%19)
+	LD	E,(IY+%1C)
+	LD	BC,(IX+%FFFFFFF9)
+	LD	A,(IX+%FFFFFFFC)
+	CALL	__lcmpu
+	JR	Z,L_590
 ; 3918	#if !FF_FS_READONLY
 ; 3919					if (fp->flag & FA_DIRTY) {		/* Write-back dirty sector cache */
 ; 3920						if (disk_write(fs->pdrv, fp->buf, fp->sect, 1) != RES_OK) ABORT(fs, FR_DISK_ERR);
@@ -12422,25 +12437,61 @@ L_586:
 ; 3922					}
 ; 3923	#endif
 ; 3924					if (disk_read(fs->pdrv, fp->buf, sect, 1) != RES_OK)	ABORT(fs, FR_DISK_ERR);	/* Fill sector cache */
+.LINE 3924
+
+	LD	BC,1
+	PUSH	BC
+	LD	C,(IX+%FFFFFFFC)
+	LD	B,%0
+	PUSH	BC
+	LD	BC,(IX+%FFFFFFF9)
+	PUSH	BC
+	LD	IY,(IX+%6)
+	PEA	IY+%1D
+	LD	IY,(IX+%FFFFFFF6)
+	LD	C,(IY+%1)
+	LD	B,%0
+	PUSH	BC
+	LD	(IX+%FFFFFFD6),A
+	CALL	_disk_read
+	LD	A,(IX+%FFFFFFD6)
+	POP	BC
+	POP	BC
+	POP	BC
+	POP	BC
+	POP	BC
+	CALL	__icmpzero
+	JR	Z,L_590
+	LD	IY,(IX+%6)
+	LD	(IY+%10),%1
+	LD	HL,1
+	JR	L_600
 ; 3925				}
+L_590:
+.LINE 3925
+
 ; 3926	#endif
 ; 3927				fp->sect = sect;
 .LINE 3927
 
-	LD	BC,(IX+%FFFFFFF0)
-	LD	D,(IX+%FFFFFFF3)
+	LD	BC,(IX+%FFFFFFF9)
+	LD	D,(IX+%FFFFFFFC)
 	LD	IY,(IX+%6)
 	LD	(IY+%19),BC
 	LD	(IY+%1C),D
 ; 3928			}
-L_588:
+L_592:
 .LINE 3928
 
 ; 3929			rcnt = SS(fs) - (UINT)fp->fptr % SS(fs);	/* Number of bytes remains in the sector */
 .LINE 3929
 
 	LD	IY,(IX+%6)
-	LD	HL,(IY+%11)
+	LD	BC,(IY+%11)
+	LD	D,(IY+%14)
+	LD	(IX+%FFFFFFDA),BC
+	LD	(IX+%FFFFFFDD),D
+	LD	HL,BC
 	LD	BC,511
 	CALL	__iand
 	LD	BC,HL
@@ -12455,63 +12506,40 @@ L_588:
 	LD	HL,(IX+%C)
 	OR	A,A
 	SBC	HL,BC
-	JR	NC,L_591
+	JR	NC,L_594
 	LD	BC,(IX+%C)
 	LD	(IX+%FFFFFFFD),BC
-L_591:
+L_594:
 ; 3931	#if FF_FS_TINY
 ; 3932			if (move_window(fs, fp->sect) != FR_OK) ABORT(fs, FR_DISK_ERR);	/* Move sector window */
-.LINE 3932
-
-	LD	IY,(IX+%6)
-	LD	BC,(IY+%19)
-	LD	A,(IY+%1C)
-	LD	H,%0
-	LD	L,A
-	PUSH	HL
-	PUSH	BC
-	LD	BC,(IX+%FFFFFFFA)
-	PUSH	BC
-	CALL	_move_window
-	POP	BC
-	POP	BC
-	POP	BC
-	CALL	__icmpzero
-	JR	Z,L_592
-	LD	IY,(IX+%6)
-	LD	(IY+%10),%1
-	LD	HL,1
-	JR	L_598
-L_592:
 ; 3933			memcpy(rbuff, fs->win + fp->fptr % SS(fs), rcnt);	/* Extract partial sector */
-.LINE 3933
+; 3934	#else
+; 3935			memcpy(rbuff, fp->buf + fp->fptr % SS(fs), rcnt);	/* Extract partial sector */
+.LINE 3935
 
 	LD	BC,(IX+%FFFFFFFD)
 	PUSH	BC
-	LD	IY,(IX+%6)
-	LD	HL,(IY+%11)
-	LD	E,(IY+%14)
+	LD	HL,(IX+%FFFFFFDA)
+	LD	E,(IX+%FFFFFFDD)
 	LD	BC,511
 	XOR	A,A
 	CALL	__land
 	LD	BC,HL
-	LD	IY,(IX+%FFFFFFFA)
-	LEA	HL,IY+%2E
+	LD	IY,(IX+%6)
+	LEA	HL,IY+%1D
 	ADD	HL,BC
 	PUSH	HL
 	LD	BC,(IX+%FFFFFFEA)
 	PUSH	BC
-	LD	(IX+%FFFFFFDA),A
+	LD	(IX+%FFFFFFD6),A
 	CALL	_memcpy
-	LD	A,(IX+%FFFFFFDA)
+	LD	A,(IX+%FFFFFFD6)
 	POP	BC
 	POP	BC
 	POP	BC
-; 3934	#else
-; 3935			memcpy(rbuff, fp->buf + fp->fptr % SS(fs), rcnt);	/* Extract partial sector */
 ; 3936	#endif
 ; 3937		}
-L_594:
+L_596:
 .LINE 3937
 
 	LD	BC,(IX+%FFFFFFFD)
@@ -12537,13 +12565,13 @@ L_594:
 	CALL	__ladd
 	LD	(IY+%11),HL
 	LD	(IY+%14),E
-L_595:
+L_597:
 	LD	BC,(IX+%C)
 	OR	A,A
 	SBC	HL,HL
 	OR	A,A
 	SBC	HL,BC
-	JR	C,L_593
+	JR	C,L_595
 ; 3938	
 ; 3939		LEAVE_FF(fs, FR_OK);
 .LINE 3939
@@ -12551,7 +12579,7 @@ L_595:
 	OR	A,A
 	SBC	HL,HL
 ; 3940	}
-L_598:
+L_600:
 .LINE 3940
 
 	LD	SP,IX
@@ -12563,15 +12591,16 @@ L_598:
 ;Name                         Addr/Register   Size   Type
 ;_memcpy                             IMPORT  -----   function
 ;_disk_read                          IMPORT  -----   function
+;G_47                                 IX-38      4   variable
 ;remain                               IX-34      4   variable
 ;G_45                                 IX-30      4   variable
 ;clst                                 IX-26      4   variable
 ;rbuff                                IX-22      3   variable
 ;csect                                IX-19      3   variable
-;sect                                 IX-16      4   variable
-;res                                  IX-12      3   variable
-;cc                                    IX-9      3   variable
-;fs                                    IX-6      3   variable
+;res                                  IX-16      3   variable
+;cc                                   IX-13      3   variable
+;fs                                   IX-10      3   variable
+;sect                                  IX-7      4   variable
 ;rcnt                                  IX-3      3   variable
 ;br                                   IX+15      3   parameter
 ;btr                                  IX+12      3   parameter
@@ -12579,7 +12608,7 @@ L_598:
 ;fp                                    IX+6      3   parameter
 
 
-; Stack Frame Size: 56 (bytes)
+; Stack Frame Size: 60 (bytes)
 ;       Spill Code: -1 (instruction)
 
 
@@ -12875,7 +12904,7 @@ _f_close:
 .LINE 4165
 
 	CALL	__icmpzero
-	JR	NZ,L_600
+	JR	NZ,L_602
 ; 4166	#if FF_FS_LOCK != 0
 ; 4167				res = dec_lock(fp->obj.lockid);		/* Decrement file open counter */
 ; 4168				if (res == FR_OK) fp->obj.fs = 0;	/* Invalidate file object */
@@ -12892,7 +12921,7 @@ _f_close:
 ; 4174	#endif
 ; 4175			}
 ; 4176		}
-L_600:
+L_602:
 .LINE 4176
 
 ; 4177		return res;
@@ -12986,10 +13015,10 @@ _f_chdrive:
 .LINE 4197
 
 	CALL	__icmpzero
-	JP	P,L_603
+	JP	P,L_605
 	LD	HL,11
-	JR	L_604
-L_603:
+	JR	L_606
+L_605:
 ; 4198		CurrVol = (BYTE)vol;	/* Set it as current volume */
 .LINE 4198
 
@@ -13002,7 +13031,7 @@ L_603:
 	OR	A,A
 	SBC	HL,HL
 ; 4201	}
-L_604:
+L_606:
 .LINE 4201
 
 	LD	SP,IX
@@ -13132,7 +13161,7 @@ _f_chdir:
 .LINE 4220
 
 	CALL	__icmpzero
-	JR	NZ,L_613
+	JR	NZ,L_615
 ; 4221			dj.obj.fs = fs;
 .LINE 4221
 
@@ -13160,14 +13189,14 @@ _f_chdir:
 .LINE 4224
 
 	CALL	__icmpzero
-	JR	NZ,L_610
+	JR	NZ,L_612
 ; 4225				if (dj.fn[NSFLAG] & NS_NONAME) {	/* Is it the start directory itself? */
 .LINE 4225
 
 	LEA	IY,IX+%FFFFFFEA
 	LD	A,(IY+%B)
 	AND	A,%80
-	JR	Z,L_608
+	JR	Z,L_610
 ; 4226					fs->cdir = dj.obj.sclust;
 .LINE 4226
 
@@ -13186,14 +13215,14 @@ _f_chdir:
 ; 4234				} else {
 .LINE 4234
 
-	JR	L_610
-L_608:
+	JR	L_612
+L_610:
 ; 4235					if (dj.obj.attr & AM_DIR) {	/* It is a sub-directory */
 .LINE 4235
 
 	LD	A,(IX+%FFFFFFD1)
 	AND	A,%10
-	JR	Z,L_606
+	JR	Z,L_608
 ; 4236	#if FF_FS_EXFAT
 ; 4237						if (fs->fs_type == FS_EXFAT) {
 ; 4238							fs->cdir = ld_dword(fs->dirbuf + XDIR_FstClus);		/* Sub-directory cluster */
@@ -13220,8 +13249,8 @@ L_608:
 ; 4247					} else {
 .LINE 4247
 
-	JR	L_610
-L_606:
+	JR	L_612
+L_608:
 ; 4248						res = FR_NO_PATH;		/* Reached but a file */
 .LINE 4248
 
@@ -13230,7 +13259,7 @@ L_606:
 ; 4249					}
 ; 4250				}
 ; 4251			}
-L_610:
+L_612:
 .LINE 4251
 
 ; 4252			FREE_NAMBUF();
@@ -13241,7 +13270,7 @@ L_610:
 	LD	HL,(IX+%FFFFFFFD)
 	OR	A,A
 	SBC	HL,BC
-	JR	NZ,L_613
+	JR	NZ,L_615
 	LD	BC,5
 	LD	(IX+%FFFFFFFD),BC
 ; 4254	#if FF_STR_VOLUME_ID == 2	/* Also current drive is changed if in Unix style volume ID */
@@ -13251,7 +13280,7 @@ L_610:
 ; 4258			}
 ; 4259	#endif
 ; 4260		}
-L_613:
+L_615:
 .LINE 4260
 
 ; 4261	
@@ -13470,7 +13499,7 @@ _f_getcwd:
 .LINE 4291
 
 	CALL	__icmpzero
-	JR	NZ,L_656
+	JR	NZ,L_658
 ; 4292			dj.obj.fs = fs;
 .LINE 4292
 
@@ -13508,8 +13537,8 @@ _f_getcwd:
 ; 4299				while ((ccl = dj.obj.sclust) != 0) {	/* Repeat while current directory is a sub-directory */
 .LINE 4299
 
-	JR	L_642
-L_643:
+	JR	L_644
+L_645:
 ; 4300					res = dir_sdi(&dj, 1 * SZDIRE);	/* Get parent directory */
 .LINE 4300
 
@@ -13527,7 +13556,7 @@ L_643:
 .LINE 4301
 
 	CALL	__icmpzero
-	JR	NZ,L_653
+	JR	NZ,L_655
 ; 4302					res = move_window(fs, dj.sect);
 .LINE 4302
 
@@ -13547,7 +13576,7 @@ L_643:
 .LINE 4303
 
 	CALL	__icmpzero
-	JR	NZ,L_653
+	JR	NZ,L_655
 ; 4304					dj.obj.sclust = ld_clust(fs, dj.dir);	/* Goto parent directory */
 .LINE 4304
 
@@ -13576,9 +13605,9 @@ L_643:
 .LINE 4306
 
 	CALL	__icmpzero
-	JR	NZ,L_653
+	JR	NZ,L_655
 ; 4307					do {							/* Find the entry links to the child directory */
-L_624:
+L_626:
 .LINE 4307
 
 ; 4308						res = DIR_READ_FILE(&dj);
@@ -13595,7 +13624,7 @@ L_624:
 .LINE 4309
 
 	CALL	__icmpzero
-	JR	NZ,L_628
+	JR	NZ,L_630
 ; 4310						if (ccl == ld_clust(fs, dj.dir)) break;	/* Found the entry */
 .LINE 4310
 
@@ -13609,7 +13638,7 @@ L_624:
 	LD	BC,(IX+%FFFFFFED)
 	LD	A,(IX+%FFFFFFF0)
 	CALL	__lcmpu
-	JR	Z,L_628
+	JR	Z,L_630
 ; 4311						res = dir_next(&dj, 0);
 .LINE 4311
 
@@ -13624,8 +13653,8 @@ L_624:
 .LINE 4312
 
 	CALL	__icmpzero
-	JR	Z,L_624
-L_628:
+	JR	Z,L_626
+L_630:
 ; 4313					if (res == FR_NO_FILE) res = FR_INT_ERR;/* It cannot be 'not found'. */
 .LINE 4313
 
@@ -13633,16 +13662,16 @@ L_628:
 	LD	HL,(IX+%FFFFFFFD)
 	OR	A,A
 	SBC	HL,BC
-	JR	NZ,L_630
+	JR	NZ,L_632
 	LD	BC,2
 	LD	(IX+%FFFFFFFD),BC
-L_630:
+L_632:
 ; 4314					if (res != FR_OK) break;
 .LINE 4314
 
 	LD	HL,(IX+%FFFFFFFD)
 	CALL	__icmpzero
-	JR	NZ,L_653
+	JR	NZ,L_655
 ; 4315					get_fileinfo(&dj, &fno);		/* Get the directory name and push it to the buffer */
 .LINE 4315
 
@@ -13660,12 +13689,12 @@ L_630:
 
 	LD	BC,0
 	LD	(IX+%FFFFFFF7),BC
-	JR	L_635
-L_633:
+	JR	L_637
+L_635:
 	LD	BC,(IX+%FFFFFFF7)
 	INC	BC
 	LD	(IX+%FFFFFFF7),BC
-L_635:
+L_637:
 	LD	BC,(IX+%FFFFFFF7)
 	LD	HL,IX
 	LD	DE,-321
@@ -13673,7 +13702,7 @@ L_635:
 	ADD	HL,BC
 	LD	A,(HL)
 	OR	A,A
-	JR	NZ,L_633
+	JR	NZ,L_635
 ; 4317					if (i < n + 1) {	/* Insufficient space to store the path name? */
 .LINE 4317
 
@@ -13682,20 +13711,20 @@ L_635:
 	LD	HL,(IX+%FFFFFFFA)
 	OR	A,A
 	SBC	HL,BC
-	JR	NC,L_638
+	JR	NC,L_640
 ; 4318						res = FR_NOT_ENOUGH_CORE; break;
 .LINE 4318
 
 	LD	BC,17
 	LD	(IX+%FFFFFFFD),BC
-	JR	L_653
+	JR	L_655
 ; 4319					}
 .LINE 4319
 
 ; 4320					while (n) buff[--i] = fno.fname[--n];	/* Stack the name */
 .LINE 4320
 
-L_639:
+L_641:
 	LD	IY,(IX+%FFFFFFF7)
 	LEA	BC,IY+%FFFFFFFF
 	LD	(IX+%FFFFFFF7),BC
@@ -13713,10 +13742,10 @@ L_639:
 	ADD	HL,BC
 	LD	A,(IY)
 	LD	(HL),A
-L_638:
+L_640:
 	LD	HL,(IX+%FFFFFFF7)
 	CALL	__icmpzero
-	JR	NZ,L_639
+	JR	NZ,L_641
 ; 4321					buff[--i] = '/';
 .LINE 4321
 
@@ -13728,7 +13757,7 @@ L_638:
 	ADD	HL,BC
 	LD	(HL),%2F
 ; 4322				}
-L_642:
+L_644:
 .LINE 4322
 
 	LD	BC,(IX+%FFFFFFC6)
@@ -13738,9 +13767,9 @@ L_642:
 	LD	HL,BC
 	LD	E,(IX+%FFFFFFF0)
 	CALL	__lcmpzero
-	JR	NZ,L_643
+	JR	NZ,L_645
 ; 4323			}
-L_653:
+L_655:
 .LINE 4323
 
 ; 4324			if (res == FR_OK) {
@@ -13748,7 +13777,7 @@ L_653:
 
 	LD	HL,(IX+%FFFFFFFD)
 	CALL	__icmpzero
-	JR	NZ,L_654
+	JR	NZ,L_656
 ; 4325				if (i == len) buff[--i] = '/';	/* Is it the root-directory? */
 .LINE 4325
 
@@ -13756,7 +13785,7 @@ L_653:
 	LD	HL,(IX+%FFFFFFFA)
 	OR	A,A
 	SBC	HL,BC
-	JR	NZ,L_651
+	JR	NZ,L_653
 	LD	IY,(IX+%FFFFFFFA)
 	LEA	IY,IY+%FFFFFFFF
 	LD	(IX+%FFFFFFFA),IY
@@ -13764,7 +13793,7 @@ L_653:
 	LD	HL,(IX+%6)
 	ADD	HL,BC
 	LD	(HL),%2F
-L_651:
+L_653:
 ; 4326	#if FF_VOLUMES >= 2			/* Put drive prefix */
 ; 4327				vl = 0;
 ; 4328	#if FF_STR_VOLUME_ID >= 1	/* String volume ID */
@@ -13790,9 +13819,9 @@ L_651:
 
 	LD	HL,(IX+%FFFFFFFD)
 	CALL	__icmpzero
-	JR	NZ,L_654
+	JR	NZ,L_656
 ; 4347					do *tp++ = buff[i++]; while (i < len);	/* Copy stacked path string */
-L_648:
+L_650:
 .LINE 4347
 
 	LD	HL,(IX+%FFFFFFF1)
@@ -13816,15 +13845,15 @@ L_648:
 	LD	HL,(IX+%FFFFFFFA)
 	OR	A,A
 	SBC	HL,BC
-	JR	C,L_648
+	JR	C,L_650
 ; 4348				}
 ; 4349			}
-L_654:
+L_656:
 .LINE 4349
 
 ; 4350			FREE_NAMBUF();
 ; 4351		}
-L_656:
+L_658:
 .LINE 4351
 
 ; 4352	
@@ -14928,10 +14957,10 @@ _f_getlabel:
 .LINE 5290
 
 	CALL	__icmpzero
-	JR	NZ,L_679
+	JR	NZ,L_681
 	LD	HL,(IX+%9)
 	CALL	__icmpzero
-	JR	Z,L_679
+	JR	Z,L_681
 ; 5291			dj.obj.fs = fs; dj.obj.sclust = 0;	/* Open root directory */
 .LINE 5291
 
@@ -14958,7 +14987,7 @@ _f_getlabel:
 .LINE 5293
 
 	CALL	__icmpzero
-	JR	NZ,L_670
+	JR	NZ,L_672
 ; 5294			 	res = DIR_READ_LABEL(&dj);		/* Find a volume label entry */
 .LINE 5294
 
@@ -14973,7 +15002,7 @@ _f_getlabel:
 .LINE 5295
 
 	CALL	__icmpzero
-	JR	NZ,L_670
+	JR	NZ,L_672
 ; 5296	#if FF_FS_EXFAT
 ; 5297					if (fs->fs_type == FS_EXFAT) {
 ; 5298						WCHAR hs;
@@ -15003,8 +15032,8 @@ _f_getlabel:
 ; 5317						while (si < 11) {
 .LINE 5317
 
-	JR	L_661
-L_662:
+	JR	L_663
+L_664:
 ; 5318							wc = dj.dir[si++];
 .LINE 5318
 
@@ -15038,16 +15067,16 @@ L_662:
 	LD	(IX+%FFFFFFFD),BC
 ; 5326	#endif
 ; 5327						}
-L_661:
+L_663:
 .LINE 5327
 
 	LD	BC,11
 	LD	HL,(IX+%FFFFFFF4)
 	OR	A,A
 	SBC	HL,BC
-	JR	C,L_662
+	JR	C,L_664
 ; 5328						do {				/* Truncate trailing spaces */
-L_664:
+L_666:
 .LINE 5328
 
 ; 5329							label[di] = 0;
@@ -15062,7 +15091,7 @@ L_664:
 
 	LD	HL,(IX+%FFFFFFFD)
 	CALL	__icmpzero
-	JR	Z,L_670
+	JR	Z,L_672
 ; 5331						} while (label[--di] == ' ');
 .LINE 5331
 
@@ -15079,11 +15108,11 @@ L_664:
 	LD	BC,32
 	OR	A,A
 	SBC	HL,BC
-	JR	Z,L_664
+	JR	Z,L_666
 ; 5332					}
 ; 5333				}
 ; 5334			}
-L_670:
+L_672:
 .LINE 5334
 
 ; 5335			if (res == FR_NO_FILE) {	/* No label entry and return nul string */
@@ -15093,7 +15122,7 @@ L_670:
 	LD	HL,(IX+%FFFFFFFA)
 	OR	A,A
 	SBC	HL,BC
-	JR	NZ,L_679
+	JR	NZ,L_681
 ; 5336				label[0] = 0;
 .LINE 5336
 
@@ -15106,7 +15135,7 @@ L_670:
 	LD	(IX+%FFFFFFFA),BC
 ; 5338			}
 ; 5339		}
-L_679:
+L_681:
 .LINE 5339
 
 ; 5340	
@@ -15116,10 +15145,10 @@ L_679:
 
 	LD	HL,(IX+%FFFFFFFA)
 	CALL	__icmpzero
-	JR	NZ,L_680
+	JR	NZ,L_682
 	LD	HL,(IX+%C)
 	CALL	__icmpzero
-	JR	Z,L_680
+	JR	Z,L_682
 ; 5343			res = move_window(fs, fs->volbase);
 .LINE 5343
 
@@ -15141,7 +15170,7 @@ L_679:
 .LINE 5344
 
 	CALL	__icmpzero
-	JR	NZ,L_680
+	JR	NZ,L_682
 ; 5345				switch (fs->fs_type) {
 .LINE 5345
 
@@ -15151,18 +15180,18 @@ L_679:
 	LD	L,A
 	CALL	__case8D
 	JP	(HL)
-L__350:
+L__351:
 	DW	2
 	DB	3
-	DW24	L_674	
+	DW24	L_676	
 
 	DB	4
-	DW24	L_673	
-
 	DW24	L_675	
 
+	DW24	L_677	
+
 ; 5346				case FS_EXFAT:
-L_673:
+L_675:
 .LINE 5346
 
 ; 5347					di = BPB_VolIDEx;
@@ -15173,10 +15202,10 @@ L_673:
 ; 5348					break;
 .LINE 5348
 
-	JR	L_676
+	JR	L_678
 ; 5349	
 ; 5350				case FS_FAT32:
-L_674:
+L_676:
 .LINE 5350
 
 ; 5351					di = BS_VolID32;
@@ -15187,10 +15216,10 @@ L_674:
 ; 5352					break;
 .LINE 5352
 
-	JR	L_676
+	JR	L_678
 ; 5353	
 ; 5354				default:
-L_675:
+L_677:
 .LINE 5354
 
 ; 5355					di = BS_VolID;
@@ -15199,7 +15228,7 @@ L_675:
 	LD	BC,39
 	LD	(IX+%FFFFFFFD),BC
 ; 5356				}
-L_676:
+L_678:
 .LINE 5356
 
 ; 5357				*vsn = ld_dword(fs->win + di);
@@ -15217,7 +15246,7 @@ L_676:
 	LD	(IY+%3),E
 ; 5358			}
 ; 5359		}
-L_680:
+L_682:
 .LINE 5359
 
 ; 5360	
@@ -16453,8 +16482,8 @@ _f_gets:
 ; 6445		while (nc < len) {
 .LINE 6445
 
-	JR	L_689
-L_690:
+	JR	L_691
+L_692:
 ; 6446			f_read(fp, s, 1, &rc);	/* Get a byte */
 .LINE 6446
 
@@ -16478,7 +16507,7 @@ L_690:
 	LD	HL,(IX+%FFFFFFF4)
 	OR	A,A
 	SBC	HL,BC
-	JR	NZ,L_691
+	JR	NZ,L_693
 ; 6448			dc = s[0];
 .LINE 6448
 
@@ -16509,17 +16538,17 @@ L_690:
 	LD	BC,10
 	XOR	A,A
 	CALL	__lcmpu
-	JR	Z,L_691
+	JR	Z,L_693
 ; 6452		}
-L_689:
+L_691:
 .LINE 6452
 
 	LD	BC,(IX+%9)
 	LD	HL,(IX+%FFFFFFFD)
 	OR	A,A
 	SBC	HL,BC
-	JP	M,L_690
-L_691:
+	JP	M,L_692
+L_693:
 ; 6453	#endif
 ; 6454	
 ; 6455		*p = 0;		/* Terminate the string */
@@ -16532,14 +16561,14 @@ L_691:
 
 	LD	HL,(IX+%FFFFFFFD)
 	CALL	__icmpzero
-	JR	Z,L_694
+	JR	Z,L_696
 	LD	BC,(IX+%6)
 	LD	(IX+%FFFFFFF7),BC
-	JR	L_695
-L_694:
+	JR	L_697
+L_696:
 	LD	BC,0
 	LD	(IX+%FFFFFFF7),BC
-L_695:
+L_697:
 	LD	HL,(IX+%FFFFFFF7)
 ; 6457	}
 .LINE 6457
@@ -16555,7 +16584,7 @@ L_695:
 ;s                                    IX-20      4   variable
 ;dc                                   IX-16      4   variable
 ;rc                                   IX-12      3   variable
-;temp692                               IX-9      3   variable
+;temp694                               IX-9      3   variable
 ;p                                     IX-6      3   variable
 ;nc                                    IX-3      3   variable
 ;fp                                   IX+12      3   parameter

@@ -28,7 +28,9 @@ Then press 'Start', wait for the tool to finish and follow the on-screen instruc
 
 ## Requirements
 1. Two (dupont female-female) cables need to be connected between the external GPIO and ZDI ports of the AgonLight board. Please see detailed description below
-2. The required MOS version to flash needs to be placed on the SD card's root filesystem, with filename "MOS.bin"
+2. Place the firmware files in the **root** directory of the microSD card:
+	- MOS firmware - 'MOS.bin'
+	- VDP firmware - 'firmware.bin'
 3. The board needs to be reset after inserting the SD card - just press the reset button.
 
 ## Cabling details

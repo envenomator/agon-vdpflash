@@ -13,7 +13,7 @@
 #define BAUDRATE	500000
 
 #define MOSFILENAME	"MOS.bin"
-#define VDPFILENAME "VDP.bin"
+#define VDPFILENAME "firmware.bin"
 #define LOADADDRESS	0x50000
 
 extern void init_UART0(void);

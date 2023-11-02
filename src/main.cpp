@@ -44,7 +44,7 @@ void boot_screen() {
     fg_white();
     terminal.write("\e[2J");     // clear screen
     terminal.write("\e[1;1H");   // move cursor to 1,1
-    terminal.write("Agon ZDI bare-metal flash utility - version 0.8\r\n\r\n");
+    terminal.write("Agon ZDI bare-metal flash utility - version 0.9\r\n\r\n");
 }
 
 void ask_initial() {
@@ -65,8 +65,8 @@ void ask_initial() {
     terminal.write("    detailed connection diagrams can be found at\r\n");
     terminal.write("    https://github.com/envenomator/agon-vdpflash\r\n\r\n");
     terminal.write(" 2) Place the required firmware files on the SD card's root:\r\n");
-    terminal.write("    MOS.bin - containing the MOS firmware\r\n");
-    terminal.write("    VDP.bin - containing a matching VDP firmware\r\n");
+    terminal.write("         MOS.bin - containing the MOS firmware\r\n");
+    terminal.write("    firmware.bin - containing a matching VDP firmware\r\n");
     terminal.write("\r\n\r\nPress ENTER to proceed:");
     waitforKey(0x0D);
 }
@@ -200,7 +200,7 @@ void loop() {
     boot_screen();
     terminal.write("Action                          Status\r\n");
     terminal.write("--------------------------------------\r\n");
-    terminal.write("Checking ZDI interface         - ");
+    terminal.write("Checking ZDI interface            - ");
     productid = zdi->get_productid();
     revision = zdi->get_revision();
     if((productid != 7)) {
@@ -211,7 +211,7 @@ void loop() {
     sprintf(buffer,"UP (ID %X.%02X)\r\n",productid, revision);
     terminal.write(buffer);
 
-    terminal.write("Uploading flashloader to ez80  - ");
+    terminal.write("Uploading flashloader to ez80     - ");
 
     init_ez80();
     ZDI_upload();
@@ -221,7 +221,7 @@ void loop() {
     cpu->pc(USERLOAD);
     cpu->setContinue(); // start uploaded program
     
-    terminal.write("Starting flashloader           - ");
+    terminal.write("Starting flashloader              - ");
 
     status = getStatus();
     if((status.state == 'S') && (status.status == 1))
@@ -232,7 +232,7 @@ void loop() {
         while(1);
     }
 
-    terminal.write("Opening MOS.bin from SD card   - ");
+    terminal.write("Opening MOS.bin from SD card      - ");
     status = getStatus();    
     if((status.state == 'F') && (status.status == 1))
         terminal.write("Done");
@@ -250,7 +250,7 @@ void loop() {
     sprintf(buffer, " (%d bytes)\r\n", mosfilesize);
     terminal.write(buffer);
 
-    terminal.write("Opening VDP.bin from SD card   - ");
+    terminal.write("Opening firmware.bin from SD card - ");
     status = getStatus();    
     if((status.state == 'V') && (status.status == 1)) {
         sprintf(buffer, "Done (%d bytes)\r\n", status.result);
@@ -263,7 +263,7 @@ void loop() {
     }
     vdpfilesize = status.result;
 
-    terminal.write("Reading MOS.bin to ez80 memory - ");
+    terminal.write("Reading MOS.bin to ez80 memory    - ");
     status = getStatus();
     if((status.state == 'M') && (status.status == 1))
         terminal.write("Done");
@@ -283,7 +283,7 @@ void loop() {
     ask_proceed();
     Serial2.write(1);
 
-    terminal.write("Erasing ez80 flash             - ");
+    terminal.write("Erasing ez80 flash                - ");
     status = getStatus();
     if((status.state == 'E') && (status.status == 1))
         terminal.write("Done\r\n");

@@ -20,10 +20,34 @@ The latest version of this tool can be downloaded [from the Espressif support we
 
 Connect your AgonLight board to your PC, using an appropriate USB interface cable. This will provide serial connectivity between the ESP32 on your AgonLight and the PC.
 
-After installation of the Espressif ESP Flash download tool, run it and fill in the fields exactly as follows (provide your own COM port details), pointing the binaries where you downloaded this git to on disk. Binaries to flash are in the 'batchfile-flash' folder, which I put in 'C:\bin' in this example:
+After installation of the Espressif ESP Flash download tool, run it and fill in the fields as follows:
 
-![espressif settings](/media/esp32flash.PNG)
+Select the **ESP32** platform for *Chiptype*:
 
+![espressif settings1](/media/flash-settings1.png)
+
+Leave **WorkMode** at *Develop*:
+
+![espressif settings2](/media/flash-settings2.png)
+
+Next, on the main screen, take care to specify these exact addresses for:
+
+|    Filename    | Address |
+|:--------------:|--------:|
+| bootloader.bin |  0x1000 |
+| partitions.bin |  0x8000 |
+|  firmware.bin  | 0x10000 |
+
+And **make sure** to **SELECT** the checkboxes on the left, to select all files to flash.
+
+![espressif settings2](/media/flash-tool.png)
+
+- SPI speed is 80Mhz
+- SPI mode can be DIO, or QIO
+- Please don't use the CombineBin/Default buttons
+- Leave the *DoNotChgBin* option selected
+- provide your own serial port details from the **DROPDOWN** and don't type it in.
+ 
 Then press 'Start', wait for the tool to finish and follow the on-screen instructions on your VGA monitor connected to the AgonLight board.
 
 ## Requirements
